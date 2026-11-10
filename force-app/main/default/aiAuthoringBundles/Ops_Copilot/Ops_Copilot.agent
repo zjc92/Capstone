@@ -115,6 +115,18 @@ subagent off_topic:
             go_to_property_ops: @utils.transition to @subagent.property_ops
                 description: "The user has asked about a tenant renewal, a draft, or this week's buildings."
 
+subagent tenant_not_found:
+    label: "Tenant not found"
+    description: "The renewal lookup returned not_found. Say the one sentence and nothing else."
+
+    before_reasoning:
+        if @system_variables.user_input != @variables.seen_input:
+            transition to @subagent.property_ops
+
+    reasoning:
+        instructions: ->
+            | That tenant is not in your buildings. I cannot draft a renewal email for that tenant.
+
 subagent property_ops:
     label: "Property operations"
     description: "Review one tenant renewal or summarize this manager's week."
@@ -204,7 +216,7 @@ subagent property_ops:
                 | I could not retrieve the renewal.
 
             if @variables.last_result_code == "not_found":
-                | That tenant is not in your buildings. I cannot draft a renewal email for that tenant.
+                transition to @subagent.tenant_not_found
 
             if @variables.last_result_code == "ambiguous":
                 | There is more than one apartment for that tenant in your buildings. Say the unit name.
