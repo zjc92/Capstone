@@ -1,0 +1,38 @@
+name: Deploy Ops_Copilot to target
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: pacific-haven-target
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Log in to target org
+        env:
+          SFDX_AUTH_URL: ${{ secrets.TARGET_SFDX_AUTH_URL }}
+        run: |
+          echo "$SFDX_AUTH_URL" > auth.txt
+          sf org login sfdx-url --sfdx-url-file auth.txt --alias target
+          rm auth.txt
+
+      - name: Dry run
+        run: sf project deploy start --dry-run --target-org target --source-dir force-app/main/default/aiAuthoringBundles/Ops_Copilot
+
+      - name: Deploy
+        run: sf project deploy start --target-org target --source-dir force-app/main/default/aiAuthoringBundles/Ops_Copilot
+
+      - name: Publish agent
+        run: sf agent publish authoring-bundle --authoring-bundle-api-name Ops_Copilot --skip-retrieve --target-org target
+
+      - name: Activate agent
+        run: sf agent activate --api-name Ops_Copilot --target-org target
