@@ -1,0 +1,35 @@
+{
+  "required" : [ "city", "bedrooms" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "bedrooms" : {
+      "title" : "Bedrooms",
+      "description" : "Number of bedrooms the guest asked for, as digits.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "city" : {
+      "title" : "City",
+      "description" : "City the guest asked about, such as Portland, Seattle, or San Francisco.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "max_rent" : {
+      "title" : "Maximum Rent",
+      "description" : "Maximum monthly rent in dollars, without a currency symbol. Leave empty when the guest did not name a maximum rent.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "move_in_window" : {
+      "title" : "Move-in Window",
+      "description" : "Pass this_week when the guest wants to move in this week. Otherwise leave empty.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

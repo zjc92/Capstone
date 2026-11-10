@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>g7f4uAr8jTORG/YqOkmvXccZA+O8WGTmjNsah/V70BA=_1</activeVersionIdentifier>
+    <description>Classifies one resident message as upset or calm for the Tenant Concierge handoff.</description>
+    <developerName>Classify_Resident_Sentiment</developerName>
+    <masterLabel>Classify Resident Sentiment</masterLabel>
+    <templateVersions>
+        <content>You classify one message from a Pacific Haven resident.
+Reply with only the single word upset or the single word calm.
+Reply upset when the resident is angry or frustrated, or says the same problem has happened again. A third time, still, or again counts as upset.
+Reply calm for a first report, a question, or a plain confirmation.
+Do not add any other word.
+
+Message:
+{!$Input:Resident_Message}</content>
+        <inputs>
+            <apiName>Resident_Message</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Resident Message</masterLabel>
+            <referenceName>Input:Resident_Message</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>g7f4uAr8jTORG/YqOkmvXccZA+O8WGTmjNsah/V70BA=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

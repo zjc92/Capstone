@@ -1,0 +1,35 @@
+{
+  "required" : [ "city", "bedrooms", "listed_rent", "requested_discount" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "bedrooms" : {
+      "title" : "Bedrooms",
+      "description" : "Bedroom count of the apartment the guest named, as digits.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "city" : {
+      "title" : "City",
+      "description" : "City of the apartment the guest named, such as Portland.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "listed_rent" : {
+      "title" : "Listed Rent",
+      "description" : "Listed monthly rent the guest named, without a currency symbol.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "requested_discount" : {
+      "title" : "Requested Discount",
+      "description" : "Discount amount the guest asked for, in dollars, without a currency symbol.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

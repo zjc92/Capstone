@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>qT6Ci8VnH72W7eJeurkpUs5G8YmZiLcBvg0rf2kvN8M==_5</activeVersionIdentifier>
+    <description>Classifies one resident message as door, keyfob, maintenance, human, confirm, decline, or other for Tenant Concierge.</description>
+    <developerName>Classify_Resident_Request</developerName>
+    <masterLabel>Classify Resident Request</masterLabel>
+    <templateVersions>
+        <content>You classify one message from a Pacific Haven resident.
+Reply with only one word: confirm, decline, door, keyfob, maintenance, human, or other.
+If the message is only yes, yeah, yep, ok, okay, sure, please, or go ahead, reply confirm.
+If the message is only no, nope, no thanks, or cancel, reply decline.
+Reply door when the resident asks to open or unlock a door, or the message is only a numeric code.
+Reply keyfob when the resident asks for a key fob, a fob, a door card, or asks to change its price.
+Reply maintenance for a leak, faucet, power, repair, or a request to file a maintenance request.
+Reply human when the resident asks to speak to a person, a human, an agent, a specialist, or a representative, and the message does not describe a leak, faucet, power problem, or other repair.
+Reply other for a greeting, thanks, goodbye, or anything else.
+Do not add any other word.
+
+Message:
+{!$Input:Resident_Message}</content>
+        <inputs>
+            <apiName>Resident_Message</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Resident Message</masterLabel>
+            <referenceName>Input:Resident_Message</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>qT6Ci8VnH72W7eJeurkpUs5G8YmZiLcBvg0rf2kvN8M==_5</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

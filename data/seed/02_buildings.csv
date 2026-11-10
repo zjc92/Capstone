@@ -1,0 +1,52 @@
+Name,City__c,External_ID__c,Manager_Username
+North Beach,San Francisco,a00oB000000mSJlQAM,ca.manager@pacifichaven.capstone
+Mission District,San Francisco,a00oB000000mSMzQAM,ca.manager@pacifichaven.capstone
+SoMa (South of Market),San Francisco,a00oB000000mSN0QAM,ca.manager@pacifichaven.capstone
+Marina District,San Francisco,a00oB000000mSN1QAM,ca.manager@pacifichaven.capstone
+Nob Hill,San Francisco,a00oB000000mSN2QAM,ca.manager@pacifichaven.capstone
+Russian Hill,San Francisco,a00oB000000mSN3QAM,ca.manager@pacifichaven.capstone
+Pacific Heights,San Francisco,a00oB000000mSN4QAM,ca.manager@pacifichaven.capstone
+Hayes Valley,San Francisco,a00oB000000mSN5QAM,ca.manager@pacifichaven.capstone
+Castro District,San Francisco,a00oB000000mSN6QAM,ca.manager@pacifichaven.capstone
+North Beach,San Francisco,a00oB000000mSN7QAM,ca.manager@pacifichaven.capstone
+Haight-Ashbury,San Francisco,a00oB000000mSN8QAM,ca.manager@pacifichaven.capstone
+Richmond District,San Francisco,a00oB000000mSN9QAM,ca.manager@pacifichaven.capstone
+Sunset District,San Francisco,a00oB000000mSNAQA2,ca.manager@pacifichaven.capstone
+Ballard,Seattle,a00oB000000mSNaQAM,wa.manager@pacifichaven.capstone
+Potrero Hill,San Francisco,a00oB000000mSNBQA2,ca.manager@pacifichaven.capstone
+Queen Anne,Seattle,a00oB000000mSNbQAM,wa.manager@pacifichaven.capstone
+Dogpatch,San Francisco,a00oB000000mSNCQA2,ca.manager@pacifichaven.capstone
+Wallingford,Seattle,a00oB000000mSNcQAM,wa.manager@pacifichaven.capstone
+Financial District,San Francisco,a00oB000000mSNDQA2,ca.manager@pacifichaven.capstone
+University District,Seattle,a00oB000000mSNdQAM,wa.manager@pacifichaven.capstone
+Noe Valley,San Francisco,a00oB000000mSNEQA2,ca.manager@pacifichaven.capstone
+Green Lake,Seattle,a00oB000000mSNeQAM,wa.manager@pacifichaven.capstone
+Bernal Heights,San Francisco,a00oB000000mSNFQA2,ca.manager@pacifichaven.capstone
+Greenlake,Seattle,a00oB000000mSNfQAM,wa.manager@pacifichaven.capstone
+Embarcadero,San Francisco,a00oB000000mSNGQA2,ca.manager@pacifichaven.capstone
+Belltown,Seattle,a00oB000000mSNgQAM,wa.manager@pacifichaven.capstone
+Presidio Heights,San Francisco,a00oB000000mSNHQA2,ca.manager@pacifichaven.capstone
+Pioneer Square,Seattle,a00oB000000mSNhQAM,wa.manager@pacifichaven.capstone
+Cole Valley,San Francisco,a00oB000000mSNIQA2,ca.manager@pacifichaven.capstone
+International District,Seattle,a00oB000000mSNiQAM,wa.manager@pacifichaven.capstone
+Pearl District,Portland,a00oB000000mSNJQA2,or.manager@pacifichaven.capstone
+Madison Park,Seattle,a00oB000000mSNjQAM,wa.manager@pacifichaven.capstone
+Alberta Arts District,Portland,a00oB000000mSNKQA2,or.manager@pacifichaven.capstone
+Ravenna,Seattle,a00oB000000mSNkQAM,wa.manager@pacifichaven.capstone
+Hawthorne District,Portland,a00oB000000mSNLQA2,or.manager@pacifichaven.capstone
+Phinney Ridge,Seattle,a00oB000000mSNlQAM,wa.manager@pacifichaven.capstone
+Division/Clinton,Portland,a00oB000000mSNMQA2,or.manager@pacifichaven.capstone
+West Seattle,Seattle,a00oB000000mSNmQAM,wa.manager@pacifichaven.capstone
+Mississippi Avenue,Portland,a00oB000000mSNNQA2,or.manager@pacifichaven.capstone
+Belmont,Portland,a00oB000000mSNOQA2,or.manager@pacifichaven.capstone
+Northwest District,Portland,a00oB000000mSNPQA2,or.manager@pacifichaven.capstone
+Sellwood,Portland,a00oB000000mSNQQA2,or.manager@pacifichaven.capstone
+St. Johns,Portland,a00oB000000mSNRQA2,or.manager@pacifichaven.capstone
+Laurelhurst,Portland,a00oB000000mSNSQA2,or.manager@pacifichaven.capstone
+Irvington,Portland,a00oB000000mSNTQA2,or.manager@pacifichaven.capstone
+Richmond,Portland,a00oB000000mSNUQA2,or.manager@pacifichaven.capstone
+Montavilla,Portland,a00oB000000mSNVQA2,or.manager@pacifichaven.capstone
+Foster-Powell,Portland,a00oB000000mSNWQA2,or.manager@pacifichaven.capstone
+Multnomah Village,Portland,a00oB000000mSNXQA2,or.manager@pacifichaven.capstone
+Capitol Hill,Seattle,a00oB000000mSNYQA2,wa.manager@pacifichaven.capstone
+Fremont,Seattle,a00oB000000mSNZQA2,wa.manager@pacifichaven.capstone

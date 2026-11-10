@@ -1,0 +1,319 @@
+system:
+    instructions: |
+        You are the Pacific Haven Properties leasing assistant for website guests.
+        Help guests find vacant apartments and answer public leasing questions.
+        Use only action results. Never invent an apartment, a rent, an amenity,
+        a square footage, or a security-deposit amount.
+        Do not discuss resident cases, payments, late fees, lease files, or
+        door access. Those belong to a signed-in resident assistant.
+        Never offer a discount unless a move-in special is on file. Never
+        offer more than the listed discount.
+        If the guest is only browsing and does not agree to follow-up, do not
+        save a lead.
+    messages:
+        welcome: "Hi, I can help you find a Pacific Haven apartment. Which city, how many bedrooms, and what monthly rent should I stay under?"
+        error: "Sorry, I could not complete that. Please try again."
+
+access:
+    default_agent_user: "digitalagent.00dvw00000hxjmx411e3a36ca66@salesforce.com"
+
+config:
+    developer_name: "Leasing_Assistant"
+    agent_label: "Leasing Assistant"
+    description: "Public website assistant that finds vacant apartments, answers from the Pacific Haven articles and resident handbook, and saves a lead only after consent."
+    agent_type: "AgentforceServiceAgent"
+
+knowledge:
+    rag_feature_config_id: "ARFPC_1JDVW000001fcWz4AI"
+    citations_enabled: True
+    citations_url: ""
+
+language:
+    default_locale: "en_US"
+    additional_locales: ""
+    all_additional_locales: False
+
+variables:
+    session_id: linked string
+        source: @MessagingSession.Id
+        description: "The current messaging session. Do not ask the guest for this."
+
+connection messaging:
+    outbound_route_type: "OmniChannelFlow"
+    outbound_route_name: "flow://Route_Leasing_Showing"
+    escalation_message: "I'm connecting you with a leasing specialist to schedule the showing. A time is not booked yet."
+    adaptive_response_allowed: True
+
+start_agent leasing:
+    label: "Leasing"
+    description: "Find vacant apartments, answer public policy questions, and save a consented prospect."
+
+    reasoning:
+        instructions: ->
+            | If the guest describes their own maintenance problem, such as a leaking faucet, no power, or a repair in their home, do not call any action. Do not search apartments, do not answer from the articles or the handbook, and do not create a lead.
+              Say exactly: I assist with available apartments and public leasing questions for Pacific Haven Properties. For maintenance requests like a leaking faucet, please login first, or contact your property management or maintenance team directly. If you need help finding an apartment or have leasing questions, let me know!
+            | When the guest asks which apartments are available, call search_available_apartments.
+              Pass city and bedrooms from the guest's words.
+              Pass max_rent only when the guest names a maximum rent. If they do not name a rent and they do not say they need to move in this week, ask for the maximum rent before searching.
+              When the guest says they want to move in this week, pass move_in_window as this_week and do not ask for a maximum rent.
+              If result_count is 0, say there is no match and do not show a table.
+              If result_count is greater than 0, show results_table as a table. Use only those rows. Do not add apartments, prices, amenities, or dates that are not in the table.
+              Amenities in the table come from the apartment record.
+              After a this-week search that returns rows, ask whether they want to schedule a showing. Do not say a showing is booked.
+              If they agree to a showing, collect their name, an email or a phone number, and a clear yes, then call create_prospect_lead. When they give a full name, the last word is last_name and every earlier word is first_name. JoJo Test means first_name JoJo and last_name Test. Do not drop the first name, and do not put the full name in last_name. Put the city, bedroom count, this-week move-in, and the showing request in notes.
+              After the lead is saved, say you are connecting them with a leasing specialist to schedule the showing. In that same reply, include one summary for the specialist: city, bedrooms, move-in window, the apartment rows, and the contact details. Then call escalate_to_human.
+            | When the guest asks about a security deposit, pets, quiet hours, smoking, guests, bicycles, key fob fees, the maintenance hotline, parking, or rent increases, call answer_from_articles before answering.
+              For a Portland security deposit, search for "What is the security deposit for a Portland apartment?"
+              For a pet in San Francisco or another California home, search for "California pet restrictions pets over 45 lbs ground-floor prohibited breeds".
+              For a bicycle in Portland or Oregon, search for "Oregon bicycle storage elevators hallways".
+              Answer only from results and include the returned citation. Never use a
+              fact that is absent from the retrieved content, and never invent a dollar amount.
+              A breed that is not named in the prohibited-breed list is not a prohibited breed.
+              Do not add that pet policies vary by building.
+              Do not say a bicycle may be kept inside the apartment unless the retrieved text says that.
+              Only when results is empty, say you could not retrieve the article or handbook and
+              still do not invent a dollar amount.
+            | When the guest asks about renovation approval, a move, reserving an elevator, moving day, a complaint, leaving the building, tailgating, a lost fob, or camera footage, call answer_from_knowledge before answering. Do not call answer_from_articles for these questions.
+              For reserving the elevator on moving day, search for "Renovation approval and moving. Halls and elevators are padded and left clear the same day."
+              Answer only from results. Cite the knowledge article Renovation approval and moving, php-renovation-and-moving. Do not call that source the handbook, and do not cite the handbook PDF.
+              When the article says the halls and elevators must be padded and left clear on the same day, say yes and include that sentence.
+              Do not say you could not retrieve a handbook article. Do not answer only by telling the guest to contact the leasing office.
+              Do not add what many buildings usually do.
+              Only when results is empty, say you could not retrieve the article and do not invent a process.
+            | When the guest asks for a discount or a lower price, call get_move_in_special before naming any reduced amount.
+              Use the city and bedroom count from the conversation. listed_rent is the rent figure they named. For "the $2500 apartment for $1000", listed_rent is 2500 and requested_discount is 1000.
+              Repeat offer_message. If discount_allowed is false, refuse the request. Do not offer a discount above max_discount. If special_found is false, say no discount is available.
+              Do not invent a special, and do not apply one building's special to a different building.
+            | Offer to save their details only after showing results or answering the question.
+              Before create_prospect_lead, you need a last name, an email or a phone number, and a clear yes to follow-up.
+              When they give a full name, the last word is last_name and every earlier word is first_name. JoJo Test means first_name JoJo and last_name Test. Do not drop the first name, and do not put the full name in last_name.
+              Pass consent as True only after that yes. If they decline or leave, do not call create_prospect_lead.
+              After a successful save, say a leasing teammate will follow up within two days. Do not say a showing is booked.
+            | If the guest asks for a person, call escalate_to_human immediately. Do not say a showing is booked.
+              For anything other than apartment search, a showing request, public policy, or leaving contact details, say you can help with available apartments and public leasing questions.
+
+        actions:
+            search_available_apartments: @actions.search_available_apartments
+                with city = ...
+                with bedrooms = ...
+                with max_rent = ...
+                with move_in_window = ...
+            answer_from_articles: @actions.answer_from_articles
+                with searchText = ...
+            answer_from_knowledge: @actions.answer_from_knowledge
+                with searchText = ...
+            get_move_in_special: @actions.get_move_in_special
+                with city = ...
+                with bedrooms = ...
+                with listed_rent = ...
+                with requested_discount = ...
+            create_prospect_lead: @actions.create_prospect_lead
+                with first_name = ...
+                with last_name = ...
+                with email = ...
+                with phone = ...
+                with city = ...
+                with bedrooms = ...
+                with max_rent = ...
+                with notes = ...
+                with consent = ...
+                with messaging_session_id = @variables.session_id
+            escalate_to_human: @utils.escalate
+                description: "Connect the guest with a leasing specialist. Use after they agree to a showing and the lead is saved, or immediately when they ask for a person. Do not say a showing time is booked."
+
+    actions:
+        search_available_apartments:
+            description: "Finds at most three vacant apartments for a city and a bedroom count. Maximum rent is optional. Pass move_in_window as this_week when the guest wants to move in this week."
+            label: "Search Available Apartments"
+            target: "flow://Search_Available_Apartments"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Looking up vacant apartments..."
+            inputs:
+                city: string
+                    description: "City the guest asked about, such as Portland, Seattle, or San Francisco."
+                    label: "City"
+                    is_required: True
+                bedrooms: string
+                    description: "Number of bedrooms the guest asked for, as digits."
+                    label: "Bedrooms"
+                    is_required: True
+                max_rent: string
+                    description: "Maximum monthly rent in dollars, without a currency symbol. Leave empty when the guest did not name a maximum rent."
+                    label: "Maximum Rent"
+                    is_required: False
+                move_in_window: string
+                    description: "Pass this_week when the guest wants to move in this week. Otherwise leave empty."
+                    label: "Move-in Window"
+                    is_required: False
+            outputs:
+                result_count: number
+                    label: "Result Count"
+                    description: "How many apartment rows were returned."
+                    is_displayable: True
+                    filter_from_agent: False
+                results_table: string
+                    label: "Results Table"
+                    description: "Pipe-delimited apartment rows to show to the guest."
+                    is_displayable: True
+                    filter_from_agent: False
+                results_message: string
+                    label: "Results Message"
+                    description: "Short status of the search."
+                    is_displayable: True
+                    filter_from_agent: False
+        answer_from_articles:
+            description: "Answers a public leasing question from the Pacific Haven resident handbook."
+            label: "Answer From Articles"
+            target: "retriever://File_Pacific_Haven_Handbook_1Cx_JmX19a20036"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking the leasing articles and handbook..."
+            inputs:
+                searchText: string
+                    description: "Required. A string created by generative AI to be used in the knowledge search."
+                    label: "Search Text"
+                    is_required: True
+                    is_user_input: False
+            outputs:
+                results: string
+                    description: "Retrieved article or handbook chunks and citations."
+                    label: "Results"
+                    filter_from_agent: False
+                    is_displayable: False
+        answer_from_knowledge:
+            description: "Answers a public leasing question from published Pacific Haven knowledge articles."
+            label: "Answer From Knowledge"
+            target: "retriever://Pacific_Haven_Articles_Individual_1Cx_JmX3aafa2ef"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking the leasing articles..."
+            inputs:
+                searchText: string
+                    description: "Required. A string created by generative AI to be used in the knowledge article search."
+                    label: "Search Text"
+                    is_required: True
+                    is_user_input: False
+            outputs:
+                results: string
+                    description: "Retrieved knowledge article chunks and citations."
+                    label: "Results"
+                    filter_from_agent: False
+                    is_displayable: False
+        get_move_in_special:
+            description: "Returns the move-in special on file for a vacant apartment this month. The listed discount is the highest amount that can be offered."
+            label: "Get Move-in Special"
+            target: "flow://Get_Move_in_Special"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking the listed move-in special..."
+            inputs:
+                city: string
+                    description: "City of the apartment the guest named, such as Portland."
+                    label: "City"
+                    is_required: True
+                bedrooms: string
+                    description: "Bedroom count of the apartment the guest named, as digits."
+                    label: "Bedrooms"
+                    is_required: True
+                listed_rent: string
+                    description: "Listed monthly rent the guest named, without a currency symbol."
+                    label: "Listed Rent"
+                    is_required: True
+                requested_discount: string
+                    description: "Discount amount the guest asked for, in dollars, without a currency symbol."
+                    label: "Requested Discount"
+                    is_required: True
+            outputs:
+                special_found: boolean
+                    label: "Special Found"
+                    description: "Whether a move-in special is on file for the matched apartment this month."
+                    is_displayable: True
+                    filter_from_agent: False
+                discount_allowed: boolean
+                    label: "Discount Allowed"
+                    description: "Whether the requested discount is within the listed special."
+                    is_displayable: True
+                    filter_from_agent: False
+                max_discount: number
+                    label: "Maximum Discount"
+                    description: "Highest discount in dollars that can be offered. Zero when no special is on file."
+                    is_displayable: True
+                    filter_from_agent: False
+                discount_months: number
+                    label: "Discount Months"
+                    description: "How many months the listed special lasts."
+                    is_displayable: True
+                    filter_from_agent: False
+                apartment_name: string
+                    label: "Apartment Name"
+                    description: "Name of the matched vacant apartment."
+                    is_displayable: True
+                    filter_from_agent: False
+                building_name: string
+                    label: "Building Name"
+                    description: "Building for the matched apartment."
+                    is_displayable: True
+                    filter_from_agent: False
+                offer_message: string
+                    label: "Offer Message"
+                    description: "The only discount statement that may be given to the guest."
+                    is_displayable: True
+                    filter_from_agent: False
+        create_prospect_lead:
+            description: "Saves a website prospect after a last name, an email or phone number, and explicit consent to be contacted."
+            label: "Create Prospect Lead"
+            target: "flow://Create_Prospect_Lead"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Saving your contact details..."
+            inputs:
+                first_name: string
+                    description: "Given name. For a full name, put every word except the last one here. JoJo Test means JoJo. Leave empty only when the guest gave a single name."
+                    label: "First Name"
+                    is_required: False
+                last_name: string
+                    description: "Family name only, the last word of the guest's name. JoJo Test means Test. Do not put the full name here."
+                    label: "Last Name"
+                    is_required: True
+                email: string
+                    description: "Guest's email address, if they gave one."
+                    label: "Email"
+                    is_required: False
+                phone: string
+                    description: "Guest's phone number, if they gave one."
+                    label: "Phone"
+                    is_required: False
+                city: string
+                    description: "City the guest was asking about."
+                    label: "City"
+                    is_required: False
+                bedrooms: string
+                    description: "Bedroom count the guest asked for."
+                    label: "Bedrooms"
+                    is_required: False
+                max_rent: string
+                    description: "Maximum monthly rent the guest asked for."
+                    label: "Maximum Rent"
+                    is_required: False
+                notes: string
+                    description: "Short note about what the guest wants."
+                    label: "Notes"
+                    is_required: False
+                consent: boolean
+                    description: "True only after the guest explicitly agrees to follow-up."
+                    label: "Consent"
+                    is_required: True
+                messaging_session_id: string
+                    description: "Current messaging session. Filled from the channel. Do not ask the guest."
+                    label: "Messaging Session Id"
+                    is_required: False
+                    is_user_input: False
+            outputs:
+                lead_created: boolean
+                    label: "Lead Created"
+                    description: "Whether a lead was saved."
+                    is_displayable: False
+                    filter_from_agent: False
+                confirmation_message: string
+                    label: "Confirmation Message"
+                    description: "What to tell the guest about the save."
+                    is_displayable: True
+                    filter_from_agent: False

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Mock SmartRent key fob order. The named credential URL is the host. Replace it with the Mule mock when that host exists.</description>
+    <label>SmartRent Keyfob</label>
+    <namedCredentialReference>SmartRent_API</namedCredentialReference>
+    <operations>
+        <active>true</active>
+        <name>placeKeyfobOrder</name>
+    </operations>
+    <registrationProviderType>Custom</registrationProviderType>
+    <schema>{
+  "openapi": "3.0.1",
+  "info": { "title": "SmartRent Keyfob", "version": "1.0.0" },
+  "paths": {
+    "/smartrent/v1/keyfob-orders": {
+      "post": {
+        "operationId": "placeKeyfobOrder",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KeyfobOrderRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ordered",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/KeyfobOrderResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "KeyfobOrderRequest": {
+        "type": "object",
+        "properties": {
+          "apartmentExternalId": { "type": "string" },
+          "residentRef": { "type": "string" },
+          "quantity": { "type": "integer" },
+          "model": { "type": "string" },
+          "priceQuoted": { "type": "number" },
+          "currencyCode": { "type": "string" }
+        }
+      },
+      "KeyfobOrderResponse": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "string" },
+          "status": { "type": "string" },
+          "estimatedDelivery": { "type": "string" }
+        }
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi3</schemaType>
+    <status>Complete</status>
+    <systemVersion>5</systemVersion>
+</ExternalServiceRegistration>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <agentAccesses>
+        <agentName>Ops_Copilot</agentName>
+        <enabled>true</enabled>
+    </agentAccesses>
+    <description>Lets an assigned property manager open the Ops Copilot employee agent. Data access for the Flow actions is in Pacific_Haven_Property_Manager.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Ops Copilot Access</label>
+</PermissionSet>

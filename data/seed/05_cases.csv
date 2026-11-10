@@ -1,0 +1,29 @@
+Subject,Status,Issue_Type__c,Priority,Origin,Apartment__r.External_Id__c,Account.External_Account__c
+Faucet is leaking,Closed,FaucetLeak,Low,Web,a03oB000000G3huQAC,001oB00000JcVz7QAF
+Faucet is leaking,Closed,FaucetLeak,Low,Web,a03oB000000G3huQAC,001oB00000JcVz7QAF
+No power,New,NoPower,High,,a03oB000000G3huQAC,001oB00000JcVz7QAF
+Faucet is leaking,Closed,FaucetLeak,Low,Web,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet is leaking,Closed,FaucetLeak,Low,Web,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet is leaking,Closed,FaucetLeak,Low,Web,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet is leaking,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet is leaking,Closed,FaucetLeak,Low,Web,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Faucet issue,New,FaucetLeak,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+No power,New,NoPower,High,,a03oB000000G3i0QAC,001oB00000JcVzAQAV
+Other maintenance,New,Other,Low,,a03oB000000G3i0QAC,001oB00000JcVzAQAV

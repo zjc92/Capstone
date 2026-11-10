@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lets a leasing specialist accept Messaging sessions routed from the Leasing Assistant.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Leasing Showings Agent</label>
+    <servicePresenceStatusAccesses>
+        <enabled>true</enabled>
+        <servicePresenceStatus>Messaging_Online</servicePresenceStatus>
+    </servicePresenceStatusAccesses>
+</PermissionSet>

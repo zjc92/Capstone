@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lets a website guest read the question and answer fields on published Pacific Haven leasing articles. Guest licenses cannot be granted View Articles; public visibility is the article's Public Knowledge Base flag.</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.Answer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.Question__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Pacific Haven Public Articles</label>
+</PermissionSet>

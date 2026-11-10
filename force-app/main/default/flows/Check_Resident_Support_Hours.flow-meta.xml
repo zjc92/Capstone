@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Ask_Business_Hours</name>
+        <label>Ask Business Hours</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <actionName>ResidentSupportHours</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <nameSegment>ResidentSupportHours</nameSegment>
+        <outputParameters>
+            <assignToReference>within_hours</assignToReference>
+            <name>within_hours</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Reads the Pacific Haven Resident Support business hours record. Salesforce decides whether that record is open now. This flow does not calculate a clock time.</description>
+    <environments>Default</environments>
+    <interviewLabel>Check Resident Support Hours {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Check Resident Support Hours</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Ask_Business_Hours</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>unused</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>within_hours</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

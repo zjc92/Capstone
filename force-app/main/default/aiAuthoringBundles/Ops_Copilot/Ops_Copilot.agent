@@ -1,0 +1,393 @@
+system:
+    instructions: |
+        You are Ops Copilot for one Pacific Haven property manager.
+        You only answer questions relevant to property manager work: one tenant's renewal, a renewal draft, or this week's buildings.
+        A message can contain more than one question. Answer each property question. For each question that is not property-manager work, say you can only answer questions relevant to property manager work.
+        You do not send email, change a record, or choose a renewal band.
+        The two actions already limit every fact to the running manager. Never pass a user id or a building id.
+        Quote the action result. Do not add a rent, a date, a count, a case, or a reason the action did not return.        Do not infer race, religion, disability, or sexual orientation from a name, a city, or an address.
+    messages:
+        welcome: "I can review one tenant's renewal or summarize your buildings for this week."
+        error: "Sorry, I could not complete that. Please try again."
+
+config:
+    developer_name: "Ops_Copilot"
+    agent_label: "Ops Copilot"
+    description: "Internal assistant for one property manager. Reviews a tenant renewal and summarizes this week's buildings from Flow results, and drafts a renewal email only when asked."
+    agent_type: "AgentforceEmployeeAgent"
+
+language:
+    default_locale: "en_US"
+    additional_locales: ""
+    all_additional_locales: False
+
+variables:
+    manager_user_id: mutable string = ""
+        description: "Preview user id. Paste a property manager id to run as that manager. Leave empty to use the logged-in user."
+        visibility: "External"
+    seen_input: mutable string = ""
+        description: "Last user message already handled."
+    request_captured: mutable boolean = False
+        description: "True after this message has been classified."
+    asked_weekly: mutable boolean = False
+        description: "This message asks for this manager's weekly building summary."
+    asked_other: mutable boolean = False
+        description: "The weekly question names another person, city, state, or manager."
+    asked_renewal: mutable boolean = False
+        description: "This message asks about one tenant renewal, rent, payments, cases, or a draft."
+    asked_draft: mutable boolean = False
+        description: "This message asks for a renewal draft or email."
+    asked_two_tenants: mutable boolean = False
+        description: "The renewal question names two people. Leave tenant_name empty."
+    tenant_name: mutable string = ""
+        description: "One tenant name from this message. Empty when none was given or two people were named."
+    last_weekly_ran: mutable boolean = False
+        description: "The weekly action ran for this message."
+    last_renewal_ran: mutable boolean = False
+        description: "The renewal action ran for this message."
+    last_result_code: mutable string = ""
+        description: "Renewal result_code from the action."
+    last_apartment_name: mutable string = ""
+        description: "Apartment name from the renewal action."
+    last_city: mutable string = ""
+        description: "City from the renewal action."
+    last_rent: mutable object = None
+        description: "Rent from the renewal action."
+    last_past_due_count: mutable number = 0
+        description: "Past-due count from the renewal action."
+    last_case_table: mutable string = ""
+        description: "Case table from the renewal action."
+    last_decision: mutable string = ""
+        description: "Decision from the renewal action."
+    last_tone: mutable string = ""
+        description: "Tone from the renewal action."
+    last_increase_percent: mutable number = 0
+        description: "Increase percent from the renewal action."
+    last_notice_days: mutable number = 0
+        description: "Notice days from the renewal action."
+    last_building_count: mutable number = 0
+        description: "Building count from the weekly action."
+    last_apartment_count: mutable number = 0
+        description: "Apartment count from the weekly action."
+    last_occupied_count: mutable number = 0
+        description: "Occupied count from the weekly action."
+    last_vacant_count: mutable number = 0
+        description: "Vacant count from the weekly action."
+    last_occupancy_rate: mutable number = 0
+        description: "Occupancy rate from the weekly action."
+    last_payments_due_count: mutable number = 0
+        description: "Payments due from the weekly action."
+    last_late_payment_count: mutable number = 0
+        description: "Late payment count from the weekly action."
+    last_late_rent_total: mutable object = None
+        description: "Late rent total from the weekly action."
+    last_cases_opened_count: mutable number = 0
+        description: "Cases opened from the weekly action."
+    last_cases_open_count: mutable number = 0
+        description: "Open cases from the weekly action."
+    last_cases_closed_count: mutable number = 0
+        description: "Cases closed from the weekly action."
+
+start_agent router:
+    label: "Router"
+    description: "Send property-manager work to Property Operations. Send every other message to Off Topic."
+    reasoning:
+        instructions: ->
+            | Read every question in the message, including questions separated by a semicolon.
+              When any question is about a tenant, a renewal, a rent, payments, cases, a draft, an email, this week, occupancy, or the manager's buildings, transition to property_ops. Do this even when another question in the same message is off topic.
+              A request to send an email, change a rent, or update a record is still property-manager work. Transition to property_ops.
+              Transition to off_topic only when every question is off topic, such as a greeting, general knowledge, or another job. Do not answer it yourself.
+        actions:
+            go_to_property_ops: @utils.transition to @subagent.property_ops
+                description: "Any question in the message is about a tenant renewal, a draft, or this manager's buildings."
+            go_to_off_topic: @utils.transition to @subagent.off_topic
+                description: "Every question in the message is outside property-manager work."
+
+subagent off_topic:
+    label: "Off Topic"
+    description: "Questions that are not about a tenant renewal, a draft, or this manager's buildings."
+    reasoning:
+        instructions: ->
+            | Say exactly: I can only answer questions relevant to property manager work.
+              Do not answer the question. Do not call a flow.
+              If this message is about a tenant, a renewal, a draft, an email, this week, or the manager's buildings, transition to property_ops.
+        actions:
+            go_to_property_ops: @utils.transition to @subagent.property_ops
+                description: "The user has asked about a tenant renewal, a draft, or this week's buildings."
+
+subagent property_ops:
+    label: "Property operations"
+    description: "Review one tenant renewal or summarize this manager's week."
+
+    before_reasoning:
+        if @system_variables.user_input != @variables.seen_input:
+            set @variables.seen_input = @system_variables.user_input
+            set @variables.request_captured = False
+            set @variables.asked_weekly = False
+            set @variables.asked_other = False
+            set @variables.asked_renewal = False
+            set @variables.asked_draft = False
+            set @variables.asked_two_tenants = False
+            set @variables.tenant_name = ""
+            set @variables.last_weekly_ran = False
+            set @variables.last_renewal_ran = False
+            set @variables.last_result_code = ""
+            set @variables.last_case_table = ""
+
+    reasoning:
+        instructions: ->
+            if @variables.request_captured == False:
+                | Use {!@actions.capture_request} now. Do not answer yet. Set asked_weekly, asked_other, asked_renewal, asked_draft, asked_two_tenants, tenant_name, and request_captured from this message only. asked_weekly is true when the message asks about this week, buildings, occupancy, late rent, or cases across buildings. asked_other is true when that weekly question names another person, a city, a state, or another manager. asked_renewal is true when it asks about a tenant renewal, rent, payments, cases, or a draft. asked_draft is true when it asks for a draft or an email. asked_two_tenants is true when the renewal names two people. tenant_name is the one person named, and is empty when two people are named or no person is named. request_captured is true.
+
+            if @variables.request_captured == True and @variables.asked_weekly == True:
+                run @actions.weekly_property_summary
+                    with unused = "now"
+                    with manager_user_id = @variables.manager_user_id
+                    set @variables.last_weekly_ran = True
+                    set @variables.last_building_count = @outputs.building_count
+                    set @variables.last_apartment_count = @outputs.apartment_count
+                    set @variables.last_occupied_count = @outputs.occupied_count
+                    set @variables.last_vacant_count = @outputs.vacant_count
+                    set @variables.last_occupancy_rate = @outputs.occupancy_rate
+                    set @variables.last_payments_due_count = @outputs.payments_due_count
+                    set @variables.last_late_payment_count = @outputs.late_payment_count
+                    set @variables.last_late_rent_total = @outputs.late_rent_total
+                    set @variables.last_cases_opened_count = @outputs.cases_opened_count
+                    set @variables.last_cases_open_count = @outputs.cases_open_count
+                    set @variables.last_cases_closed_count = @outputs.cases_closed_count
+
+            if @variables.request_captured == True and @variables.asked_renewal == True and @variables.asked_two_tenants == False and @variables.tenant_name != "":
+                run @actions.review_tenant_renewal
+                    with tenant_name = @variables.tenant_name
+                    with manager_user_id = @variables.manager_user_id
+                    set @variables.last_renewal_ran = True
+                    set @variables.last_result_code = @outputs.result_code
+                    set @variables.last_apartment_name = @outputs.apartment_name
+                    set @variables.last_city = @outputs.city
+                    set @variables.last_rent = @outputs.rent
+                    set @variables.last_past_due_count = @outputs.past_due_count
+                    set @variables.last_case_table = @outputs.case_table
+                    set @variables.last_decision = @outputs.decision
+                    set @variables.last_tone = @outputs.tone
+                    set @variables.last_increase_percent = @outputs.increase_percent
+                    set @variables.last_notice_days = @outputs.notice_days
+
+            if @variables.request_captured == True and @variables.asked_weekly == True and @variables.last_weekly_ran == False:
+                | I could not retrieve the summary.
+
+            if @variables.last_weekly_ran == True and @variables.asked_other == True:
+                | I can only summarize your own buildings this week. Do not give any count.
+
+            if @variables.last_weekly_ran == True and @variables.asked_other == False and @variables.last_building_count == 0:
+                | You have no buildings assigned as property manager.
+
+            if @variables.last_weekly_ran == True and @variables.asked_other == False and @variables.last_building_count > 0:
+                | Here is your building summary for this week.
+                  | Measure | Value | What it counts |
+                  | Buildings | {!@variables.last_building_count} | Buildings assigned to you |
+                  | Apartments | {!@variables.last_apartment_count} | Apartments in those buildings |
+                  | Occupied | {!@variables.last_occupied_count} | Occupied apartments |
+                  | Vacant | {!@variables.last_vacant_count} | Vacant apartments |
+                  | Occupancy rate | {!@variables.last_occupancy_rate}% | Occupied divided by apartments |
+                  | Payments due | {!@variables.last_payments_due_count} | Payments due in the last 7 days |
+                  | Late payments | {!@variables.last_late_payment_count} | Past-due payments in that window |
+                  | Late rent | ${!@variables.last_late_rent_total} | Rent amount on those late payments |
+                  | Cases opened | {!@variables.last_cases_opened_count} | Cases opened in the last 7 days |
+                  | Cases still open | {!@variables.last_cases_open_count} | Cases still open |
+                  | Cases closed | {!@variables.last_cases_closed_count} | Cases closed in the last 7 days |
+                  Say this table exactly. Do not change a number.
+
+            if @variables.request_captured == True and @variables.asked_renewal == True and @variables.asked_two_tenants == True:
+                | I can review one tenant at a time.
+
+            if @variables.request_captured == True and @variables.asked_renewal == True and @variables.asked_two_tenants == False and @variables.last_renewal_ran == False:
+                | I could not retrieve the renewal.
+
+            if @variables.last_result_code == "not_found":
+                | That tenant is not in your buildings. I cannot draft a renewal email for that tenant.
+
+            if @variables.last_result_code == "ambiguous":
+                | There is more than one apartment for that tenant in your buildings. Say the unit name.
+
+            if @variables.last_result_code == "no_payment_history":
+                | {!@variables.last_apartment_name} in {!@variables.last_city} has no payment history, so there is no renewal decision. The rent is ${!@variables.last_rent}. I cannot draft a renewal email for this tenant.
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == False and (@variables.last_case_table == "" or @variables.last_case_table is None):
+                | {!@variables.last_apartment_name} in {!@variables.last_city}. Rent ${!@variables.last_rent}. Past due {!@variables.last_past_due_count}. Decision {!@variables.last_decision}. Increase {!@variables.last_increase_percent} percent. Notice {!@variables.last_notice_days} days. No cases on that apartment.
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == False and @variables.last_case_table != "" and @variables.last_case_table is not None:
+                | {!@variables.last_apartment_name} in {!@variables.last_city}. Rent ${!@variables.last_rent}. Past due {!@variables.last_past_due_count}. Decision {!@variables.last_decision}. Increase {!@variables.last_increase_percent} percent. Notice {!@variables.last_notice_days} days. Cases: {!@variables.last_case_table}
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == True:
+                | Your current rent is ${!@variables.last_rent} per month. The increase is {!@variables.last_increase_percent} percent. Notice: {!@variables.last_notice_days} days. This draft is for you to review. It has not been sent.
+
+            if @variables.request_captured == True and @variables.asked_weekly == False and @variables.asked_renewal == False:
+                | I can only answer questions relevant to property manager work.
+
+        actions:
+            capture_request: @utils.setVariables
+                description: "Record whether this message asks for a weekly summary, a renewal, or a draft, and the tenant name."
+                with asked_weekly = ...
+                with asked_other = ...
+                with asked_renewal = ...
+                with asked_draft = ...
+                with asked_two_tenants = ...
+                with tenant_name = ...
+                with request_captured = ...
+            go_to_off_topic: @utils.transition to @subagent.off_topic
+                description: "The message is not property-manager work."
+
+    actions:
+        review_tenant_renewal:
+            description: "Reads the running manager and returns the renewal decision for one tenant in that manager's buildings."
+            label: "Review Tenant Renewal"
+            target: "flow://Review_Tenant_Renewal"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking this tenant in your buildings..."
+            inputs:
+                tenant_name: string
+                    description: "Tenant name the manager asked about. Not a user id or a building id."
+                    label: "Tenant Name"
+                    is_required: True
+                    is_user_input: True
+                manager_user_id: string
+                    description: "Preview user id from the context variable. The conversation cannot set this."
+                    label: "Manager User Id"
+                    is_required: False
+                    is_user_input: False
+            outputs:
+                result_code: string
+                    label: "Result Code"
+                    description: "found, not_found, ambiguous, or no_payment_history. not_found means the tenant is not in this manager's buildings. no_payment_history means the apartment is in these buildings and has no payment rows, so there is no renewal decision."
+                    is_displayable: False
+                    filter_from_agent: False
+                apartment_name: string
+                    label: "Apartment Name"
+                    description: "Apartment in this manager's buildings. Empty unless result_code is found."
+                    is_displayable: False
+                    filter_from_agent: False
+                city: string
+                    label: "City"
+                    description: "City of that apartment. Empty unless result_code is found."
+                    is_displayable: False
+                    filter_from_agent: False
+                rent: object
+                    label: "Rent"
+                    description: "Current monthly rent. Empty unless result_code is found."
+                    complex_data_type_name: "lightning__currencyType"
+                    is_displayable: False
+                    filter_from_agent: False
+                past_due_count: number
+                    label: "Past Due Count"
+                    description: "Count of Past_Due__c payments on that apartment."
+                    is_displayable: False
+                    filter_from_agent: False
+                earliest_due: date
+                    label: "Earliest Due"
+                    description: "Earliest Date_Due__c, used as the tenancy start for the Oregon first-year rule."
+                    is_displayable: False
+                    filter_from_agent: False
+                decision: string
+                    label: "Decision"
+                    description: "StandardRenewal, RenewalIncrease, RenewalNoIncrease, or Decline."
+                    is_displayable: False
+                    filter_from_agent: False
+                increase_percent: number
+                    label: "Increase Percent"
+                    description: "10 only for RenewalIncrease. Otherwise 0."
+                    is_displayable: False
+                    filter_from_agent: False
+                notice_days: number
+                    label: "Notice Days"
+                    description: "90 only for RenewalNoIncrease. Otherwise 0."
+                    is_displayable: False
+                    filter_from_agent: False
+                tone: string
+                    label: "Tone"
+                    description: "warm, strict, or decline. Use this for a draft. Do not choose a different tone."
+                    is_displayable: False
+                    filter_from_agent: False
+                case_subjects: string
+                    label: "Case Subjects"
+                    description: "Case subjects for that apartment, separated by a semicolon. Empty when there are none."
+                    is_displayable: False
+                    filter_from_agent: False
+                case_table: string
+                    label: "Case Table"
+                    description: "Case rows for that apartment. Each row is Case Number, Subject, Status, and Created Date, separated by ' | '. Rows are separated by '; '."
+                    is_displayable: False
+                    filter_from_agent: False
+        weekly_property_summary:
+            description: "Reads the running manager and returns this week's counts for that manager's buildings."
+            label: "Weekly Property Summary"
+            target: "flow://Weekly_Property_Summary"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Adding up your buildings for this week..."
+            inputs:
+                unused: string
+                    description: "Ignored. Present because an employee action needs one input. The script sets it. The manager does not."
+                    label: "Unused"
+                    is_required: False
+                    is_user_input: False
+                manager_user_id: string
+                    description: "Preview user id from the context variable. The conversation cannot set this."
+                    label: "Manager User Id"
+                    is_required: False
+                    is_user_input: False
+            outputs:
+                building_count: number
+                    label: "Building Count"
+                    description: "Buildings where this manager is Property_Manager__c."
+                    is_displayable: False
+                    filter_from_agent: False
+                apartment_count: number
+                    label: "Apartment Count"
+                    description: "Apartments in those buildings."
+                    is_displayable: False
+                    filter_from_agent: False
+                occupied_count: number
+                    label: "Occupied Count"
+                    description: "Apartments with Occupied__c true."
+                    is_displayable: False
+                    filter_from_agent: False
+                vacant_count: number
+                    label: "Vacant Count"
+                    description: "apartment_count minus occupied_count."
+                    is_displayable: False
+                    filter_from_agent: False
+                occupancy_rate: number
+                    label: "Occupancy Rate"
+                    description: "Occupied divided by total, as a percent with one decimal."
+                    is_displayable: False
+                    filter_from_agent: False
+                payments_due_count: number
+                    label: "Payments Due Count"
+                    description: "Payments with Date_Due__c in the last 7 days."
+                    is_displayable: False
+                    filter_from_agent: False
+                late_payment_count: number
+                    label: "Late Payment Count"
+                    description: "Those payments where Past_Due__c is true."
+                    is_displayable: False
+                    filter_from_agent: False
+                late_rent_total: object
+                    label: "Late Rent Total"
+                    description: "Sum of Rent_Amount__c on the late payments in that window."
+                    complex_data_type_name: "lightning__currencyType"
+                    is_displayable: False
+                    filter_from_agent: False
+                cases_opened_count: number
+                    label: "Cases Opened Count"
+                    description: "Cases created in the last 7 days on these apartments."
+                    is_displayable: False
+                    filter_from_agent: False
+                cases_open_count: number
+                    label: "Cases Open Count"
+                    description: "Cases on these apartments that are still open."
+                    is_displayable: False
+                    filter_from_agent: False
+                cases_closed_count: number
+                    label: "Cases Closed Count"
+                    description: "Cases on these apartments closed in the last 7 days."
+                    is_displayable: False
+                    filter_from_agent: False

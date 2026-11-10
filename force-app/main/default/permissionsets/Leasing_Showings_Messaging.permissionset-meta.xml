@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Messaging User license so a specialist can open sessions routed to Leasing Showings.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Leasing Showings Messaging</label>
+    <license>LiveMessageUserPsl</license>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>LiveMessageAgent</name>
+    </userPermissions>
+</PermissionSet>

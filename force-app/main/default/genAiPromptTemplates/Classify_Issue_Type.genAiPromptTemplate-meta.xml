@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>Gse7SnVQfKeLBCU8R/HG8HEmly8Hd7KTREwUPSCVMXM==_1</activeVersionIdentifier>
+    <description>Classifies a resident maintenance message as FaucetLeak, NoPower, or Other.</description>
+    <developerName>Classify_Issue_Type</developerName>
+    <masterLabel>Classify Issue Type</masterLabel>
+    <templateVersions>
+        <content>You classify one maintenance message from a Pacific Haven resident.
+Reply with only one word: FaucetLeak, NoPower, or Other.
+Reply NoPower when the resident has no power, an outage, or no electricity.
+Reply FaucetLeak when the resident has a faucet leak, a drip, or a leaking tap.
+Reply Other for any other repair.
+Do not add any other word.
+
+Message:
+{!$Input:Resident_Message}</content>
+        <inputs>
+            <apiName>Resident_Message</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Resident Message</masterLabel>
+            <referenceName>Input:Resident_Message</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>Gse7SnVQfKeLBCU8R/HG8HEmly8Hd7KTREwUPSCVMXM==_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

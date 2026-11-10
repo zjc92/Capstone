@@ -1,0 +1,474 @@
+system:
+    instructions: |
+        You are the Pacific Haven Properties tenant concierge for a signed-in resident.
+        Help with a leaking faucet, a power problem, or another maintenance request.
+        Use only action results. Never invent an apartment, a case number, a fee,
+        a phone number, or a repair time.
+        Answer from the resident articles before a case exists.
+        File a case only after that answer, and only when the resident explicitly asks
+        to file one or confirms that you should.
+        An angry or repeated report is the exception: after the article answer, file on that turn.
+        Hand off to a person only when resident support is within its business hours.
+        Outside those hours, leave the case and do not say that someone is joining.
+        Do not unlock a door, order a key fob, or discuss a payment.
+    messages:
+        welcome: "Hi, I can help with a maintenance request for your Pacific Haven apartment."
+        error: "Sorry, I could not complete that. Please try again."
+
+access:
+    default_agent_user: "digitalagent.00dvw00000hxjmx411e3a36ca66@salesforce.com"
+
+config:
+    developer_name: "Tenant_Concierge"
+    agent_label: "Tenant Concierge"
+    description: "Signed-in resident assistant that answers from resident articles first, files a case when the resident asks, and hands an angry repeat report to a person only during resident-support business hours."
+    agent_type: "AgentforceServiceAgent"
+
+knowledge:
+    citations_url: ""
+    rag_feature_config_id: "ARFPC_1JDVW000001flGv4AI"
+    citations_enabled: True
+
+language:
+    default_locale: "en_US"
+    additional_locales: ""
+    all_additional_locales: False
+
+connection messaging:
+    outbound_route_type: "OmniChannelFlow"
+    outbound_route_name: "flow://Route_Resident_Handoff"
+    escalation_message: "I'm asking a resident specialist to join about this repeated leak. Nobody has joined this chat yet."
+    adaptive_response_allowed: True
+
+variables:
+    session_id: linked string
+        source: @MessagingSession.Id
+        description: "The current messaging session. Do not ask the resident for this."
+    tenant_result: mutable number = 0
+        description: "How many occupied apartments Verify_Active_Tenant returned."
+    is_valid_user: mutable boolean = False
+        description: "True only when the session has an end-user account."
+    is_active_tenant: mutable boolean = False
+        description: "True only when that account has at least one occupied apartment."
+    account_id: mutable string = ""
+        description: "Person Account Id from the messaging session."
+    resident_name: mutable string = ""
+        description: "Name on the person account."
+    apartment_choices: mutable string = ""
+        description: "Apartment names from active_rental_records, one name per line."
+    selected_this_turn: mutable string = ""
+        description: "Apartment Id the verify flow resolved this turn. Empty when the resident still has to choose."
+    selected_name_this_turn: mutable string = ""
+        description: "Apartment name that belongs to selected_this_turn."
+    apartment_id: mutable string = ""
+        description: "Occupied apartment Id chosen by this script. The model must not invent or replace it."
+    apartment_name: mutable string = ""
+        description: "Name of the apartment in apartment_id."
+    article_results: mutable string = ""
+        description: "Knowledge Summary from Answer Questions with Knowledge. The model answers from this text."
+    article_delivered: mutable boolean = False
+        description: "True after a previous turn already retrieved the resident articles."
+    case_allowed: mutable boolean = False
+        description: "True only on a later turn, after the resident has already been answered from the articles. The model still files a case only when asked or confirmed, unless this message is upset."
+    sentiment_label: mutable string = ""
+        description: "upset or calm, from Classify Resident Sentiment. Empty until an apartment is bound."
+    within_hours: mutable boolean = False
+        description: "True when the Pacific Haven Resident Support business hours record is open now."
+    can_file: mutable boolean = False
+        description: "True when this turn may file a case: a later confirmation, or an upset message."
+    can_escalate: mutable boolean = False
+        description: "True only for an upset message while resident support is within business hours."
+
+start_agent router:
+    label: "Router"
+    description: "Send a greeting or small talk to Off Topic. Send a maintenance problem to Concierge."
+    reasoning:
+        instructions: ->
+            | If this message is only a greeting, thanks, goodbye, or a question about what you can help with, transition to off_topic.
+              If it mentions a faucet, drip, leak, water, power, outage, repair, maintenance, a case, or asks to file a request, transition to concierge.
+              A greeting that also describes a maintenance problem goes to concierge.
+              Do not answer the resident yourself. Do not search articles.
+        actions:
+            go_to_off_topic: @utils.transition to @subagent.off_topic
+                description: "The message is only a greeting, thanks, or small talk, with no maintenance problem."
+            go_to_concierge: @utils.transition to @subagent.concierge
+                description: "The resident describes a faucet, leak, power problem, repair, or asks to file a maintenance case."
+
+subagent off_topic:
+    label: "Off Topic"
+    description: "Greetings, thanks, and small talk that do not describe a maintenance problem."
+    reasoning:
+        instructions: ->
+            | Greet the resident briefly and ask if they need a maintenance request for their Pacific Haven apartment.
+              Do not search articles, do not mention sources, do not file a case, and do not hand off to a person.
+              If this message actually describes a faucet, leak, power problem, or other repair, transition to concierge.
+        actions:
+            go_to_concierge: @utils.transition to @subagent.concierge
+                description: "The resident has described a maintenance problem."
+
+subagent concierge:
+    label: "Concierge"
+    description: "A faucet, leak, power problem, repair, or a request to file a maintenance case for one occupied apartment."
+
+    reasoning:
+        instructions: ->
+            run @actions.verify_active_tenant
+                with messaging_session_id = @variables.session_id
+                with resident_message = @system_variables.user_input
+                set @variables.tenant_result = @outputs.result
+                set @variables.is_valid_user = @outputs.is_valid_user
+                set @variables.is_active_tenant = @outputs.is_active_tenant
+                set @variables.account_id = @outputs.account_id
+                set @variables.resident_name = @outputs.resident_name
+                set @variables.apartment_choices = @outputs.apartment_choices
+                set @variables.selected_this_turn = @outputs.default_apartment_id
+                set @variables.selected_name_this_turn = @outputs.default_apartment_name
+
+            set @variables.case_allowed = @variables.article_delivered
+            set @variables.can_file = False
+            set @variables.can_escalate = False
+            set @variables.sentiment_label = ""
+            set @variables.within_hours = False
+
+            if @variables.is_valid_user != True:
+                set @variables.apartment_id = ""
+                set @variables.apartment_name = ""
+                | This visitor is not signed in as a resident with a portal account. Politely ask them to log in to the Experience Cloud portal before continuing with a maintenance request.
+                  Do not answer from resident knowledge, do not create a maintenance case, do not hand off to a person, and do not ask them to pick an apartment.
+            else if @variables.is_active_tenant != True or @variables.tenant_result == 0:
+                set @variables.apartment_id = ""
+                set @variables.apartment_name = ""
+                | This signed-in person has no active rental. Do not create a maintenance case, do not use resident knowledge, do not hand off to a person, and do not ask them to pick an apartment.
+                  Tell them the portal account is not currently linked to an occupied Pacific Haven apartment and to contact the property team if they believe this is incorrect.
+            else if @variables.tenant_result == 1:
+                set @variables.apartment_id = @variables.selected_this_turn
+                set @variables.apartment_name = @variables.selected_name_this_turn
+            else if @variables.tenant_result > 1 and @variables.selected_this_turn != "":
+                set @variables.apartment_id = @variables.selected_this_turn
+                set @variables.apartment_name = @variables.selected_name_this_turn
+            else if @variables.tenant_result > 1 and @variables.apartment_id != "":
+                set @variables.apartment_name = @variables.apartment_name
+            else:
+                set @variables.apartment_id = ""
+                set @variables.apartment_name = ""
+                | result is greater than 1. Show these apartment names from active_rental_records and wait for the resident to pick one:
+                  {!@variables.apartment_choices}
+                  Do not answer from resident knowledge, do not create a maintenance case, do not hand off to a person, and do not invent an apartment Id.
+
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.case_allowed != True:
+                run @actions.AnswerQuestionsWithKnowledge
+                    with query = @system_variables.user_input
+                    with citationsUrl = @knowledge.citations_url
+                    with ragFeatureConfigId = @knowledge.rag_feature_config_id
+                    with citationsEnabled = @knowledge.citations_enabled
+                    set @variables.article_results = @outputs.knowledgeSummary
+                run @actions.classify_resident_sentiment
+                    with "Input:Resident_Message" = @system_variables.user_input
+                    set @variables.sentiment_label = @outputs.promptResponse
+                run @actions.check_resident_support_hours
+                    with unused = "now"
+                    set @variables.within_hours = @outputs.within_hours
+                set @variables.article_delivered = True
+
+            if @variables.apartment_id != "" and @variables.sentiment_label == "upset":
+                set @variables.can_file = True
+            if @variables.apartment_id != "" and @variables.case_allowed == True:
+                set @variables.can_file = True
+            if @variables.apartment_id != "" and @variables.sentiment_label == "upset" and @variables.within_hours == True:
+                set @variables.can_escalate = True
+
+            if @variables.apartment_id != "" and @variables.sentiment_label == "upset" and @variables.within_hours != True:
+                | The resident article action already ran. Answer only from this retrieved text and use the article title that appears in the text. If this text is empty, or it says an answer cannot be found, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time.
+                  {!@variables.article_results}
+                  This resident is upset about a repeated problem, and resident support is outside business hours.
+                  Acknowledge the issue in their words. For a faucet, say it is leaking again.
+                  Call create_maintenance_case on this turn. Pass issue_type as FaucetLeak, NoPower, or Other. Write the description from the resident's words. Do not choose the priority.
+                  If this conversation already has a case number, do not file another case.
+                  Repeat the case number and priority. If recommend_replacement is true, say replacement is recommended because that apartment had more than three closed cases of the same issue type in the past year.
+                  Do not call escalate_to_human. Do not say that someone is joining, waiting, or already handling it.
+                  Say that no resident specialist is on duty, and that a person will take the case when resident support hours resume.
+                  A routine faucet is not the 24/7 hotline. Mention the hotline only when the retrieved text says this situation is an emergency.
+                  The apartment is {!@variables.apartment_name}. The id is already bound. Do not pass a different Id.
+            else if @variables.apartment_id != "" and @variables.sentiment_label == "upset" and @variables.within_hours == True:
+                | The resident article action already ran. Answer only from this retrieved text and use the article title that appears in the text. If this text is empty, or it says an answer cannot be found, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time.
+                  {!@variables.article_results}
+                  This resident is upset about a repeated problem, and resident support is within business hours.
+                  Acknowledge the issue in their words. For a faucet, say it is leaking again.
+                  Call create_maintenance_case on this turn unless this conversation already has a case number. Pass issue_type as FaucetLeak, NoPower, or Other. Write the description from the resident's words. Do not choose the priority.
+                  Repeat the case number and priority. If recommend_replacement is true, say replacement is recommended because that apartment had more than three closed cases of the same issue type in the past year.
+                  Then say you are asking a resident specialist to join and that nobody has joined yet.
+                  In that same reply, include one summary for the specialist: resident name {!@variables.resident_name}, apartment {!@variables.apartment_name}, the issue, the case number, the priority, and that the resident is upset about a repeat this month.
+                  Then call escalate_to_human. Do not say a person has already joined.
+                  The id is already bound. Do not pass a different Id.
+            else if @variables.apartment_id != "" and @variables.case_allowed != True:
+                | The resident article action already ran. Answer only from this retrieved text and use the article title that appears in the text. If this text is empty, or it says an answer cannot be found, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time.
+                  {!@variables.article_results}
+                  Do not create a maintenance case on this turn. Do not say a case was filed. Do not hand off to a person.
+                  If the text does not cover the question, say that and do not invent an answer.
+                  After the article answer, ask whether they want a maintenance request filed.
+                  The apartment is {!@variables.apartment_name}. Do not ask which apartment when result is 1. Do not pass a different Id.
+            else if @variables.apartment_id != "" and @variables.case_allowed == True:
+                | This resident already received a resident-article answer. The apartment is {!@variables.apartment_name}.
+                  Call create_maintenance_case only when this message explicitly asks to file, submit, or open a maintenance request, or confirms that you should file one.
+                  Describing a leak, a drip, or a power problem is not a request to file. For a new question, call AnswerQuestionsWithKnowledge and answer from its knowledge summary. Do not create a case. Do not hand off to a person.
+                  If you file, pass issue_type as FaucetLeak, NoPower, or Other. Anything else is Other. Write the description from the resident's words. Do not choose the priority yourself.
+                  Repeat the case number and priority from the action. If recommend_replacement is true, say replacement is recommended because that apartment had more than three closed cases of the same issue type in the past year.
+                  The id is already bound. Do not pass a different Id.
+
+        actions:
+            verify_active_tenant: @actions.verify_active_tenant
+                description: "Run this first. Do not search articles, classify sentiment, check hours, or file a case until this says the person is an active tenant."
+                with messaging_session_id = @variables.session_id
+                with resident_message = @system_variables.user_input
+                set @variables.tenant_result = @outputs.result
+                set @variables.is_valid_user = @outputs.is_valid_user
+                set @variables.is_active_tenant = @outputs.is_active_tenant
+                set @variables.account_id = @outputs.account_id
+                set @variables.resident_name = @outputs.resident_name
+                set @variables.apartment_choices = @outputs.apartment_choices
+                set @variables.selected_this_turn = @outputs.default_apartment_id
+                set @variables.selected_name_this_turn = @outputs.default_apartment_name
+            AnswerQuestionsWithKnowledge: @actions.AnswerQuestionsWithKnowledge
+                description: "Search resident articles. Use only after verify_active_tenant says this is an active tenant."
+                available when @variables.is_active_tenant == True and @variables.apartment_id != ""
+                with query = @system_variables.user_input
+                with citationsUrl = @knowledge.citations_url
+                with ragFeatureConfigId = @knowledge.rag_feature_config_id
+                with citationsEnabled = @knowledge.citations_enabled
+                set @variables.article_results = @outputs.knowledgeSummary
+            classify_resident_sentiment: @actions.classify_resident_sentiment
+                description: "Classify the message as upset or calm. Use only after verify_active_tenant says this is an active tenant."
+                available when @variables.is_active_tenant == True and @variables.apartment_id != ""
+                with "Input:Resident_Message" = @system_variables.user_input
+                set @variables.sentiment_label = @outputs.promptResponse
+            check_resident_support_hours: @actions.check_resident_support_hours
+                description: "Check whether resident support is within business hours. Use only after verify_active_tenant says this is an active tenant."
+                available when @variables.is_active_tenant == True and @variables.apartment_id != ""
+                with unused = "now"
+                set @variables.within_hours = @outputs.within_hours
+            create_maintenance_case: @actions.create_maintenance_case
+                description: "File a maintenance case only for an active tenant. On a calm turn, call it only when the resident explicitly asked or confirmed. On an upset turn, call it in that same turn."
+                available when @variables.is_active_tenant == True and @variables.can_file == True and @variables.apartment_id != ""
+                with is_valid_user = @variables.is_valid_user
+                with is_active_tenant = @variables.is_active_tenant
+                with account_id = @variables.account_id
+                with apartment_id = @variables.apartment_id
+                with messaging_session_id = @variables.session_id
+                with issue_type = ...
+                with description = ...
+            escalate_to_human: @utils.escalate
+                description: "Ask a resident specialist to join. Use only after the case is filed for an upset resident, and only while resident support is within business hours. Do not say that a person has already joined."
+                available when @variables.can_escalate == True
+
+    actions:
+        verify_active_tenant:
+            description: "Reads the messaging session and returns the occupied apartments for that account."
+            label: "Verify Active Tenant"
+            target: "flow://Verify_Active_Tenant"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking the apartment on this account..."
+            inputs:
+                messaging_session_id: string
+                    description: "Current messaging session Id."
+                    label: "Messaging Session Id"
+                    is_required: True
+                    is_user_input: False
+                resident_message: string
+                    description: "The resident's latest message. Used only to match one apartment name from active_rental_records."
+                    label: "Resident Message"
+                    is_required: False
+                    is_user_input: False
+            outputs:
+                result: number
+                    label: "Result"
+                    description: "Number of occupied apartments. 0 when there is no active rental."
+                    is_displayable: False
+                    filter_from_agent: True
+                is_valid_user: boolean
+                    label: "Is Valid User"
+                    description: "True when the session has an end-user account."
+                    is_displayable: False
+                    filter_from_agent: True
+                is_active_tenant: boolean
+                    label: "Is Active Tenant"
+                    description: "True when that account has at least one occupied apartment."
+                    is_displayable: False
+                    filter_from_agent: True
+                account_id: string
+                    label: "Account Id"
+                    description: "Person Account Id from the session."
+                    is_displayable: False
+                    filter_from_agent: True
+                resident_name: string
+                    label: "Resident Name"
+                    description: "Name on the person account."
+                    is_displayable: False
+                    filter_from_agent: True
+                apartment_choices: string
+                    label: "Apartment Choices"
+                    description: "Names of the occupied apartments, one per line."
+                    is_displayable: False
+                    filter_from_agent: True
+                default_apartment_id: string
+                    label: "Default Apartment Id"
+                    description: "The one occupied apartment Id, or the Id of the single apartment name found in the message. Empty when the resident must still choose."
+                    is_displayable: False
+                    filter_from_agent: True
+                default_apartment_name: string
+                    label: "Default Apartment Name"
+                    description: "Name that belongs to default_apartment_id."
+                    is_displayable: False
+                    filter_from_agent: True
+                active_rental_records: list[object]
+                    label: "Active Rental Records"
+                    description: "Occupied apartment records for this session."
+                    complex_data_type_name: "lightning__recordInfoType"
+                    is_displayable: False
+                    filter_from_agent: True
+        AnswerQuestionsWithKnowledge:
+            description: "Answers a resident maintenance question from the Pacific Haven Resident Support library."
+            label: "Answer Questions with Knowledge"
+            target: "standardInvocableAction://streamKnowledgeSearch"
+            source: "EmployeeCopilot__AnswerQuestionsWithKnowledge"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking the resident articles..."
+            inputs:
+                query: string
+                    description: "The resident's maintenance question."
+                    label: "Query"
+                    is_required: True
+                    is_user_input: False
+                citationsUrl: string = @knowledge.citations_url
+                    description: "Citation URL prefix. Left empty. Default citations have no URL."
+                    label: "Citations Url"
+                    is_required: False
+                    is_user_input: False
+                ragFeatureConfigId: string = @knowledge.rag_feature_config_id
+                    description: "Resident Support data library feature id."
+                    label: "RAG Feature Configuration Id"
+                    is_required: False
+                    is_user_input: False
+                citationsEnabled: boolean = @knowledge.citations_enabled
+                    description: "Whether the library returns citations."
+                    label: "Citations Enabled"
+                    is_required: False
+                    is_user_input: False
+            outputs:
+                knowledgeSummary: object
+                    description: "A string formatted as rich text that includes a summary of the information retrieved from the knowledge articles and citations to those articles."
+                    label: "Knowledge Summary"
+                    complex_data_type_name: "lightning__richTextType"
+                    filter_from_agent: False
+                    is_displayable: True
+                citationSources: object
+                    description: "Source links for the retrieved articles."
+                    label: "Citation Sources"
+                    complex_data_type_name: "@apexClassType/AiCopilot__GenAiCitationInput"
+                    filter_from_agent: False
+                    is_displayable: False
+        classify_resident_sentiment:
+            description: "Classifies the resident's latest message as upset or calm."
+            label: "Classify Resident Sentiment"
+            target: "generatePromptResponse://Classify_Resident_Sentiment"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Reading the tone of this message..."
+            inputs:
+                "Input:Resident_Message": string
+                    description: "The resident's latest message."
+                    label: "Resident Message"
+                    is_required: True
+                    is_user_input: False
+            outputs:
+                promptResponse: string
+                    description: "The single word upset or calm."
+                    label: "Prompt Response"
+                    filter_from_agent: True
+                    is_displayable: False
+        check_resident_support_hours:
+            description: "Reads the Pacific Haven Resident Support business hours record and returns whether it is open now."
+            label: "Check Resident Support Hours"
+            target: "flow://Check_Resident_Support_Hours"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking resident support hours..."
+            inputs:
+                unused: string
+                    description: "Required by the action contract. The flow ignores it and reads the business hours record."
+                    label: "Unused"
+                    is_required: True
+                    is_user_input: False
+            outputs:
+                within_hours: boolean
+                    label: "Within Hours"
+                    description: "True when the resident support business hours record is open now."
+                    is_displayable: False
+                    filter_from_agent: True
+        create_maintenance_case:
+            description: "Creates one maintenance case for an apartment Id this script already selected."
+            label: "Create Maintenance Case"
+            target: "flow://Create_Maintenance_Case"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Filing the maintenance case..."
+            inputs:
+                is_valid_user: boolean
+                    description: "Must be true. Bound from the verify result."
+                    label: "Is Valid User"
+                    is_required: True
+                    is_user_input: False
+                is_active_tenant: boolean
+                    description: "Must be true. Bound from the verify result."
+                    label: "Is Active Tenant"
+                    is_required: True
+                    is_user_input: False
+                account_id: string
+                    description: "Person Account Id. Bound from the verify result."
+                    label: "Account Id"
+                    is_required: True
+                    is_user_input: False
+                apartment_id: string
+                    description: "Occupied apartment Id selected by the script. The model cannot change it."
+                    label: "Apartment Id"
+                    is_required: True
+                    is_user_input: False
+                messaging_session_id: string
+                    description: "Current messaging session Id. Used only to copy the contact."
+                    label: "Messaging Session Id"
+                    is_required: False
+                    is_user_input: False
+                issue_type: string
+                    description: "FaucetLeak, NoPower, or Other. Any other value is stored as Other."
+                    label: "Issue Type"
+                    is_required: True
+                    is_user_input: False
+                description: string
+                    description: "Short description of the maintenance problem, written from the resident's words."
+                    label: "Description"
+                    is_required: True
+                    is_user_input: False
+            outputs:
+                case_id: string
+                    label: "Case Id"
+                    description: "Id of the new case. Empty when no case was created."
+                    is_displayable: False
+                    filter_from_agent: True
+                case_number: string
+                    label: "Case Number"
+                    description: "Case number to tell the resident."
+                    is_displayable: True
+                    filter_from_agent: False
+                priority: string
+                    label: "Priority"
+                    description: "Priority set by the flow."
+                    is_displayable: True
+                    filter_from_agent: False
+                closed_case_count: number
+                    label: "Closed Case Count"
+                    description: "Closed cases of this issue type at this apartment in the past year."
+                    is_displayable: True
+                    filter_from_agent: False
+                recommend_replacement: boolean
+                    label: "Recommend Replacement"
+                    description: "True when the closed count is greater than 3."
+                    is_displayable: True
+                    filter_from_agent: False
