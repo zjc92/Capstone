@@ -32,7 +32,7 @@ jobs:
         run: sf project deploy start --target-org target --source-dir force-app/main/default/aiAuthoringBundles/Ops_Copilot
 
       - name: Publish agent
-        run: sf agent publish authoring-bundle --authoring-bundle-api-name Ops_Copilot --skip-retrieve --target-org target
+        run: sf agent publish authoring-bundle --api-name Ops_Copilot --skip-retrieve --target-org target
 
       - name: Activate agent
-        run: sf agent activate --api-name Ops_Copilot --target-org target
+        run: sf agent activate --api-name Ops_Copilot --json --target-org target
