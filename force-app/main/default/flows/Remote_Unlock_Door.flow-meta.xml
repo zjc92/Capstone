@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessType>NamespaceRestricted</accessType>
     <actionCalls>
         <name>Unlock_Door</name>
         <label>Unlock Door</label>
@@ -50,22 +51,29 @@
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Set_Not_Verified</name>
-        <label>Set Not Verified</label>
+        <name>Copy_Unlocked</name>
+        <label>Copy Unlocked</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>door_unlocked</assignToReference>
+            <assignToReference>case_id</assignToReference>
             <operator>Assign</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <elementReference>Read_Door_Case.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>case_number</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Read_Door_Case.CaseNumber</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>result_message</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>The door was not unlocked. The code was not verified.</stringValue>
+                <stringValue>The door was unlocked.</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -92,28 +100,37 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Done</targetReference>
+            <targetReference>Has_Case_For_Failure</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Copy_Unlocked</name>
-        <label>Copy Unlocked</label>
+        <name>Set_Not_Verified</name>
+        <label>Set Not Verified</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>case_id</assignToReference>
+            <assignToReference>door_unlocked</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Read_Door_Case.Id</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>case_number</assignToReference>
+            <assignToReference>result_message</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Read_Door_Case.CaseNumber</elementReference>
+                <stringValue>The door was not unlocked. The code was not verified.</stringValue>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Has_Case_For_Failure</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Unlocked_No_Case</name>
+        <label>Set Unlocked No Case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>result_message</assignToReference>
             <operator>Assign</operator>
@@ -151,6 +168,56 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Has_Case</name>
+        <label>Has Case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Unlocked_No_Case</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No case</defaultConnectorLabel>
+        <rules>
+            <name>Case_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>has_door_case_id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Close_Door_Case</targetReference>
+            </connector>
+            <label>Case present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_Case_For_Failure</name>
+        <label>Has Case For Failure</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Done</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No case</defaultConnectorLabel>
+        <rules>
+            <name>Case_Present_Failure</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>has_door_case_id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Note_Failure</targetReference>
+            </connector>
+            <label>Case present</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Was_Unlocked</name>
         <label>Was Unlocked</label>
         <locationX>0</locationX>
@@ -170,51 +237,31 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Has_Contact</targetReference>
+                <targetReference>Has_Case</targetReference>
             </connector>
             <label>Unlocked</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Has_Contact</name>
-        <label>Has Contact</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>Create_Door_Case</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No contact</defaultConnectorLabel>
-        <rules>
-            <name>Contact_Present</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>has_contact_id</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Door_Case_With_Contact</targetReference>
-            </connector>
-            <label>Contact present</label>
-        </rules>
-    </decisions>
-    <description>Calls the Apex UnlockDoor only after the code is verified. The Door Access Case is created only when Apex returns unlocked. A refused or failed call creates no Case.</description>
+    <description>Calls the Apex UnlockDoor only after the code is verified. The Door Access Case was created with Status New when the code was sent. This flow sets it to Closed only when Apex returns unlocked. A refused or failed call leaves it New with the outcome in the Description.</description>
     <ends>
         <name>Done</name>
         <locationX>0</locationX>
         <locationY>0</locationY>
     </ends>
     <formulas>
-        <name>has_contact_id</name>
-        <dataType>Boolean</dataType>
-        <expression>NOT(ISBLANK({!contact_id}))</expression>
-    </formulas>
-    <formulas>
         <name>door_case_description</name>
         <dataType>String</dataType>
-        <expression>&quot;Remote unlock. SmartRent request &quot; &amp; {!unlock_request_id}</expression>
+        <expression>&quot;Remote unlock completed. SmartRent request &quot; &amp; {!unlock_request_id}</expression>
+    </formulas>
+    <formulas>
+        <name>door_case_failure_description</name>
+        <dataType>String</dataType>
+        <expression>&quot;Remote unlock not completed. &quot; &amp; {!result_message}</expression>
+    </formulas>
+    <formulas>
+        <name>has_door_case_id</name>
+        <dataType>Boolean</dataType>
+        <expression>NOT(ISBLANK({!door_case_id}))</expression>
     </formulas>
     <interviewLabel>Remote Unlock Door {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Remote Unlock Door</label>
@@ -231,106 +278,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordCreates>
-        <name>Create_Door_Case</name>
-        <label>Create Door Case</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignRecordIdToReference>case_id</assignRecordIdToReference>
-        <connector>
-            <targetReference>Read_Door_Case</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>AccountId</field>
-            <value>
-                <elementReference>unlock_account_id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Apartment__c</field>
-            <value>
-                <elementReference>apartment_id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description</field>
-            <value>
-                <elementReference>door_case_description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Closed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <stringValue>Remote door unlock</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Door Access</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Door_Case_With_Contact</name>
-        <label>Create Door Case With Contact</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignRecordIdToReference>case_id</assignRecordIdToReference>
-        <connector>
-            <targetReference>Read_Door_Case</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>AccountId</field>
-            <value>
-                <elementReference>unlock_account_id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Apartment__c</field>
-            <value>
-                <elementReference>apartment_id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ContactId</field>
-            <value>
-                <elementReference>contact_id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description</field>
-            <value>
-                <elementReference>door_case_description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Closed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <stringValue>Remote door unlock</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Door Access</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordCreates>
     <recordLookups>
         <name>Read_Door_Case</name>
         <label>Read Door Case</label>
@@ -345,7 +292,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>case_id</elementReference>
+                <elementReference>door_case_id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -354,6 +301,60 @@
         <queriedFields>CaseNumber</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Close_Door_Case</name>
+        <label>Close Door Case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Read_Door_Case</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>door_case_id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>door_case_description</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Note_Failure</name>
+        <label>Note Failure</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Done</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>door_case_id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>door_case_failure_description</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
         <locationX>0</locationX>
@@ -400,6 +401,13 @@
     </variables>
     <variables>
         <name>customer_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>door_case_id</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

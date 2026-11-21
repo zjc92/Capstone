@@ -12,6 +12,14 @@
         <response>Text STOP to opt out of further messages.</response>
         <type>HelpResponse</type>
     </automatedResponses>
+    <automatedResponses>
+        <autoResponseContentType>MessageDefinition</autoResponseContentType>
+        <messageDefinitionName>Resident_Handoff_Notice</messageDefinitionName>
+        <type>RerouteResponse</type>
+    </automatedResponses>
+    <embeddedConfig>
+        <authMode>Auth</authMode>
+    </embeddedConfig>
     <isAgentMessageResetInactivityEnabled>false</isAgentMessageResetInactivityEnabled>
     <isEndUserDataCaptured>false</isEndUserDataCaptured>
     <isEstimatedWaitTimeEnabled>false</isEstimatedWaitTimeEnabled>

@@ -1,0 +1,42 @@
+{
+  "required" : [ "customer_code", "customer_id", "customer_type", "apartment_id", "authentication_key" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "apartment_id" : {
+      "title" : "Apartment Id",
+      "description" : "Apartment Id selected by the script. The code is only valid for the apartment it was issued for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "authentication_key" : {
+      "title" : "Authentication Key",
+      "description" : "authenticationKey from the send action.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customer_code" : {
+      "title" : "Customer Code",
+      "description" : "The resident's reply, which should be only the code.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customer_id" : {
+      "title" : "Customer Id",
+      "description" : "customerId from the send action.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customer_type" : {
+      "title" : "Customer Type",
+      "description" : "customerType from the send action.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

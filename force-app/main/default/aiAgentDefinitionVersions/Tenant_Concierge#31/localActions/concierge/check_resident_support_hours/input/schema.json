@@ -1,0 +1,14 @@
+{
+  "required" : [ "unused" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "unused" : {
+      "title" : "Unused",
+      "description" : "Required by the action contract. The flow ignores it and reads the business hours record.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

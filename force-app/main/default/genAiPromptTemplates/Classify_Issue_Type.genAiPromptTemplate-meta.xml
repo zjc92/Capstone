@@ -4,6 +4,7 @@
     <description>Classifies a resident maintenance message as FaucetLeak, NoPower, or Other.</description>
     <developerName>Classify_Issue_Type</developerName>
     <masterLabel>Classify Issue Type</masterLabel>
+    <overridable>false</overridable>
     <templateVersions>
         <content>You classify one maintenance message from a Pacific Haven resident.
 Reply with only one word: FaucetLeak, NoPower, or Other.
@@ -21,6 +22,7 @@ Message:
             <referenceName>Input:Resident_Message</referenceName>
             <required>true</required>
         </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
         <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
         <status>Published</status>
         <versionIdentifier>Gse7SnVQfKeLBCU8R/HG8HEmly8Hd7KTREwUPSCVMXM==_1</versionIdentifier>

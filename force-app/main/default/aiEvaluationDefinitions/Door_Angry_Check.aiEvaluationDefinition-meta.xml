@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiEvaluationDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Temporary check for v29. session_id is a Rahul Sharma session.</description>
+    <name>Tenant Concierge Door and Angry check</name>
+    <subjectName>Tenant_Concierge</subjectName>
+    <subjectType>AGENT</subjectType>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>Does not say it will connect, transfer, or bring in a person or specialist. Says no resident specialist is on duty now, or asks what the problem is. Does not say a case was created.</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>I&apos;m so angry!!!!I need help!</utterance>
+            <contextVariable>
+                <variableName>session_id</variableName>
+                <variableValue>0MwVW000007oOZN0A2</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>1</number>
+    </testCase>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[&apos;send_verification_code&apos;]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>Says a verification code was sent to the email on the account and asks for only that code. Does not say the door is unlocked.</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>Can you open my door</utterance>
+            <contextVariable>
+                <variableName>session_id</variableName>
+                <variableValue>0MwVW000007oOZN0A2</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>2</number>
+    </testCase>
+</AiEvaluationDefinition>

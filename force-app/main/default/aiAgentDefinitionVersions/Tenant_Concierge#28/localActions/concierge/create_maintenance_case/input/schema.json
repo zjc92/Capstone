@@ -1,0 +1,56 @@
+{
+  "required" : [ "is_valid_user", "is_active_tenant", "account_id", "apartment_id", "issue_type", "description" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "account_id" : {
+      "title" : "Account Id",
+      "description" : "Person Account Id. Bound from the verify result.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "apartment_id" : {
+      "title" : "Apartment Id",
+      "description" : "Occupied apartment Id selected by the script. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "description" : {
+      "title" : "Description",
+      "description" : "Short description of the maintenance problem, written from the resident's words.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "is_active_tenant" : {
+      "title" : "Is Active Tenant",
+      "description" : "Must be true. Bound from the verify result.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "is_valid_user" : {
+      "title" : "Is Valid User",
+      "description" : "Must be true. Bound from the verify result.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "issue_type" : {
+      "title" : "Issue Type",
+      "description" : "FaucetLeak, NoPower, or Other. Any other value is stored as Other.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "messaging_session_id" : {
+      "title" : "Messaging Session Id",
+      "description" : "Current messaging session Id. Used only to copy the contact.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

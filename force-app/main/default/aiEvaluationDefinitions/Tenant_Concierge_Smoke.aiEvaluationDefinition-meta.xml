@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiEvaluationDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>smoke</description>
+    <name>Tenant Concierge Smoke</name>
+    <subjectName>Tenant_Concierge</subjectName>
+    <subjectType>AGENT</subjectType>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>variant session_id</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>My faucet is leaking</utterance>
+            <contextVariable>
+                <variableName>session_id</variableName>
+                <variableValue>0MwVW000007c1Or0AI</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>1</number>
+    </testCase>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>variant $Context.session_id</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>My faucet is leaking</utterance>
+            <contextVariable>
+                <variableName>$Context.session_id</variableName>
+                <variableValue>0MwVW000007c1Or0AI</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>2</number>
+    </testCase>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>variant $Context.RoutableId</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>My faucet is leaking</utterance>
+            <contextVariable>
+                <variableName>$Context.RoutableId</variableName>
+                <variableValue>0MwVW000007c1Or0AI</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>3</number>
+    </testCase>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>variant MessagingSession.Id</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>My faucet is leaking</utterance>
+            <contextVariable>
+                <variableName>MessagingSession.Id</variableName>
+                <variableValue>0MwVW000007c1Or0AI</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>4</number>
+    </testCase>
+    <testCase>
+        <expectation>
+            <expectedValue>concierge</expectedValue>
+            <name>topic_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>[]</expectedValue>
+            <name>action_sequence_match</name>
+        </expectation>
+        <expectation>
+            <expectedValue>variant $Context.MessagingSession.Id</expectedValue>
+            <name>bot_response_rating</name>
+        </expectation>
+        <inputs>
+            <utterance>My faucet is leaking</utterance>
+            <contextVariable>
+                <variableName>$Context.MessagingSession.Id</variableName>
+                <variableValue>0MwVW000007c1Or0AI</variableValue>
+            </contextVariable>
+        </inputs>
+        <number>5</number>
+    </testCase>
+</AiEvaluationDefinition>

@@ -4,22 +4,6 @@
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
-        <name>Count_Apartments</name>
-        <label>Count Apartments</label>
-        <locationX>176</locationX>
-        <locationY>674</locationY>
-        <assignmentItems>
-            <assignToReference>apartment_count</assignToReference>
-            <operator>AssignCount</operator>
-            <value>
-                <elementReference>Find_Occupied_Apartments</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>How_Many_Apartments</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Add_Active_Rental</name>
         <label>Add Active Rental</label>
         <locationX>176</locationX>
@@ -57,6 +41,42 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Clear_Selected_Apartment</name>
+        <label>Clear Selected Apartment</label>
+        <locationX>624</locationX>
+        <locationY>1320</locationY>
+        <assignmentItems>
+            <assignToReference>default_apartment_id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>default_apartment_name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Count_Apartments</name>
+        <label>Count Apartments</label>
+        <locationX>176</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>apartment_count</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Find_Occupied_Apartments</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>How_Many_Apartments</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Remember_Match</name>
         <label>Remember Match</label>
         <locationX>176</locationX>
@@ -85,66 +105,6 @@
         <connector>
             <targetReference>Use_The_Apartment</targetReference>
         </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Only_Apartment</name>
-        <label>Set Only Apartment</label>
-        <locationX>176</locationX>
-        <locationY>1320</locationY>
-        <assignmentItems>
-            <assignToReference>default_apartment_id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>first_apartment_id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>default_apartment_name</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>first_apartment_name</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>Set_Matched_Apartment</name>
-        <label>Set Matched Apartment</label>
-        <locationX>400</locationX>
-        <locationY>1320</locationY>
-        <assignmentItems>
-            <assignToReference>default_apartment_id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>matched_apartment_id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>default_apartment_name</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>matched_apartment_name</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>Clear_Selected_Apartment</name>
-        <label>Clear Selected Apartment</label>
-        <locationX>624</locationX>
-        <locationY>1320</locationY>
-        <assignmentItems>
-            <assignToReference>default_apartment_id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>default_apartment_name</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </assignmentItems>
     </assignments>
     <assignments>
         <name>Set_Active_Tenant</name>
@@ -212,6 +172,80 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_Invalid_User</name>
+        <label>Set Invalid User</label>
+        <locationX>704</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>is_valid_user</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>has_active_rental</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>is_active_tenant</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>result</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_Matched_Apartment</name>
+        <label>Set Matched Apartment</label>
+        <locationX>400</locationX>
+        <locationY>1320</locationY>
+        <assignmentItems>
+            <assignToReference>default_apartment_id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>matched_apartment_id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>default_apartment_name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>matched_apartment_name</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_Only_Apartment</name>
+        <label>Set Only Apartment</label>
+        <locationX>176</locationX>
+        <locationY>1320</locationY>
+        <assignmentItems>
+            <assignToReference>default_apartment_id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>first_apartment_id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>default_apartment_name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>first_apartment_name</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Set_Valid_No_Rental</name>
         <label>Set Valid User, No Active Rental</label>
         <locationX>176</locationX>
@@ -256,40 +290,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>Get_Account.PersonEmail</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>Set_Invalid_User</name>
-        <label>Set Invalid User</label>
-        <locationX>704</locationX>
-        <locationY>242</locationY>
-        <assignmentItems>
-            <assignToReference>is_valid_user</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>has_active_rental</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>is_active_tenant</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>result</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <numberValue>0.0</numberValue>
             </value>
         </assignmentItems>
     </assignments>
@@ -458,17 +458,7 @@
             <label>Unique name</label>
         </rules>
     </decisions>
-    <description>Returns occupied apartments for this messaging session. result is the apartment count. When result is 1, default_apartment_id is that record's Id. When the latest message names exactly one of those apartments, default_apartment_id is that record's Id. contact_id is the session EndUserContactId when the session has an account. person_email is that account's PersonEmail.</description>
-    <formulas>
-        <name>session_id_present</name>
-        <dataType>Boolean</dataType>
-        <expression>AND(OR(LEN({!messaging_session_id})=15, LEN({!messaging_session_id})=18), REGEX({!messaging_session_id}, &quot;^[a-zA-Z0-9]+$&quot;))</expression>
-    </formulas>
-    <formulas>
-        <name>next_choice_list</name>
-        <dataType>String</dataType>
-        <expression>IF(ISBLANK({!apartment_choices}), {!Use_The_Apartment.Name}, {!apartment_choices} &amp; BR() &amp; {!Use_The_Apartment.Name})</expression>
-    </formulas>
+    <description>Returns occupied apartments for this messaging session. result is the apartment count. When result is 1, default_apartment_id is that record&apos;s Id. When the latest message names exactly one of those apartments, default_apartment_id is that record&apos;s Id. contact_id is the session EndUserContactId when the session has an account. person_email is that account&apos;s PersonEmail.</description>
     <formulas>
         <name>keep_first_id</name>
         <dataType>String</dataType>
@@ -480,10 +470,20 @@
         <expression>IF(ISBLANK({!first_apartment_name}), {!Use_The_Apartment.Name}, {!first_apartment_name})</expression>
     </formulas>
     <formulas>
+        <name>next_choice_list</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!apartment_choices}), {!Use_The_Apartment.Name}, {!apartment_choices} &amp; BR() &amp; {!Use_The_Apartment.Name})</expression>
+    </formulas>
+    <formulas>
         <name>next_match_count</name>
         <dataType>Number</dataType>
         <expression>{!match_count} + 1</expression>
         <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>session_id_present</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(OR(LEN({!messaging_session_id})=15, LEN({!messaging_session_id})=18), REGEX({!messaging_session_id}, &quot;^[a-zA-Z0-9]+$&quot;))</expression>
     </formulas>
     <formulas>
         <name>utterance_names_this_apartment</name>
@@ -612,85 +612,12 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
-        <name>apartment_count</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-        <value>
-            <numberValue>0.0</numberValue>
-        </value>
-    </variables>
-    <variables>
         <name>active_rental_records</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>Apartment__c</objectType>
-    </variables>
-    <variables>
-        <name>result</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <scale>0</scale>
-        <value>
-            <numberValue>0.0</numberValue>
-        </value>
-    </variables>
-    <variables>
-        <name>is_active_tenant</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>is_valid_user</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>has_active_rental</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>messaging_session_id</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>resident_name</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>resident_message</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>apartment_choices</name>
@@ -700,11 +627,15 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
-        <name>person_email</name>
-        <dataType>String</dataType>
+        <name>apartment_count</name>
+        <dataType>Number</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
     <variables>
         <name>contact_id</name>
@@ -742,6 +673,47 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>has_active_rental</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>is_active_tenant</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>is_valid_user</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>match_count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
         <name>matched_apartment_id</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -756,11 +728,39 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>match_count</name>
+        <name>messaging_session_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>person_email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>resident_message</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>resident_name</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>result</name>
         <dataType>Number</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <scale>0</scale>
         <value>
             <numberValue>0.0</numberValue>

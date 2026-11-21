@@ -4,6 +4,7 @@
     <description>Classifies one resident message as upset or calm for the Tenant Concierge handoff.</description>
     <developerName>Classify_Resident_Sentiment</developerName>
     <masterLabel>Classify Resident Sentiment</masterLabel>
+    <overridable>false</overridable>
     <templateVersions>
         <content>You classify one message from a Pacific Haven resident.
 Reply with only the single word upset or the single word calm.
@@ -20,6 +21,7 @@ Message:
             <referenceName>Input:Resident_Message</referenceName>
             <required>true</required>
         </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
         <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
         <status>Published</status>
         <versionIdentifier>g7f4uAr8jTORG/YqOkmvXccZA+O8WGTmjNsah/V70BA=_1</versionIdentifier>

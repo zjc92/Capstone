@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessType>NamespaceRestricted</accessType>
     <actionCalls>
         <name>Ask_Business_Hours</name>
         <label>Ask Business Hours</label>
@@ -24,6 +25,9 @@
         <locationY>458</locationY>
         <actionName>routeWork</actionName>
         <actionType>routeWork</actionType>
+        <connector>
+            <targetReference>Lookup_Messaging_Session</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -71,8 +75,80 @@
         <nameSegment>routeWork</nameSegment>
         <versionString>2.0.0</versionString>
     </actionCalls>
+    <actionCalls>
+        <name>Send_Handoff_Notice</name>
+        <label>Send Handoff Notice</label>
+        <locationX>176</locationX>
+        <locationY>782</locationY>
+        <actionName>sendConversationMessages</actionName>
+        <actionType>sendConversationMessages</actionType>
+        <faultConnector>
+            <targetReference>Note_Notice_Failed</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>messageDefinitionName</name>
+            <value>
+                <stringValue>Resident_Handoff_Notice</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>requestType</name>
+            <value>
+                <stringValue>SendNotificationMessages</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isEnforceMessagingChannelConsent</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>allowedSessionStatus</name>
+            <value>
+                <stringValue>Any</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>messagingEndUserIds</name>
+            <value>
+                <elementReference>end_user_ids</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>sendConversationMessages</nameSegment>
+    </actionCalls>
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Collect_End_User</name>
+        <label>Collect End User</label>
+        <locationX>176</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>end_user_ids</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Lookup_Messaging_Session.MessagingEndUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Send_Handoff_Notice</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Note_Notice_Failed</name>
+        <label>Note Notice Failed</label>
+        <locationX>440</locationX>
+        <locationY>890</locationY>
+        <assignmentItems>
+            <assignToReference>notice_error</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
         <name>Support_Is_Open</name>
         <label>Support Is Open</label>
@@ -95,7 +171,7 @@
             <label>Open</label>
         </rules>
     </decisions>
-    <description>Outbound Omni-Channel flow. During Pacific Haven Resident Support business hours, sends the escalated resident session to the Resident Concierge queue. Outside those hours, leaves the session with Tenant Concierge.</description>
+    <description>Outbound Omni-Channel flow. During Pacific Haven Resident Support business hours, sends the escalated resident session to the Resident Concierge queue and sends the resident the Resident Handoff Notice. Outside those hours, leaves the session with Tenant Concierge.</description>
     <environments>Default</environments>
     <interviewLabel>Route Resident Handoff {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Route Resident Handoff</label>
@@ -106,6 +182,29 @@
         </value>
     </processMetadataValues>
     <processType>RoutingFlow</processType>
+    <recordLookups>
+        <name>Lookup_Messaging_Session</name>
+        <label>Lookup Messaging Session</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Collect_End_User</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>MessagingSession</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MessagingEndUserId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Lookup_Resident_Concierge</name>
         <label>Lookup Resident Concierge</label>
@@ -142,6 +241,20 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>end_user_ids</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>notice_error</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

@@ -159,7 +159,7 @@
             <assignToReference>result_message</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>The key fob order was placed.</stringValue>
+                <elementReference>placed_message</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -334,6 +334,11 @@
         <name>has_recent_order</name>
         <dataType>Boolean</dataType>
         <expression>NOT(ISBLANK({!Find_Recent_Order.Id}))</expression>
+    </formulas>
+    <formulas>
+        <name>placed_message</name>
+        <dataType>String</dataType>
+        <expression>&quot;The key fob order was placed. Order number: &quot; &amp; {!order_response.orderId}</expression>
     </formulas>
     <formulas>
         <name>request_id</name>
@@ -552,13 +557,6 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>contact_id</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>case_id</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -571,6 +569,13 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>contact_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>fee_amount</name>

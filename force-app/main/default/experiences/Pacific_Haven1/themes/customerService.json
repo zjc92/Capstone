@@ -1,126 +1,149 @@
 {
-  "activeBrandingSetId" : "2259ffcc-a596-4edd-9871-311c0139b693",
-  "customCSS" : "",
-  "developerName" : "service",
-  "id" : "fcedf64d-ab5b-4c00-b905-040e425e19cb",
-  "label" : "Customer Service",
-  "layouts" : {
-    "Inner" : "73bff974-4e40-42a3-b0ef-92b96467eeab",
-    "Login" : "b271b68a-8d7d-4e21-b5d9-a20a2d86a7bb",
-    "ServiceNotAvailable" : "75cf30ca-2ce5-418d-a2fe-295010a0ae8a"
+  "activeBrandingSetId": "2259ffcc-a596-4edd-9871-311c0139b693",
+  "customCSS": ".ph-header{display:flex;align-items:center;justify-content:space-between;padding:16px 6%;background:#fff;box-shadow:0 1px 12px rgba(11,42,74,.08)}.ph-logo{font-family:Montserrat,Lato,sans-serif;letter-spacing:.22em;font-size:15px;font-weight:700;color:#0b2a4a}.ph-logo:before{content:'';display:inline-block;width:14px;height:14px;margin-right:10px;border-radius:4px;background:linear-gradient(135deg,#ff7a59,#ffb347);vertical-align:-1px}.ph-tag{font-size:13px;color:#1b6f8f;font-weight:600;letter-spacing:.04em}.ph-hero{min-height:560px;display:flex;align-items:center;padding:0 6%;background:url(\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 580' preserveAspectRatio='xMidYMax slice'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%230b2a4a'/><stop offset='.55' stop-color='%231b6f8f'/><stop offset='.85' stop-color='%23f2a07a'/><stop offset='1' stop-color='%23ffcf99'/></linearGradient><radialGradient id='s' cx='.5' cy='.5' r='.5'><stop offset='0' stop-color='%23fff2cf'/><stop offset='1' stop-color='%23fff2cf' stop-opacity='0'/></radialGradient></defs><rect width='1600' height='580' fill='url(%23g)'/><circle cx='1000' cy='430' r='170' fill='url(%23s)'/><circle cx='1000' cy='430' r='46' fill='%23fff2cf'/><g fill='%23123a63' opacity='0.75'><rect x='760' y='330' width='70' height='250'/><rect x='850' y='280' width='60' height='300'/><rect x='930' y='340' width='90' height='240'/><rect x='1040' y='300' width='70' height='280'/><rect x='1130' y='350' width='80' height='230'/><rect x='1230' y='290' width='70' height='290'/><rect x='1320' y='340' width='90' height='240'/><rect x='1430' y='310' width='70' height='270'/><rect x='1520' y='350' width='90' height='230'/></g><g fill='%230a2038' opacity='0.95'><rect x='700' y='400' width='90' height='180'/><rect x='810' y='350' width='70' height='230'/><rect x='900' y='420' width='110' height='160'/><rect x='1030' y='370' width='80' height='210'/><rect x='1130' y='430' width='100' height='150'/><rect x='1250' y='360' width='80' height='220'/><rect x='1350' y='410' width='110' height='170'/><rect x='1480' y='380' width='90' height='200'/></g><rect x='710' y='416' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='710' y='440' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='710' y='464' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='740' y='416' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='740' y='440' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='740' y='464' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='740' y='488' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='770' y='416' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='770' y='440' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='820' y='366' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='820' y='390' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='820' y='414' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='820' y='438' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='820' y='462' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='843' y='366' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='843' y='390' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='843' y='414' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='843' y='438' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='843' y='462' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='866' y='366' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='866' y='390' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='866' y='414' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='910' y='436' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='910' y='460' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='946' y='436' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='946' y='460' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='982' y='436' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='982' y='460' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1040' y='386' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1040' y='410' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1040' y='434' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1040' y='458' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1040' y='482' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1066' y='386' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1066' y='410' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1066' y='434' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1066' y='458' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1092' y='386' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1092' y='410' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1140' y='446' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1140' y='470' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1140' y='494' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1173' y='446' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1173' y='470' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1173' y='494' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1173' y='518' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1206' y='446' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1206' y='470' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1206' y='494' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1206' y='518' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1260' y='376' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1260' y='400' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1260' y='424' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1286' y='376' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1286' y='400' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1312' y='376' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1312' y='400' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1312' y='424' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1312' y='448' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1360' y='426' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1360' y='450' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1360' y='474' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1396' y='426' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1396' y='450' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1432' y='426' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1432' y='450' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1432' y='474' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1432' y='498' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1490' y='396' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1490' y='420' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1490' y='444' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1490' y='468' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1520' y='396' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1520' y='420' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1520' y='444' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1550' y='396' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1550' y='420' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect x='1550' y='444' width='7' height='9' fill='%23ffd27a' opacity='.85'/><rect y='560' width='1600' height='20' fill='%230a2038'/></svg>\") center bottom/cover no-repeat}.ph-hero-text{max-width:600px}.ph-eyebrow{display:inline-block;letter-spacing:.22em;font-size:12px;font-weight:700;color:#ffd27a;margin:0 0 18px}.ph-hero h1{font-family:Montserrat,Lato,sans-serif;font-weight:700;font-size:54px;line-height:1.1;color:#fff;margin:0 0 18px;text-shadow:0 2px 18px rgba(0,0,0,.25)}.ph-sub{font-size:19px;line-height:1.5;color:#e6f1f7;margin:0 0 28px}.ph-pill{display:inline-block;padding:13px 26px;border-radius:999px;background:linear-gradient(135deg,#ff7a59,#ffb347);color:#fff;font-weight:700;font-size:15px;letter-spacing:.03em;box-shadow:0 8px 24px rgba(255,122,89,.45)}.ph-section{max-width:1080px;margin:0 auto;padding:72px 24px 8px;text-align:center}.ph-section h2{font-family:Montserrat,Lato,sans-serif;font-weight:700;font-size:30px;color:#0b2a4a;margin:0 0 10px}.ph-lead{font-size:17px;line-height:1.7;color:#4a6275;max-width:700px;margin:0 auto 40px}.ph-grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}.ph-card{flex:1 1 280px;max-width:340px;background:#fff;border-radius:16px;padding:30px 26px;text-align:left;box-shadow:0 10px 30px rgba(11,42,74,.10);border-top:5px solid #ff7a59}.ph-card.teal{border-top-color:#1b9aaa}.ph-card.indigo{border-top-color:#5b6cf0}.ph-card h3{font-family:Montserrat,Lato,sans-serif;font-size:20px;font-weight:700;color:#0b2a4a;margin:0 0 8px}.ph-card p{font-size:15px;line-height:1.6;color:#4a6275;margin:0}.ph-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#fff1ec;color:#ff7a59;font-weight:700;margin-bottom:14px}.ph-card.teal .ph-num{background:#e4f6f8;color:#1b9aaa}.ph-card.indigo .ph-num{background:#eceefe;color:#5b6cf0}.ph-cities{padding-bottom:80px}.ph-footer{margin-top:40px;padding:44px 6%;text-align:center;background:#0a2038;color:#9fb6c8;font-size:14px}.ph-footer p{margin:5px 0}.ph-footer-name{font-weight:700;color:#fff;letter-spacing:.16em}.ph-copy{font-size:12px;margin-top:14px;color:#6f8aa0}.cHeaderOverlay{background:#fff!important;box-shadow:0 1px 12px rgba(11,42,74,.08)}.cHeaderLine{max-width:none!important;width:100%!important;padding:14px 6%!important;align-items:center!important}.cBrandingProfile{display:flex!important;align-items:center}.cBrandingProfile:before{content:'';display:inline-block;width:14px;height:14px;margin-right:10px;border-radius:4px;background:linear-gradient(135deg,#ff7a59,#ffb347)}.cBrandingProfile:after{content:'PACIFIC HAVEN';font-family:Montserrat,Lato,sans-serif;letter-spacing:.22em;font-size:15px;font-weight:700;color:#0b2a4a;white-space:nowrap}.selfServiceUserProfileMenu .login-link{display:inline-block;padding:9px 22px!important;border-radius:999px;background:linear-gradient(135deg,#ff7a59,#ffb347);color:#fff!important;font-weight:700;letter-spacing:.06em}.selfServiceUserProfileMenu .profile-menuTrigger, .selfServiceUserProfileMenu .profileName{color:#0b2a4a!important}.siteforceSldsTwoCol84SidebarFeaturedLayout{position:relative;background:linear-gradient(135deg,#0b2a4a,#1b6ca8) top center/100% 270px no-repeat,#f4f8fb!important;padding-top:280px!important;padding-bottom:40px}.siteforceSldsTwoCol84SidebarFeaturedLayout:before{content:'Welcome home';position:absolute;top:96px;left:6%;font-family:Montserrat,Lato,sans-serif;font-weight:700;font-size:40px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.45),0 2px 18px rgba(0,0,0,.35)}.siteforceSldsTwoCol84SidebarFeaturedLayout:after{content:'Report a repair, check your apartment, or ask a question in the chat.';position:absolute;top:156px;left:6%;max-width:520px;font-size:17px;line-height:1.5;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.45)}.siteforceSldsTwoCol84SidebarFeaturedLayout .forceCommunityRecommendations,.siteforceSldsTwoCol84SidebarFeaturedLayout .forceCommunityReputationLeaderboard42{background:#fff;border-radius:16px;padding:20px;margin-bottom:24px;box-shadow:0 10px 30px rgba(11,42,74,.10);border-top:5px solid #1b9aaa}.siteforceSldsTwoCol84SidebarFeaturedLayout .forceCommunityReputationLeaderboard42{border-top-color:#5b6cf0}.siteforceSldsTwoCol84SidebarFeaturedLayout h2,.siteforceSldsTwoCol84SidebarFeaturedLayout h3{color:#0b2a4a;font-family:Montserrat,Lato,sans-serif}.ph-login-logo{text-align:center;padding:8px 0 18px}.ph-login-logo .ph-logo{font-size:20px;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25)}.siteforceSldsTwoCol84SidebarFeaturedLayout .slds-medium-size--8-of-12,.siteforceSldsTwoCol84SidebarFeaturedLayout .slds-large-size--8-of-12{width:100%!important;max-width:100%!important;flex:0 0 100%!important}.siteforceSldsTwoCol84SidebarFeaturedLayout .slds-medium-size--4-of-12,.siteforceSldsTwoCol84SidebarFeaturedLayout .slds-large-size--4-of-12{display:none!important}.siteforceServiceBody{background:#f4f8fb!important}.siteforceSldsTwoCol84SidebarFeaturedLayout{min-height:calc(100vh - 330px)}.ph-res{padding:24px 6% 40px}.ph-res .ph-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;max-width:none;width:100%}.ph-res .ph-card{width:auto!important;max-width:none!important;margin:0!important;flex:none!important}.ph-res h2,.ph-tips h2{font-family:Montserrat,Lato,sans-serif;font-weight:700;font-size:24px;color:#0b2a4a;margin:0 0 16px}.ph-res .ph-grid{justify-content:flex-start}.ph-res .ph-card{max-width:none}.ph-tips{background:#fff;border-radius:16px;padding:26px 28px;box-shadow:0 10px 30px rgba(11,42,74,.10);border-top:5px solid #ffb347;margin-bottom:24px}.ph-tips ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px 28px}.ph-tips li{font-size:14px;line-height:1.55;color:#4a6275}.ph-tips li strong{display:block;color:#0b2a4a;font-size:15px;margin-bottom:2px}",
+  "developerName": "service",
+  "id": "fcedf64d-ab5b-4c00-b905-040e425e19cb",
+  "label": "Customer Service",
+  "layouts": {
+    "Inner": "73bff974-4e40-42a3-b0ef-92b96467eeab",
+    "Login": "b271b68a-8d7d-4e21-b5d9-a20a2d86a7bb",
+    "ServiceNotAvailable": "75cf30ca-2ce5-418d-a2fe-295010a0ae8a"
   },
-  "type" : "theme",
-  "views" : [ {
-    "componentAttributes" : { },
-    "componentName" : "salesforceIdentity:loginBody2",
-    "id" : "b271b68a-8d7d-4e21-b5d9-a20a2d86a7bb",
-    "label" : "Login",
-    "regions" : [ {
-      "id" : "59dd97fb-02da-4332-a963-69d40a2e480b",
-      "regionName" : "header",
-      "type" : "region"
-    }, {
-      "id" : "aab95c46-1002-4a48-9e8e-81b444f2ffe3",
-      "regionName" : "content",
-      "type" : "region"
-    }, {
-      "id" : "b7693e56-f79a-4177-b005-3c7a6e50e262",
-      "regionName" : "footer",
-      "type" : "region"
-    } ],
-    "type" : "view"
-  }, {
-    "componentAttributes" : {
-      "IsDefaultHeaderHidden" : false,
-      "IsDefaultNotificationsHidden" : false,
-      "fixedPageWidth" : 1140,
-      "isPageWidthFixed" : true
-    },
-    "componentName" : "siteforce:serviceBody",
-    "id" : "73bff974-4e40-42a3-b0ef-92b96467eeab",
-    "label" : "Default",
-    "regions" : [ {
-      "id" : "5e32d8db-db27-49ac-b26f-7c7fd1033d2a",
-      "regionName" : "customHeader",
-      "type" : "region"
-    }, {
-      "id" : "25262873-d67c-46bf-8bdb-04a1bfd08a45",
-      "regionName" : "search",
-      "type" : "region"
-    }, {
-      "components" : [ {
-        "componentAttributes" : {
-          "accountManagementLabel" : "Account Management",
-          "communityBuilderLabel" : "Experience Builder",
-          "communitySetupLabel" : "Salesforce Setup",
-          "contactSupportLabel" : "Contact Support",
-          "filterName" : "MyCases",
-          "homeLabel" : "Home",
-          "includeContactSupport" : true,
-          "includeMessages" : false,
-          "loginLabel" : "Login",
-          "logoutLabel" : "Logout",
-          "myAccountLabel" : "My Account",
-          "showAccountManagement" : true,
-          "showUserSettings" : true,
-          "userSettingsLabel" : "My Settings",
-          "viewProfileLabel" : "My Profile"
+  "type": "theme",
+  "views": [
+    {
+      "componentAttributes": {},
+      "componentName": "salesforceIdentity:loginBody2",
+      "id": "b271b68a-8d7d-4e21-b5d9-a20a2d86a7bb",
+      "label": "Login",
+      "regions": [
+        {
+          "id": "59dd97fb-02da-4332-a963-69d40a2e480b",
+          "regionName": "header",
+          "type": "region"
         },
-        "componentName" : "selfService:userProfileMenu",
-        "id" : "86b5b314-4995-489d-8661-b7175d0b3f22",
-        "renditionMap" : { },
-        "type" : "component"
-      } ],
-      "id" : "22c6ee5b-6bfe-4498-9a15-e410fe9065fa",
-      "regionName" : "profileMenu",
-      "type" : "region"
-    }, {
-      "components" : [ {
-        "componentAttributes" : {
-          "NavigationMenuEditorRefresh" : "",
-          "hideAppLauncher" : false,
-          "hideHomeText" : false
+        {
+          "id": "aab95c46-1002-4a48-9e8e-81b444f2ffe3",
+          "regionName": "content",
+          "type": "region"
         },
-        "componentName" : "forceCommunity:globalNavigation",
-        "id" : "2a2644e0-00aa-4b11-9a48-1c0d0f047e94",
-        "renditionMap" : { },
-        "type" : "component"
-      } ],
-      "id" : "b557699e-f122-443f-b4cc-21bc16322f52",
-      "regionName" : "navBar",
-      "type" : "region"
-    }, {
-      "id" : "029affe3-c171-48c2-8c47-162caaf12c32",
-      "regionName" : "customRegion",
-      "type" : "region"
-    }, {
-      "id" : "fc42ca00-7888-4da5-ae06-8e21f91e028e",
-      "regionName" : "footer",
-      "type" : "region"
-    } ],
-    "type" : "view"
-  }, {
-    "componentAttributes" : {
-      "fixedPageWidth" : 1170,
-      "headerBgColor" : "rgba(0, 0, 0, 0)",
-      "isHeaderPinned" : false,
-      "isHeroUnderHeader" : false,
-      "isPageWidthFixed" : true,
-      "showHeader" : true,
-      "showHero" : true
+        {
+          "id": "b7693e56-f79a-4177-b005-3c7a6e50e262",
+          "regionName": "footer",
+          "type": "region"
+        }
+      ],
+      "type": "view"
     },
-    "componentName" : "siteforce:themeLayoutStarter",
-    "id" : "75cf30ca-2ce5-418d-a2fe-295010a0ae8a",
-    "label" : "ServiceNotAvailable",
-    "regions" : [ {
-      "id" : "1699b26a-c358-4f2f-bb6b-b11a22bda141",
-      "regionName" : "themeHeader",
-      "type" : "region"
-    }, {
-      "id" : "80ef0718-2de2-4fb9-9842-b1760c939044",
-      "regionName" : "themeFooter",
-      "type" : "region"
-    } ],
-    "type" : "view"
-  } ]
+    {
+      "componentAttributes": {
+        "IsDefaultHeaderHidden": false,
+        "IsDefaultNotificationsHidden": false,
+        "fixedPageWidth": 1140,
+        "isPageWidthFixed": false
+      },
+      "componentName": "siteforce:serviceBody",
+      "id": "73bff974-4e40-42a3-b0ef-92b96467eeab",
+      "label": "Default",
+      "regions": [
+        {
+          "id": "5e32d8db-db27-49ac-b26f-7c7fd1033d2a",
+          "regionName": "customHeader",
+          "type": "region",
+          "components": []
+        },
+        {
+          "id": "25262873-d67c-46bf-8bdb-04a1bfd08a45",
+          "regionName": "search",
+          "type": "region"
+        },
+        {
+          "components": [
+            {
+              "componentAttributes": {
+                "accountManagementLabel": "Account Management",
+                "communityBuilderLabel": "Experience Builder",
+                "communitySetupLabel": "Salesforce Setup",
+                "contactSupportLabel": "Contact Support",
+                "filterName": "MyCases",
+                "homeLabel": "Home",
+                "includeContactSupport": false,
+                "includeMessages": false,
+                "loginLabel": "Login",
+                "logoutLabel": "Logout",
+                "myAccountLabel": "My Account",
+                "showAccountManagement": true,
+                "showUserSettings": true,
+                "userSettingsLabel": "My Settings",
+                "viewProfileLabel": "My Profile"
+              },
+              "componentName": "selfService:userProfileMenu",
+              "id": "86b5b314-4995-489d-8661-b7175d0b3f22",
+              "renditionMap": {},
+              "type": "component"
+            }
+          ],
+          "id": "22c6ee5b-6bfe-4498-9a15-e410fe9065fa",
+          "regionName": "profileMenu",
+          "type": "region"
+        },
+        {
+          "components": [],
+          "id": "b557699e-f122-443f-b4cc-21bc16322f52",
+          "regionName": "navBar",
+          "type": "region"
+        },
+        {
+          "id": "029affe3-c171-48c2-8c47-162caaf12c32",
+          "regionName": "customRegion",
+          "type": "region"
+        },
+        {
+          "id": "fc42ca00-7888-4da5-ae06-8e21f91e028e",
+          "regionName": "footer",
+          "type": "region",
+          "components": [
+            {
+              "componentAttributes": {
+                "richTextValue": "<div class='ph-footer'><p class='ph-footer-name'>PACIFIC HAVEN PROPERTIES</p><p>San Francisco &middot; Portland &middot; Seattle</p><p class='ph-copy'>&copy; 2026 Pacific Haven Properties. All rights reserved.</p></div>"
+              },
+              "componentName": "forceCommunity:htmlBlock",
+              "id": "400b84c3-f0f7-415b-b5dc-f9eff1696cef",
+              "renderPriority": "NEUTRAL",
+              "renditionMap": {},
+              "type": "component"
+            }
+          ]
+        }
+      ],
+      "type": "view"
+    },
+    {
+      "componentAttributes": {
+        "fixedPageWidth": 1170,
+        "headerBgColor": "rgba(0, 0, 0, 0)",
+        "isHeaderPinned": false,
+        "isHeroUnderHeader": false,
+        "isPageWidthFixed": true,
+        "showHeader": true,
+        "showHero": true
+      },
+      "componentName": "siteforce:themeLayoutStarter",
+      "id": "75cf30ca-2ce5-418d-a2fe-295010a0ae8a",
+      "label": "ServiceNotAvailable",
+      "regions": [
+        {
+          "id": "1699b26a-c358-4f2f-bb6b-b11a22bda141",
+          "regionName": "themeHeader",
+          "type": "region"
+        },
+        {
+          "id": "80ef0718-2de2-4fb9-9842-b1760c939044",
+          "regionName": "themeFooter",
+          "type": "region"
+        }
+      ],
+      "type": "view"
+    }
+  ]
 }

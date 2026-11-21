@@ -4,8 +4,8 @@
  * This class never inserts a Case. The flow inserts the Door Access Case only
  * when unlocked is true, so a failed or refused call leaves no success record.
  *
- * Without sharing: the agent user cannot see every Contact and Apartment__c
- * row. The checks below are the access control, not record sharing.
+ * Without sharing and WITH SYSTEM_MODE: the portal resident cannot read Apartment__c
+ * or every Contact. The checks below are the access control, not record sharing or CRUD.
  */
 public without sharing class UnlockDoor {
 
@@ -58,6 +58,7 @@ public without sharing class UnlockDoor {
             SELECT Id, Account__c, Occupied__c, External_Id__c, SmartRent_Device_Id__c
             FROM Apartment__c
             WHERE Id = :request.apartmentId
+            WITH SYSTEM_MODE
             LIMIT 1
         ];
         if (apartments.isEmpty()) {
@@ -65,7 +66,7 @@ public without sharing class UnlockDoor {
         }
         Apartment__c apartment = apartments[0];
 
-        Contact contact = [SELECT Id, AccountId FROM Contact WHERE Id = :contactId LIMIT 1];
+        Contact contact = [SELECT Id, AccountId FROM Contact WHERE Id = :contactId WITH SYSTEM_MODE LIMIT 1];
         if (apartment.Account__c == null || contact.AccountId != apartment.Account__c) {
             return result;
         }
@@ -122,7 +123,7 @@ public without sharing class UnlockDoor {
             return recordId;
         }
         if (recordId.getSObjectType() == User.SObjectType) {
-            List<User> users = [SELECT ContactId FROM User WHERE Id = :recordId LIMIT 1];
+            List<User> users = [SELECT ContactId FROM User WHERE Id = :recordId WITH SYSTEM_MODE LIMIT 1];
             return users.isEmpty() ? null : users[0].ContactId;
         }
         return null;

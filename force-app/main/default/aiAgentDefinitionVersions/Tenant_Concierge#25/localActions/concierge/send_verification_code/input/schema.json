@@ -1,0 +1,14 @@
+{
+  "required" : [ "customer_to_verify" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "customer_to_verify" : {
+      "title" : "Customer To Verify",
+      "description" : "PersonEmail from the session account. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

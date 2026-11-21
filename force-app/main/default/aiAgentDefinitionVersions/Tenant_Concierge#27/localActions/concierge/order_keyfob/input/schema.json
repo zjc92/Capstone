@@ -1,0 +1,35 @@
+{
+  "required" : [ "is_active_tenant", "account_id", "apartment_id" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "account_id" : {
+      "title" : "Account Id",
+      "description" : "Person Account Id. Bound from the verify result.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "apartment_id" : {
+      "title" : "Apartment Id",
+      "description" : "Occupied apartment Id selected by the script.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "contact_id" : {
+      "title" : "Contact Id",
+      "description" : "Session contact. The Flow omits it when this is blank.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "is_active_tenant" : {
+      "title" : "Is Active Tenant",
+      "description" : "Must be true. Bound from the verify result.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

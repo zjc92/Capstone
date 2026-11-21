@@ -1,7 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessType>NamespaceRestricted</accessType>
+    <actionCalls>
+        <name>Check_The_Code</name>
+        <label>Check The Code</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>DoorCodeChecker</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customerCode</name>
+            <value>
+                <elementReference>customer_code</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>customerId</name>
+            <value>
+                <elementReference>customer_id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>apartmentId</name>
+            <value>
+                <elementReference>apartment_id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>authenticationKey</name>
+            <value>
+                <elementReference>authentication_key</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>DoorCodeChecker</nameSegment>
+        <outputParameters>
+            <assignToReference>is_verified</assignToReference>
+            <name>isVerified</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>68.0</apiVersion>
-    <description>Checks the code the resident typed. Returns is_verified. Does not return the original code.</description>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Checks the code the resident typed against the signed key. Returns is_verified. Does not return the original code.</description>
     <environments>Default</environments>
     <interviewLabel>Check Door Code {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Check Door Code</label>
@@ -27,41 +67,20 @@
         </connector>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Check_The_Code</name>
-        <label>Check The Code</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <flowName>SvcCopilotTmpl__VerifyCode</flowName>
-        <inputAssignments>
-            <name>customerCode</name>
-            <value>
-                <elementReference>customer_code</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>customerId</name>
-            <value>
-                <elementReference>customer_id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>customerType</name>
-            <value>
-                <elementReference>customer_type</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>authenticationKey</name>
-            <value>
-                <elementReference>authentication_key</elementReference>
-            </value>
-        </inputAssignments>
-        <outputAssignments>
-            <assignToReference>is_verified</assignToReference>
-            <name>isVerified</name>
-        </outputAssignments>
-    </subflows>
+    <variables>
+        <name>apartment_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>authentication_key</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>customer_code</name>
         <dataType>String</dataType>
@@ -78,13 +97,6 @@
     </variables>
     <variables>
         <name>customer_type</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>authentication_key</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

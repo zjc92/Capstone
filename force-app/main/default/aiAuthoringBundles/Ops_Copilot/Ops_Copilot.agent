@@ -230,7 +230,27 @@ subagent property_ops:
             if @variables.last_result_code == "found" and @variables.asked_draft == False and @variables.last_case_table != "" and @variables.last_case_table is not None:
                 | {!@variables.last_apartment_name} in {!@variables.last_city}. Rent ${!@variables.last_rent}. Past due {!@variables.last_past_due_count}. Decision {!@variables.last_decision}. Increase {!@variables.last_increase_percent} percent. Notice {!@variables.last_notice_days} days. Cases: {!@variables.last_case_table}
 
-            if @variables.last_result_code == "found" and @variables.asked_draft == True:
+            if @variables.last_result_code == "found" and @variables.asked_draft == True and @variables.last_decision == "StandardRenewal":
+                | Write one short renewal email to {!@variables.tenant_name} about {!@variables.last_apartment_name}. The tone is professional and warm. Thank them for paying on time and invite them to renew. The rent stays the same per month.
+                  The rent is the amount in {!@variables.last_rent}. Write that amount in dollars with two decimals, such as $1,234.00. Do not show the isoCode. Use no other number, date, fee, or reason. Do not mention cases.
+                  After the email, write this line on its own: This draft is for you to review. It has not been sent.
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == True and @variables.last_decision == "RenewalIncrease":
+                | Write one short renewal email to {!@variables.tenant_name} about {!@variables.last_apartment_name}. The tone is strict but professional. Say that some rent payments were late. Offer a renewal at a rent {!@variables.last_increase_percent} percent higher than the current monthly rent.
+                  The rent is the amount in {!@variables.last_rent}. Write that amount in dollars with two decimals, such as $1,234.00. Do not show the isoCode. Use no other number, date, fee, or reason. Do not calculate the new rent. Do not mention cases.
+                  After the email, write this line on its own: This draft is for you to review. It has not been sent.
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == True and @variables.last_decision == "RenewalNoIncrease":
+                | Write one short renewal email to {!@variables.tenant_name} about {!@variables.last_apartment_name}. The tone is strict but professional. Say that some rent payments were late. Offer a renewal with no rent increase: the monthly rent stays the same. Give {!@variables.last_notice_days} days of notice.
+                  The rent is the amount in {!@variables.last_rent}. Write that amount in dollars with two decimals, such as $1,234.00. Do not show the isoCode. Use no other number, date, fee, or reason. Do not mention cases.
+                  After the email, write this line on its own: This draft is for you to review. It has not been sent.
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == True and @variables.last_decision == "Decline":
+                | Write one short email to {!@variables.tenant_name} about {!@variables.last_apartment_name}. The tone is polite and professional. Say that the lease will not be renewed, and that the decision is based on the rent payment history. Do not offer another rent, apartment, or renewal.
+                  Use no number, date, fee, or other reason. Do not mention cases.
+                  After the email, write this line on its own: This draft is for you to review. It has not been sent.
+
+            if @variables.last_result_code == "found" and @variables.asked_draft == True and @variables.last_decision != "StandardRenewal" and @variables.last_decision != "RenewalIncrease" and @variables.last_decision != "RenewalNoIncrease" and @variables.last_decision != "Decline":
                 | Your current rent is ${!@variables.last_rent} per month. The increase is {!@variables.last_increase_percent} percent. Notice: {!@variables.last_notice_days} days. This draft is for you to review. It has not been sent.
 
             if @variables.request_captured == True and @variables.asked_weekly == False and @variables.asked_renewal == False:

@@ -1,0 +1,21 @@
+{
+  "required" : [ "messaging_session_id" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "messaging_session_id" : {
+      "title" : "Messaging Session Id",
+      "description" : "Current messaging session Id.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "resident_message" : {
+      "title" : "Resident Message",
+      "description" : "The resident's latest message. Used only to match one apartment name from active_rental_records.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

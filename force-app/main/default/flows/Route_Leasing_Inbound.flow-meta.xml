@@ -35,13 +35,13 @@
         <inputParameters>
             <name>copilotLabel</name>
             <value>
-                <stringValue>Leasing Assistant</stringValue>
+                <stringValue>Leasing Assistant Sales</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>copilotId</name>
             <value>
-                <setupReference>Leasing_Assistant</setupReference>
+                <setupReference>Leasing_Assistant_Sales</setupReference>
                 <setupReferenceType>BotDefinition</setupReferenceType>
             </value>
         </inputParameters>
@@ -163,7 +163,7 @@
             <label>Has Contact</label>
         </rules>
     </decisions>
-    <description>Inbound Omni-Channel flow. A session with an end-user contact goes to Tenant Concierge. A guest session goes to Leasing Assistant.</description>
+    <description>Inbound Omni-Channel flow. A session with an end-user contact goes to Tenant Concierge. A guest session goes to Leasing Assistant Sales.</description>
     <environments>Default</environments>
     <interviewLabel>Route Leasing Inbound {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Route Leasing Inbound</label>

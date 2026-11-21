@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiAgentDefinitionVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <billingMode>ActionBased</billingMode>
+    <citationsEnabled>false</citationsEnabled>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The agent instructions</description>
+        <developerName>AgentScriptInternal_agent_instructions</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Agent Instructions</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for if statements</description>
+        <developerName>AgentScriptInternal_condition_1</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 1</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 10</description>
+        <developerName>AgentScriptInternal_condition_10</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 10</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 11</description>
+        <developerName>AgentScriptInternal_condition_11</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 11</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 12</description>
+        <developerName>AgentScriptInternal_condition_12</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 12</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 13</description>
+        <developerName>AgentScriptInternal_condition_13</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 13</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 2</description>
+        <developerName>AgentScriptInternal_condition_2</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 2</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 3</description>
+        <developerName>AgentScriptInternal_condition_3</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 3</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 4</description>
+        <developerName>AgentScriptInternal_condition_4</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 4</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 5</description>
+        <developerName>AgentScriptInternal_condition_5</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 5</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 6</description>
+        <developerName>AgentScriptInternal_condition_6</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 6</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 7</description>
+        <developerName>AgentScriptInternal_condition_7</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 7</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 8</description>
+        <developerName>AgentScriptInternal_condition_8</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 8</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 9</description>
+        <developerName>AgentScriptInternal_condition_9</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 9</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The next topic to be visited</description>
+        <developerName>AgentScriptInternal_next_topic</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Next Topic</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Person Account Id from the messaging session.</description>
+        <developerName>account_id</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Account Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Apartment names from active_rental_records, one name per line.</description>
+        <developerName>apartment_choices</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Apartment Choices</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Occupied apartment Id chosen by this script. The model must not invent or replace it.</description>
+        <developerName>apartment_id</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Apartment Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Name of the apartment in apartment_id.</description>
+        <developerName>apartment_name</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Apartment Name</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True after a previous turn already retrieved the resident articles.</description>
+        <developerName>article_delivered</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Article Delivered</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Title, question, and answer of every resident article, from Get Resident Articles. The model answers from this text.</description>
+        <developerName>article_results</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Article Results</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>authenticationKey from Send Verification Code. Used once as the SmartRent idempotency key.</description>
+        <developerName>authentication_key</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Authentication Key</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True while resident support is within business hours and the resident is upset or explicitly asked for a person.</description>
+        <developerName>can_escalate</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Can Escalate</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True when this turn may file a case: a later confirmation, or an upset message.</description>
+        <developerName>can_file</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Can File</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True only on a later turn, after the resident has already been answered from the articles. The model still files a case only when asked or confirmed, unless this message is upset.</description>
+        <developerName>case_allowed</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Case Allowed</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True after a verification code was sent for this door request.</description>
+        <developerName>code_sent</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Code Sent</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Messaging session contact. Passed to the door and key fob flows when present.</description>
+        <developerName>contact_id</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Contact Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Exact result_message from Remote Unlock Door.</description>
+        <developerName>door_result_message</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Door Result Message</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Case number returned by Create Maintenance Case. Empty until that flow files a case.</description>
+        <developerName>filed_case_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Filed Case Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Priority returned by Create Maintenance Case.</description>
+        <developerName>filed_case_priority</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Filed Case Priority</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True at the start of a turn when handoff_pending was already true. This turn connects a person and does not file another case.</description>
+        <developerName>handoff_due</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Handoff Due</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True after an upset case was filed during business hours. The next turn connects a person.</description>
+        <developerName>handoff_pending</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Handoff Pending</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True only when that account has at least one occupied apartment.</description>
+        <developerName>is_active_tenant</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Is Active Tenant</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True only when the session has an end-user account.</description>
+        <developerName>is_valid_user</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Is Valid User</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True only after Verify Code accepts the resident&apos;s code.</description>
+        <developerName>is_verified</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Is Verified</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>FaucetLeak, NoPower, or Other. Set by Classify Issue Type before the case is filed.</description>
+        <developerName>issue_type</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Issue Type</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True on the turn the resident declines the key fob order.</description>
+        <developerName>keyfob_declined</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Keyfob Declined</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True after the $75 fee was stated. A later confirm places the order.</description>
+        <developerName>keyfob_offered</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Keyfob Offered</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Exact result_message from Order Key Fob.</description>
+        <developerName>order_result_message</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Order Result Message</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>PersonEmail on the session account. The door code is sent here. The model cannot replace it.</description>
+        <developerName>person_email</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Person Email</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True on the turn the resident accepts the fee. The script places the order.</description>
+        <developerName>place_keyfob_now</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Place Keyfob Now</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True at the start of a turn when a code was already sent and not yet accepted. Stops the same turn from sending and checking.</description>
+        <developerName>ready_to_check_code</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Ready To Check Code</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True when Create Maintenance Case finds more than three closed cases of this issue type in the past year.</description>
+        <developerName>recommend_replacement</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Recommend Replacement</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>door, keyfob, or maintenance, from Classify Resident Request.</description>
+        <developerName>request_kind</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Request Kind</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Name on the person account.</description>
+        <developerName>resident_name</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Resident Name</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Apartment name that belongs to selected_this_turn.</description>
+        <developerName>selected_name_this_turn</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Selected Name This Turn</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Apartment Id the verify flow resolved this turn. Empty when the resident still has to choose.</description>
+        <developerName>selected_this_turn</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Selected This Turn</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>upset or calm, from Classify Resident Sentiment. Empty until an apartment is bound.</description>
+        <developerName>sentiment_label</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Sentiment Label</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>How many occupied apartments Verify_Active_Tenant returned.</description>
+        <developerName>tenant_result</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Tenant Result</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Contact or User id returned by Send Verification Code. Not an Account Id.</description>
+        <developerName>verification_customer_id</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Verification Customer Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>customerType returned by Send Verification Code.</description>
+        <developerName>verification_customer_type</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Verification Customer Type</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True when the Pacific Haven Resident Support business hours record is open now.</description>
+        <developerName>within_hours</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Within Hours</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <copilotPrimaryLanguage>en_US</copilotPrimaryLanguage>
+    <genAiPlannerName>Tenant_Concierge_v27</genAiPlannerName>
+    <isScriptCompatibleAgent>true</isScriptCompatibleAgent>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <planner>
+        <fullName>Tenant_Concierge_v27</fullName>
+        <agentGraphRef>20ZVW000001ztwf</agentGraphRef>
+        <description>Signed-in resident assistant that answers from resident articles first, files a case when the resident asks, hands an angry repeat report to a person only during resident-support business hours, unlocks the resident&apos;s own door after a verification code, and orders a key fob after they accept the $75 fee.</description>
+        <localTopicLinks>
+            <genAiPluginName>concierge</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>off_topic</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>router</genAiPluginName>
+        </localTopicLinks>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>A faucet, leak, power problem, repair, or a request to file a maintenance case for one occupied apartment.</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties tenant concierge for a signed-in resident.
+Help with a leaking faucet, a power problem, or another maintenance request.
+Never invent a case number, an apartment, a fee, a phone number, or a repair time.
+When a case number is given, that number is the whole case number. Do not write a different one.
+Answer from the resident articles before a case exists.
+File a case only after that answer, and only when the resident explicitly asks
+to file one or confirms that you should.
+An angry or repeated report is the exception: after the article answer, file on that turn.
+Hand off to a person only when resident support is within its business hours.
+Hand off when the resident is upset about a repair, or when they explicitly ask for a person.
+Outside those hours, leave the case and do not say that someone is joining.
+Never say a code was received, a door is unlocking, or a door was unlocked unless those exact words are the whole reply.
+Never say a key fob order was placed or is being processed. When an order result is given, the whole reply is that result.
+Do not discuss a payment, and do not change the key fob price.
+Never offer, promise, or ask about providing a hotline phone number. For an emergency, say only &quot;call the 24/7 hotline&quot;. Do not write &quot;do you need the hotline number&quot; or any similar question.
+Never say a maintenance request was filed, created, or submitted unless create_maintenance_case ran on this same turn. When it did, quote the case number and priority from the action. If it did not run, say the request has not been filed yet and ask if the resident wants one filed.</description>
+                <developerName>instruction0_179VW000001M8Hj</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001M8Hj</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localActionLinks>
+                <functionName>order_keyfob</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>verify_resident_code</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>check_resident_support_hours</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>create_maintenance_case</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>send_verification_code</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>classify_resident_sentiment</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>classify_issue_type</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>verify_active_tenant</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>remote_unlock_door</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>get_resident_articles</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>classify_resident_request</functionName>
+            </localActionLinks>
+            <localActions>
+                <description>Reads the Pacific Haven Resident Support business hours record and returns whether it is open now.</description>
+                <invocationTarget>Check_Resident_Support_Hours</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>check_resident_support_hours</localDeveloperName>
+                <masterLabel>Check Resident Support Hours</masterLabel>
+                <progressIndicatorMessage>Checking resident support hours...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Classifies a maintenance message as FaucetLeak, NoPower, or Other before a case is filed.</description>
+                <invocationTarget>Classify_Issue_Type</invocationTarget>
+                <invocationTargetType>generatePromptResponse</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+                <localDeveloperName>classify_issue_type</localDeveloperName>
+                <masterLabel>Classify Issue Type</masterLabel>
+            </localActions>
+            <localActions>
+                <description>Classifies the latest message as door, keyfob, or maintenance.</description>
+                <invocationTarget>Classify_Resident_Request</invocationTarget>
+                <invocationTargetType>generatePromptResponse</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+                <localDeveloperName>classify_resident_request</localDeveloperName>
+                <masterLabel>Classify Resident Request</masterLabel>
+            </localActions>
+            <localActions>
+                <description>Classifies the resident&apos;s latest message as upset or calm.</description>
+                <invocationTarget>Classify_Resident_Sentiment</invocationTarget>
+                <invocationTargetType>generatePromptResponse</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>classify_resident_sentiment</localDeveloperName>
+                <masterLabel>Classify Resident Sentiment</masterLabel>
+                <progressIndicatorMessage>Reading the tone of this message...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Creates one maintenance case for an apartment Id this script already selected.</description>
+                <invocationTarget>Create_Maintenance_Case</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>create_maintenance_case</localDeveloperName>
+                <masterLabel>Create Maintenance Case</masterLabel>
+                <progressIndicatorMessage>Filing the maintenance case...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Returns the title, question, and answer of each published resident article.</description>
+                <invocationTarget>Get_Resident_Articles</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>get_resident_articles</localDeveloperName>
+                <masterLabel>Get Resident Articles</masterLabel>
+                <progressIndicatorMessage>Checking the resident articles...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Places one key fob order at 75 USD. The Flow creates a Key Fob Order Case only after SmartRent accepts the order.</description>
+                <invocationTarget>Order_Keyfob</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>order_keyfob</localDeveloperName>
+                <masterLabel>Order Key Fob</masterLabel>
+                <progressIndicatorMessage>Placing the key fob order...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Unlocks the bound apartment after the code is verified. The Flow creates a Door Access Case only when the unlock succeeds.</description>
+                <invocationTarget>Remote_Unlock_Door</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>remote_unlock_door</localDeveloperName>
+                <masterLabel>Remote Unlock Door</masterLabel>
+                <progressIndicatorMessage>Asking the lock to open...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Emails a verification code to the email already stored on the account, from the org-wide address.</description>
+                <invocationTarget>Send_Door_Code</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>send_verification_code</localDeveloperName>
+                <masterLabel>Send Verification Code</masterLabel>
+                <progressIndicatorMessage>Sending a verification code...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Reads the messaging session and returns the occupied apartments for that account.</description>
+                <invocationTarget>Verify_Active_Tenant</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>verify_active_tenant</localDeveloperName>
+                <masterLabel>Verify Active Tenant</masterLabel>
+                <progressIndicatorMessage>Checking the apartment on this account...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Checks the code the resident typed. Does not accept an id or email from the model.</description>
+                <invocationTarget>Check_Door_Code</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>verify_resident_code</localDeveloperName>
+                <masterLabel>Verify Code</masterLabel>
+                <progressIndicatorMessage>Checking the code...</progressIndicatorMessage>
+            </localActions>
+            <localDeveloperName>concierge</localDeveloperName>
+            <masterLabel>Concierge</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Greetings, thanks, and small talk that do not describe a maintenance problem.</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties tenant concierge for a signed-in resident.
+Help with a leaking faucet, a power problem, or another maintenance request.
+Never invent a case number, an apartment, a fee, a phone number, or a repair time.
+When a case number is given, that number is the whole case number. Do not write a different one.
+Answer from the resident articles before a case exists.
+File a case only after that answer, and only when the resident explicitly asks
+to file one or confirms that you should.
+An angry or repeated report is the exception: after the article answer, file on that turn.
+Hand off to a person only when resident support is within its business hours.
+Hand off when the resident is upset about a repair, or when they explicitly ask for a person.
+Outside those hours, leave the case and do not say that someone is joining.
+Never say a code was received, a door is unlocking, or a door was unlocked unless those exact words are the whole reply.
+Never say a key fob order was placed or is being processed. When an order result is given, the whole reply is that result.
+Do not discuss a payment, and do not change the key fob price.
+Never offer, promise, or ask about providing a hotline phone number. For an emergency, say only &quot;call the 24/7 hotline&quot;. Do not write &quot;do you need the hotline number&quot; or any similar question.
+Never say a maintenance request was filed, created, or submitted unless create_maintenance_case ran on this same turn. When it did, quote the case number and priority from the action. If it did not run, say the request has not been filed yet and ask if the resident wants one filed.</description>
+                <developerName>instruction0_179VW000001M8Hh</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001M8Hh</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>off_topic</localDeveloperName>
+            <masterLabel>Off Topic</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Send a greeting or small talk to Off Topic. Send a maintenance problem, a door, a key fob, a fee reply, or a verification code to Concierge.</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties tenant concierge for a signed-in resident.
+Help with a leaking faucet, a power problem, or another maintenance request.
+Never invent a case number, an apartment, a fee, a phone number, or a repair time.
+When a case number is given, that number is the whole case number. Do not write a different one.
+Answer from the resident articles before a case exists.
+File a case only after that answer, and only when the resident explicitly asks
+to file one or confirms that you should.
+An angry or repeated report is the exception: after the article answer, file on that turn.
+Hand off to a person only when resident support is within its business hours.
+Hand off when the resident is upset about a repair, or when they explicitly ask for a person.
+Outside those hours, leave the case and do not say that someone is joining.
+Never say a code was received, a door is unlocking, or a door was unlocked unless those exact words are the whole reply.
+Never say a key fob order was placed or is being processed. When an order result is given, the whole reply is that result.
+Do not discuss a payment, and do not change the key fob price.
+Never offer, promise, or ask about providing a hotline phone number. For an emergency, say only &quot;call the 24/7 hotline&quot;. Do not write &quot;do you need the hotline number&quot; or any similar question.
+Never say a maintenance request was filed, created, or submitted unless create_maintenance_case ran on this same turn. When it did, quote the case number and priority from the action. If it did not run, say the request has not been filed yet and ask if the resident wants one filed.</description>
+                <developerName>instruction0_179VW000001M8Hi</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001M8Hi</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localActionLinks>
+                <functionName>classify_resident_request</functionName>
+            </localActionLinks>
+            <localActions>
+                <description>Classifies the latest message as door, keyfob, maintenance, human, confirm, decline, or other.</description>
+                <invocationTarget>Classify_Resident_Request</invocationTarget>
+                <invocationTargetType>generatePromptResponse</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+                <localDeveloperName>classify_resident_request</localDeveloperName>
+                <masterLabel>Classify Resident Request</masterLabel>
+            </localActions>
+            <localDeveloperName>router</localDeveloperName>
+            <masterLabel>Router</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <masterLabel>Tenant Concierge</masterLabel>
+        <plannerSurfaces>
+            <adaptiveResponseAllowed>false</adaptiveResponseAllowed>
+            <callRecordingAllowed>false</callRecordingAllowed>
+            <outboundRouteConfigs>
+                <escalationMessage>I&apos;m asking a resident specialist to join this chat. Nobody has joined yet.</escalationMessage>
+                <outboundRouteName>Route_Resident_Handoff</outboundRouteName>
+                <outboundRouteType>OmniChannelFlow</outboundRouteType>
+            </outboundRouteConfigs>
+            <surface>SurfaceAction__Messaging</surface>
+            <surfaceType>Messaging</surfaceType>
+        </plannerSurfaces>
+        <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+    </planner>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <status>Inactive</status>
+    <stopRecPrompts>false</stopRecPrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+    <version>27</version>
+    <welcomeMessage>Hi, I can help with a maintenance request for your Pacific Haven apartment.</welcomeMessage>
+</AiAgentDefinitionVersion>

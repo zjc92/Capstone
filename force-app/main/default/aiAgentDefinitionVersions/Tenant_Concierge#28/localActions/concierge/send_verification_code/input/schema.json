@@ -1,0 +1,21 @@
+{
+  "required" : [ "customer_to_verify" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contact_id" : {
+      "title" : "Contact Id",
+      "description" : "Contact id from the session. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customer_to_verify" : {
+      "title" : "Customer To Verify",
+      "description" : "PersonEmail from the session account. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

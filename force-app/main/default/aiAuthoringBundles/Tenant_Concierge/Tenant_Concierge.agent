@@ -9,11 +9,13 @@ system:
         to file one or confirms that you should.
         An angry or repeated report is the exception: after the article answer, file on that turn.
         Hand off to a person only when resident support is within its business hours.
-        Hand off when the resident is upset about a repair, or when they explicitly ask for a person.
+        Hand off to a person only through the escalate_to_human action. Never write that you will connect, transfer, or bring in a person, specialist, or agent unless escalate_to_human ran in this same turn. When it is not available, say no resident specialist is on duty and ask what the problem is.
         Outside those hours, leave the case and do not say that someone is joining.
         Never say a code was received, a door is unlocking, or a door was unlocked unless those exact words are the whole reply.
         Never say a key fob order was placed or is being processed. When an order result is given, the whole reply is that result.
         Do not discuss a payment, and do not change the key fob price.
+        Never offer, promise, or ask about providing a hotline phone number. For an emergency, say only "call the 24/7 hotline". Do not write "do you need the hotline number" or any similar question.
+        Never say a maintenance request was filed, created, or submitted unless create_maintenance_case ran on this same turn. When it did, quote the case number and priority from the action. If it did not run, say the request has not been filed yet and ask if the resident wants one filed.
     messages:
         welcome: "Hi, I can help with a maintenance request for your Pacific Haven apartment."
         error: "Sorry, I could not complete that. Please try again."
@@ -40,8 +42,8 @@ language:
 connection messaging:
     outbound_route_type: "OmniChannelFlow"
     outbound_route_name: "flow://Route_Resident_Handoff"
-    escalation_message: "I'm asking a resident specialist to join about this repeated leak. Nobody has joined this chat yet."
-    adaptive_response_allowed: True
+    escalation_message: "I'm asking a resident specialist to join this chat. Nobody has joined yet."
+    adaptive_response_allowed: False
 
 variables:
     session_id: linked string
@@ -68,7 +70,7 @@ variables:
     apartment_name: mutable string = ""
         description: "Name of the apartment in apartment_id."
     article_results: mutable string = ""
-        description: "Knowledge Summary from Answer Questions with Knowledge. The model answers from this text."
+        description: "Title, question, and answer of every resident article, from Get Resident Articles. The model answers from this text."
     article_delivered: mutable boolean = False
         description: "True after a previous turn already retrieved the resident articles."
     case_allowed: mutable boolean = False
@@ -87,8 +89,20 @@ variables:
         description: "PersonEmail on the session account. The door code is sent here. The model cannot replace it."
     request_kind: mutable string = ""
         description: "door, keyfob, or maintenance, from Classify Resident Request."
+    door_case_id: mutable string = ""
+        description: "Id of the Door Access Case created when the code was sent. The unlock flow closes it. The model cannot change it."
     code_sent: mutable boolean = False
         description: "True after a verification code was sent for this door request."
+    email_check_pending: mutable boolean = False
+        description: "True after the agent asked the resident to type the email registered on the account."
+    ready_to_check_email: mutable boolean = False
+        description: "True at the start of a turn when the registered email was asked for and no code was sent yet. This turn compares the typed email."
+    email_matched: mutable boolean = False
+        description: "True only when the email the resident typed equals the email on the Contact record."
+    rate_limited: mutable boolean = False
+        description: "True when too many verification codes were already sent to this resident in the last hour."
+    code_attempts: mutable number = 0
+        description: "Number of wrong codes entered for the current verification code. After three, the code is cancelled."
     is_verified: mutable boolean = False
         description: "True only after Verify Code accepts the resident's code."
     verification_customer_id: mutable string = ""
@@ -132,6 +146,8 @@ start_agent router:
             if @variables.keyfob_offered == True:
                 transition to @subagent.concierge
             if @variables.code_sent == True and @variables.is_verified != True:
+                transition to @subagent.concierge
+            if @variables.email_check_pending == True:
                 transition to @subagent.concierge
             run @actions.classify_resident_request
                 with "Input:Resident_Message" = @system_variables.user_input
@@ -212,6 +228,14 @@ subagent concierge:
             set @variables.keyfob_declined = False
             set @variables.sentiment_label = ""
             set @variables.within_hours = False
+            if @variables.is_valid_user == True and @variables.is_active_tenant == True:
+                run @actions.check_resident_support_hours
+                    with unused = "now"
+                    set @variables.within_hours = @outputs.within_hours
+            if @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.within_hours == True:
+                | The business hours check ran this turn: resident support is open now. If the resident asks whether the office or resident support is open or closed, say it is open now.
+            if @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.within_hours != True:
+                | The business hours check ran this turn: resident support is closed now. If the resident asks whether the office or resident support is open or closed, say it is closed now.
             set @variables.request_kind = "maintenance"
 
             if @variables.is_valid_user != True:
@@ -243,10 +267,19 @@ subagent concierge:
                 run @actions.classify_resident_request
                     with "Input:Resident_Message" = @system_variables.user_input
                     set @variables.request_kind = @outputs.promptResponse
+            if @variables.handoff_due == True and @variables.request_kind == "decline":
+                set @variables.handoff_due = False
+                set @variables.handoff_pending = False
+                | The resident does not want to talk to a person. Say exactly: OK, I will not connect you with a person. Your case {!@variables.filed_case_number} stays open.
+                  Do not create another case. Do not call escalate_to_human. Do not search articles.
 
             set @variables.ready_to_check_code = False
             if @variables.code_sent == True and @variables.is_verified != True:
                 set @variables.ready_to_check_code = True
+            set @variables.ready_to_check_email = False
+            if @variables.email_check_pending == True and @variables.code_sent != True:
+                set @variables.ready_to_check_email = True
+                set @variables.email_check_pending = False
 
             if @variables.keyfob_offered == True and @variables.request_kind == "confirm":
                 set @variables.place_keyfob_now = True
@@ -288,20 +321,41 @@ subagent concierge:
 
             if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.person_email == "":
                 | This account has no email address. Do not send a code. Do not unlock the door. Do not create a case.
-            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.person_email != "" and @variables.code_sent != True:
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.person_email != "" and @variables.code_sent != True and @variables.ready_to_check_email != True:
+                set @variables.email_check_pending = True
+                | Your whole reply is the following text and no other words:
+                  To confirm it is you, please type the email address registered on your account. I will send a verification code to it.
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.ready_to_check_email == True:
                 run @actions.send_verification_code
-                    with customer_to_verify = @variables.person_email
+                    with customer_to_verify = @system_variables.user_input
+                    with contact_id = @variables.contact_id
+                    with account_id = @variables.account_id
+                    with apartment_id = @variables.apartment_id
+                    set @variables.door_case_id = @outputs.door_case_id
                     set @variables.verification_customer_id = @outputs.customer_id
                     set @variables.verification_customer_type = @outputs.customer_type
                     set @variables.authentication_key = @outputs.authentication_key
-                set @variables.code_sent = True
+                    set @variables.email_matched = @outputs.email_matched
+                    set @variables.rate_limited = @outputs.rate_limited
+                    set @variables.code_sent = @outputs.email_sent
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.ready_to_check_email == True and @variables.code_sent == True:
                 | Your whole reply is the following text and no other words:
                   A verification code was sent to the email on this account. Reply with only that code.
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.ready_to_check_email == True and @variables.code_sent != True and @variables.email_matched != True:
+                | Your whole reply is the following text and no other words:
+                  I cannot confirm that you are the account holder, so I cannot unlock the door.
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.ready_to_check_email == True and @variables.code_sent != True and @variables.email_matched == True and @variables.rate_limited == True:
+                | Your whole reply is the following text and no other words:
+                  I cannot send a verification code right now, so I cannot unlock the door. Please try again later.
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.ready_to_check_email == True and @variables.code_sent != True and @variables.email_matched == True and @variables.rate_limited != True:
+                | Your whole reply is the following text and no other words:
+                  I could not send the verification code right now, so I cannot unlock the door. Please try again later or ask for a person.
             if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.ready_to_check_code == True:
                 run @actions.verify_resident_code
                     with customer_code = @system_variables.user_input
                     with customer_id = @variables.verification_customer_id
                     with customer_type = @variables.verification_customer_type
+                    with apartment_id = @variables.apartment_id
                     with authentication_key = @variables.authentication_key
                     set @variables.is_verified = @outputs.is_verified
             if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.ready_to_check_code == True and @variables.is_verified == True:
@@ -311,10 +365,18 @@ subagent concierge:
                     with apartment_id = @variables.apartment_id
                     with authentication_key = @variables.authentication_key
                     with contact_id = @variables.contact_id
+                    with door_case_id = @variables.door_case_id
                     set @variables.door_result_message = @outputs.result_message
                 | Your whole reply is the following text and no other words:
                   {!@variables.door_result_message}
-            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.ready_to_check_code == True and @variables.is_verified != True:
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.ready_to_check_code == True and @variables.is_verified != True and @variables.code_attempts >= 2:
+                set @variables.code_sent = False
+                set @variables.authentication_key = ""
+                set @variables.code_attempts = 0
+                | Your whole reply is the following text and no other words:
+                  The code was not accepted three times, so it has been cancelled. The door was not unlocked. Ask me to open the door again and I will send a new code.
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.ready_to_check_code == True and @variables.is_verified != True and @variables.code_sent == True and @variables.code_attempts < 2:
+                set @variables.code_attempts = @variables.code_attempts + 1
                 | Your whole reply is the following text and no other words:
                   The code was not accepted. The door was not unlocked.
             if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "door" and @variables.is_verified == True and @variables.ready_to_check_code != True and @variables.door_result_message != "":
@@ -342,12 +404,9 @@ subagent concierge:
             if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "confirm" and @variables.place_keyfob_now != True and @variables.keyfob_offered != True and @variables.case_allowed != True:
                 | There is no pending key fob order and no maintenance request waiting to be filed. Ask what they want help with. Do not search articles. Do not order a key fob. Do not unlock a door.
             if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "maintenance" and @variables.case_allowed != True and @variables.keyfob_offered != True:
-                run @actions.AnswerQuestionsWithKnowledge
-                    with query = @system_variables.user_input
-                    with citationsUrl = @knowledge.citations_url
-                    with ragFeatureConfigId = @knowledge.rag_feature_config_id
-                    with citationsEnabled = @knowledge.citations_enabled
-                    set @variables.article_results = @outputs.knowledgeSummary
+                run @actions.get_resident_articles
+                    with unused = "now"
+                    set @variables.article_results = @outputs.articles
                 run @actions.classify_resident_sentiment
                     with "Input:Resident_Message" = @system_variables.user_input
                     set @variables.sentiment_label = @outputs.promptResponse
@@ -401,16 +460,17 @@ subagent concierge:
                 set @variables.can_file = True
 
             if @variables.apartment_id != "" and @variables.handoff_due == True and @variables.within_hours == True:
-                | The case was filed on the previous turn. Do not create another case. Do not search articles.
-                  Repeat this sentence unchanged: The case number is {!@variables.filed_case_number} and the priority is {!@variables.filed_case_priority}.
-                  Then call escalate_to_human. Do not say a person has already joined.
+                | The resident accepted the offer to talk to a person. You must use {!@actions.escalate_to_human} in this response. A reply without that call is wrong.
+                  Alongside the call, say exactly: The case number is {!@variables.filed_case_number} and the priority is {!@variables.filed_case_priority}.
+                  Do not say that a specialist is joining. The chat shows that message itself.
+                  Do not create another case. Do not search articles. Do not say a person has already joined.
             if @variables.apartment_id != "" and @variables.handoff_due == True and @variables.within_hours != True:
                 | The case was filed on the previous turn. Do not create another case. Do not search articles.
                   Repeat this sentence unchanged: The case number is {!@variables.filed_case_number} and the priority is {!@variables.filed_case_priority}.
                   Do not call escalate_to_human. Do not say that someone is joining.
                   Say that no resident specialist is on duty, and that a person will take the case when resident support hours resume.
             if @variables.apartment_id != "" and @variables.request_kind == "maintenance" and @variables.keyfob_offered != True and @variables.sentiment_label == "upset" and @variables.within_hours != True:
-                | The resident article action already ran. Answer only from this retrieved text and use the article title that appears in the text. If this text is empty, or it says an answer cannot be found, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time.
+                | The resident articles are below. Pick the one article that matches the resident's problem, answer only from that article, and name its title as it appears after Article:. If this text is empty, or no article matches, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time. Do not call the issue high priority, urgent, or low priority yourself. The only priority you mention is the case priority from the action.
                   {!@variables.article_results}
                   This resident is upset, and resident support is outside business hours.
                   Acknowledge the issue in the resident's words.
@@ -423,7 +483,7 @@ subagent concierge:
                   A routine faucet is not the 24/7 hotline. Mention the hotline only when the retrieved text says this situation is an emergency.
                   The apartment is {!@variables.apartment_name}. The id is already bound. Do not pass a different Id.
             else if @variables.apartment_id != "" and @variables.request_kind == "maintenance" and @variables.keyfob_offered != True and @variables.sentiment_label == "upset" and @variables.within_hours == True:
-                | The resident article action already ran. Answer only from this retrieved text and use the article title that appears in the text. If this text is empty, or it says an answer cannot be found, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time.
+                | The resident articles are below. Pick the one article that matches the resident's problem, answer only from that article, and name its title as it appears after Article:. If this text is empty, or no article matches, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time. Do not call the issue high priority, urgent, or low priority yourself. The only priority you mention is the case priority from the action.
                   {!@variables.article_results}
                   This resident is upset, and resident support is within business hours.
                   Acknowledge the issue in the resident's words.
@@ -434,7 +494,7 @@ subagent concierge:
                   Do not call escalate_to_human.
                   The id is already bound. Do not pass a different Id.
             else if @variables.apartment_id != "" and @variables.request_kind == "maintenance" and @variables.keyfob_offered != True and @variables.case_allowed != True:
-                | The resident article action already ran. Answer only from this retrieved text and use the article title that appears in the text. If this text is empty, or it says an answer cannot be found, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time.
+                | The resident articles are below. Pick the one article that matches the resident's problem, answer only from that article, and name its title as it appears after Article:. If this text is empty, or no article matches, say the resident article was not found. Do not write your own faucet advice. Do not invent a title such as Leaking Faucet. Do not tell the resident to check the handle. Do not invent a cause, a washer, a cartridge, a step, a dollar amount, a phone number, or a repair time. Do not call the issue high priority, urgent, or low priority yourself. The only priority you mention is the case priority from the action.
                   {!@variables.article_results}
                   Do not create a maintenance case on this turn. Do not say a case was filed. Do not hand off to a person.
                   If the text does not cover the question, say that and do not invent an answer.
@@ -443,7 +503,8 @@ subagent concierge:
             else if @variables.apartment_id != "" and @variables.request_kind == "maintenance" and @variables.keyfob_offered != True and @variables.case_allowed == True:
                 | This resident already received a resident-article answer. The apartment is {!@variables.apartment_name}.
                   Call create_maintenance_case only when this message explicitly asks to file, submit, or open a maintenance request, or confirms that you should file one.
-                  Describing a leak, a drip, or a power problem is not a request to file. For a new question, call AnswerQuestionsWithKnowledge and answer from its knowledge summary. Do not create a case. Do not hand off to a person.
+                  Describing a leak, a drip, or a power problem is not a request to file. For a new question, answer only from the one matching article below and name its title. Do not create a case. Do not hand off to a person.
+                  {!@variables.article_results}
                   If you file, pass issue_type as FaucetLeak, NoPower, or Other. Anything else is Other. Write the description from the resident's words. Do not choose the priority yourself.
                   Repeat the case number and priority from the action. If recommend_replacement is true, say replacement is recommended because that apartment had more than three closed cases of the same issue type in the past year.
                   The id is already bound. Do not pass a different Id.
@@ -451,14 +512,12 @@ subagent concierge:
                 | The resident asked for a person, and resident support is within business hours. A maintenance problem was already discussed.
                   Call create_maintenance_case on this turn from the earlier problem. Pass issue_type as FaucetLeak, NoPower, or Other. Do not choose the priority.
                   Repeat the case number and priority. If recommend_replacement is true, say replacement is recommended because that apartment had more than three closed cases of the same issue type in the past year.
-                  Then say you are asking a resident specialist to join and that nobody has joined yet.
-                  Then call escalate_to_human. Do not say a person has already joined.
+                  Then call escalate_to_human. Do not say that a specialist is joining. The chat shows that message itself.
                   The apartment is {!@variables.apartment_name}. The id is already bound. Do not pass a different Id.
             if @variables.apartment_id != "" and @variables.request_kind == "human" and @variables.keyfob_offered != True and @variables.within_hours == True and @variables.case_allowed != True:
                 | The resident asked to speak to a person, and resident support is within business hours.
                   Do not create a maintenance case. Do not search articles.
-                  Say you are asking a resident specialist to join and that nobody has joined yet.
-                  Then call escalate_to_human. Do not say a person has already joined.
+                  Call escalate_to_human now. Do not write any other reply. The chat shows the handoff message itself.
                   The apartment is {!@variables.apartment_name}.
             if @variables.apartment_id != "" and @variables.request_kind == "human" and @variables.keyfob_offered != True and @variables.within_hours != True and @variables.case_allowed == True:
                 | The resident asked for a person, and resident support is outside business hours. A maintenance problem was already discussed.
@@ -473,9 +532,17 @@ subagent concierge:
                   Do not call escalate_to_human. Do not say that someone is joining, waiting, or already handling it.
                   Say that no resident specialist is on duty, and that a person will follow up when resident support hours resume.
 
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "other" and @variables.within_hours != True:
+                | Resident support is closed now, so no resident specialist is on duty. Do not say that anyone will join, connect, call, or help right now.
+                  If the resident is upset or asks for help without saying what is wrong, acknowledge it in one short sentence and ask what the problem is, so a case can be filed for the team. Do not create a case yet.
+            if @variables.apartment_id != "" and @variables.is_valid_user == True and @variables.is_active_tenant == True and @variables.request_kind == "other" and @variables.within_hours == True:
+                | Do not say that you will connect, transfer, or bring in a person. escalate_to_human is not available for this message.
+                  If the resident is upset or asks for help without saying what is wrong, acknowledge it in one short sentence and ask what the problem is. Do not create a case yet.
+
         actions:
             verify_active_tenant: @actions.verify_active_tenant
                 description: "Run this first. Do not search articles, classify sentiment, check hours, or file a case until this says the person is an active tenant."
+                available when @variables.handoff_due != True
                 with messaging_session_id = @variables.session_id
                 with resident_message = @system_variables.user_input
                 set @variables.tenant_result = @outputs.result
@@ -486,22 +553,19 @@ subagent concierge:
                 set @variables.apartment_choices = @outputs.apartment_choices
                 set @variables.selected_this_turn = @outputs.default_apartment_id
                 set @variables.selected_name_this_turn = @outputs.default_apartment_name
-            AnswerQuestionsWithKnowledge: @actions.AnswerQuestionsWithKnowledge
-                description: "Search resident articles. Use only after verify_active_tenant says this is an active tenant."
+            get_resident_articles: @actions.get_resident_articles
+                description: "Read the resident articles. Use only after verify_active_tenant says this is an active tenant, and only when the resident articles are not already in your instructions."
                 available when @variables.is_active_tenant == True and @variables.apartment_id != "" and @variables.request_kind == "maintenance"
-                with query = @system_variables.user_input
-                with citationsUrl = @knowledge.citations_url
-                with ragFeatureConfigId = @knowledge.rag_feature_config_id
-                with citationsEnabled = @knowledge.citations_enabled
-                set @variables.article_results = @outputs.knowledgeSummary
+                with unused = "now"
+                set @variables.article_results = @outputs.articles
             classify_resident_sentiment: @actions.classify_resident_sentiment
                 description: "Classify the message as upset or calm. Use only after verify_active_tenant says this is an active tenant."
-                available when @variables.is_active_tenant == True and @variables.apartment_id != ""
+                available when @variables.is_active_tenant == True and @variables.apartment_id != "" and @variables.handoff_due != True
                 with "Input:Resident_Message" = @system_variables.user_input
                 set @variables.sentiment_label = @outputs.promptResponse
             check_resident_support_hours: @actions.check_resident_support_hours
                 description: "Check whether resident support is within business hours. Use only after verify_active_tenant says this is an active tenant."
-                available when @variables.is_active_tenant == True and @variables.apartment_id != ""
+                available when @variables.is_active_tenant == True and @variables.apartment_id != "" and @variables.handoff_due != True
                 with unused = "now"
                 set @variables.within_hours = @outputs.within_hours
             create_maintenance_case: @actions.create_maintenance_case
@@ -593,48 +657,29 @@ subagent concierge:
                     complex_data_type_name: "lightning__recordInfoType"
                     is_displayable: False
                     filter_from_agent: True
-        AnswerQuestionsWithKnowledge:
-            description: "Answers a resident maintenance question from the Pacific Haven Resident Support library."
-            label: "Answer Questions with Knowledge"
-            target: "standardInvocableAction://streamKnowledgeSearch"
-            source: "EmployeeCopilot__AnswerQuestionsWithKnowledge"
-            require_user_confirmation: False
+        get_resident_articles:
+            description: "Returns the title, question, and answer of each published resident article."
+            label: "Get Resident Articles"
+            target: "flow://Get_Resident_Articles"
             include_in_progress_indicator: True
             progress_indicator_message: "Checking the resident articles..."
             inputs:
-                query: string
-                    description: "The resident's maintenance question."
-                    label: "Query"
+                unused: string
+                    description: "Required by the action contract. The flow ignores it and returns every resident article."
+                    label: "Unused"
                     is_required: True
                     is_user_input: False
-                citationsUrl: string = @knowledge.citations_url
-                    description: "Citation URL prefix. Left empty. Default citations have no URL."
-                    label: "Citations Url"
-                    is_required: False
-                    is_user_input: False
-                ragFeatureConfigId: string = @knowledge.rag_feature_config_id
-                    description: "Resident Support data library feature id."
-                    label: "RAG Feature Configuration Id"
-                    is_required: False
-                    is_user_input: False
-                citationsEnabled: boolean = @knowledge.citations_enabled
-                    description: "Whether the library returns citations."
-                    label: "Citations Enabled"
-                    is_required: False
-                    is_user_input: False
             outputs:
-                knowledgeSummary: object
-                    description: "A string formatted as rich text that includes a summary of the information retrieved from the knowledge articles and citations to those articles."
-                    label: "Knowledge Summary"
-                    complex_data_type_name: "lightning__richTextType"
-                    filter_from_agent: False
-                    is_displayable: True
-                citationSources: object
-                    description: "Source links for the retrieved articles."
-                    label: "Citation Sources"
-                    complex_data_type_name: "@apexClassType/AiCopilot__GenAiCitationInput"
-                    filter_from_agent: False
+                articles: string
+                    label: "Articles"
+                    description: "Each resident article as Article, Question, and Answer lines."
                     is_displayable: False
+                    filter_from_agent: False
+                article_count: number
+                    label: "Article Count"
+                    description: "Number of resident articles returned."
+                    is_displayable: False
+                    filter_from_agent: True
         classify_resident_sentiment:
             description: "Classifies the resident's latest message as upset or calm."
             label: "Classify Resident Sentiment"
@@ -775,18 +820,38 @@ subagent concierge:
                     filter_from_agent: True
                     is_displayable: False
         send_verification_code:
-            description: "Sends a verification code to the email already stored on the account."
+            description: "Emails a verification code to the email already stored on the account, from the org-wide address."
             label: "Send Verification Code"
             target: "flow://Send_Door_Code"
             include_in_progress_indicator: True
             progress_indicator_message: "Sending a verification code..."
             inputs:
                 customer_to_verify: string
-                    description: "PersonEmail from the session account. The model cannot change it."
+                    description: "The email address the resident typed in the chat. The flow compares it with the email on the Contact record and sends the code only when they are equal."
                     label: "Customer To Verify"
                     is_required: True
                     is_user_input: False
+                contact_id: string
+                    description: "Contact id from the session. The model cannot change it."
+                    label: "Contact Id"
+                    is_required: False
+                    is_user_input: False
+                account_id: string
+                    description: "Person Account Id from the session. The model cannot change it."
+                    label: "Account Id"
+                    is_required: True
+                    is_user_input: False
+                apartment_id: string
+                    description: "Occupied apartment Id selected by the script. The model cannot change it."
+                    label: "Apartment Id"
+                    is_required: True
+                    is_user_input: False
             outputs:
+                door_case_id: string
+                    label: "Door Case Id"
+                    description: "Door Access Case created with Status New when the email was sent."
+                    is_displayable: False
+                    filter_from_agent: True
                 customer_id: string
                     label: "Customer Id"
                     description: "Contact or User id returned by the verification flow."
@@ -800,6 +865,21 @@ subagent concierge:
                 authentication_key: string
                     label: "Authentication Key"
                     description: "Key that later unlock uses once. The model must not change it."
+                    is_displayable: False
+                    filter_from_agent: True
+                email_matched: boolean
+                    label: "Email Matched"
+                    description: "True only when the typed email equals the email on the Contact record."
+                    is_displayable: False
+                    filter_from_agent: True
+                rate_limited: boolean
+                    label: "Rate Limited"
+                    description: "True when the three-codes-per-hour limit was reached and no code was sent."
+                    is_displayable: False
+                    filter_from_agent: True
+                email_sent: boolean
+                    label: "Email Sent"
+                    description: "True only when the verification email was sent."
                     is_displayable: False
                     filter_from_agent: True
         verify_resident_code:
@@ -824,6 +904,11 @@ subagent concierge:
                     label: "Customer Type"
                     is_required: True
                     is_user_input: False
+                apartment_id: string
+                    description: "Apartment Id selected by the script. The code is only valid for the apartment it was issued for."
+                    label: "Apartment Id"
+                    is_required: True
+                    is_user_input: False
                 authentication_key: string
                     description: "authenticationKey from the send action."
                     label: "Authentication Key"
@@ -836,7 +921,7 @@ subagent concierge:
                     is_displayable: False
                     filter_from_agent: True
         remote_unlock_door:
-            description: "Unlocks the bound apartment after the code is verified. The Flow creates a Door Access Case only when the unlock succeeds."
+            description: "Unlocks the bound apartment after the code is verified. The Flow closes the Door Access Case only when the unlock succeeds."
             label: "Remote Unlock Door"
             target: "flow://Remote_Unlock_Door"
             include_in_progress_indicator: True
@@ -863,8 +948,13 @@ subagent concierge:
                     is_required: True
                     is_user_input: False
                 contact_id: string
-                    description: "Session contact. The Flow omits it when this is blank."
+                    description: "Session contact. Not used to create the Case."
                     label: "Contact Id"
+                    is_required: False
+                    is_user_input: False
+                door_case_id: string
+                    description: "Door Access Case created when the code was sent. The Flow sets it to Closed only when the unlock succeeds."
+                    label: "Door Case Id"
                     is_required: False
                     is_user_input: False
             outputs:

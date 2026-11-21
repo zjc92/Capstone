@@ -1,0 +1,42 @@
+{
+  "required" : [ "is_verified", "customer_id", "apartment_id", "authentication_key" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "apartment_id" : {
+      "title" : "Apartment Id",
+      "description" : "Occupied apartment Id selected by the script.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "authentication_key" : {
+      "title" : "Authentication Key",
+      "description" : "authenticationKey from the code check. Used once.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "contact_id" : {
+      "title" : "Contact Id",
+      "description" : "Session contact. The Flow omits it when this is blank.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customer_id" : {
+      "title" : "Customer Id",
+      "description" : "Contact or User id from the code check. Not an Account Id.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "is_verified" : {
+      "title" : "Is Verified",
+      "description" : "Must be true. Bound from the code check.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -1,0 +1,62 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "apartment_name" : {
+      "title" : "Apartment Name",
+      "description" : "Name of the matched vacant apartment.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "building_name" : {
+      "title" : "Building Name",
+      "description" : "Building for the matched apartment.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "discount_allowed" : {
+      "title" : "Discount Allowed",
+      "description" : "Whether the requested discount is within the listed special.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "discount_months" : {
+      "title" : "Discount Months",
+      "description" : "How many months the listed special lasts.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "max_discount" : {
+      "title" : "Maximum Discount",
+      "description" : "Highest discount in dollars that can be offered. Zero when no special is on file.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "offer_message" : {
+      "title" : "Offer Message",
+      "description" : "The only discount statement that may be given to the guest.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "special_found" : {
+      "title" : "Special Found",
+      "description" : "Whether a move-in special is on file for the matched apartment this month.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

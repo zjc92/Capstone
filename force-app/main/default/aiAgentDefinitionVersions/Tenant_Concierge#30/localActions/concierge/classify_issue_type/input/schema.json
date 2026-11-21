@@ -1,0 +1,14 @@
+{
+  "required" : [ "Input:Resident_Message" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "Input:Resident_Message" : {
+      "title" : "Resident Message",
+      "description" : "The resident's latest message.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

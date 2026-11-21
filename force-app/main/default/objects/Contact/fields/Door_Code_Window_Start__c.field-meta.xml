@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Door_Code_Window_Start__c</fullName>
+    <label>Door Code Window Start</label>
+    <description>When the current one-hour door code sending window began. Set only by DoorCodeService.</description>
+    <externalId>false</externalId>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

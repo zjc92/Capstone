@@ -1,0 +1,77 @@
+{
+  "required" : [ "last_name", "consent" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "bedrooms" : {
+      "title" : "Bedrooms",
+      "description" : "Bedroom count the guest asked for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "city" : {
+      "title" : "City",
+      "description" : "City the guest was asking about.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "consent" : {
+      "title" : "Consent",
+      "description" : "True only after the guest explicitly agrees to follow-up.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "email" : {
+      "title" : "Email",
+      "description" : "Guest's email address, if they gave one.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "first_name" : {
+      "title" : "First Name",
+      "description" : "Given name. For a full name, put every word except the last one here. JoJo Test means JoJo. Leave empty only when the guest gave a single name.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "last_name" : {
+      "title" : "Last Name",
+      "description" : "Family name only, the last word of the guest's name. JoJo Test means Test. Do not put the full name here.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "max_rent" : {
+      "title" : "Maximum Rent",
+      "description" : "Maximum monthly rent the guest asked for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "messaging_session_id" : {
+      "title" : "Messaging Session Id",
+      "description" : "Current messaging session. Filled from the channel. Do not ask the guest.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "notes" : {
+      "title" : "Notes",
+      "description" : "Short note about what the guest wants.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "phone" : {
+      "title" : "Phone",
+      "description" : "Guest's phone number, if they gave one.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

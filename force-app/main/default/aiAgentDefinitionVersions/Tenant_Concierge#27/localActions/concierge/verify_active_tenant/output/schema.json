@@ -1,0 +1,98 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "account_id" : {
+      "title" : "Account Id",
+      "description" : "Person Account Id from the session.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "active_rental_records" : {
+      "title" : "Active Rental Records",
+      "description" : "Occupied apartment records for this session.",
+      "maxItems" : 2000,
+      "items" : {
+        "lightning:type" : "lightning__recordInfoType"
+      },
+      "lightning:type" : "lightning__listType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "apartment_choices" : {
+      "title" : "Apartment Choices",
+      "description" : "Names of the occupied apartments, one per line.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "contact_id" : {
+      "title" : "Contact Id",
+      "description" : "Messaging session contact. Empty when the session has no contact.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "default_apartment_id" : {
+      "title" : "Default Apartment Id",
+      "description" : "The one occupied apartment Id, or the Id of the single apartment name found in the message. Empty when the resident must still choose.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "default_apartment_name" : {
+      "title" : "Default Apartment Name",
+      "description" : "Name that belongs to default_apartment_id.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "is_active_tenant" : {
+      "title" : "Is Active Tenant",
+      "description" : "True when that account has at least one occupied apartment.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "is_valid_user" : {
+      "title" : "Is Valid User",
+      "description" : "True when the session has an end-user account.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "person_email" : {
+      "title" : "Person Email",
+      "description" : "PersonEmail on the session account. The model must not change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "resident_name" : {
+      "title" : "Resident Name",
+      "description" : "Name on the person account.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    },
+    "result" : {
+      "title" : "Result",
+      "description" : "Number of occupied apartments. 0 when there is no active rental.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

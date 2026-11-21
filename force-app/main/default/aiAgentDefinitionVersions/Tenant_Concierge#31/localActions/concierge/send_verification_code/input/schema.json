@@ -1,0 +1,35 @@
+{
+  "required" : [ "customer_to_verify", "account_id", "apartment_id" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "account_id" : {
+      "title" : "Account Id",
+      "description" : "Person Account Id from the session. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "apartment_id" : {
+      "title" : "Apartment Id",
+      "description" : "Occupied apartment Id selected by the script. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "contact_id" : {
+      "title" : "Contact Id",
+      "description" : "Contact id from the session. The model cannot change it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customer_to_verify" : {
+      "title" : "Customer To Verify",
+      "description" : "The email address the resident typed in the chat. The flow compares it with the email on the Contact record and sends the code only when they are equal.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -70,8 +70,77 @@
     </actionCalls>
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <description>Inbound Omni-Channel flow. Sends a signed-in resident Enhanced Chat session to Tenant Concierge. If the agent cannot take it, the session waits in Resident Concierge.</description>
+    <decisions>
+        <name>Needs_Link</name>
+        <label>Needs Link</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Route_to_Agent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Already linked or guest</defaultConnectorLabel>
+        <rules>
+            <name>Verified_Unlinked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_End_User.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_End_User.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>signed_in_user_id</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Portal_User</targetReference>
+            </connector>
+            <label>Verified, not linked</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Portal_User_Found</name>
+        <label>Portal User Found</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Route_to_Agent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No contact</defaultConnectorLabel>
+        <rules>
+            <name>Has_Contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Portal_User.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Link_End_User</targetReference>
+            </connector>
+            <label>Has contact</label>
+        </rules>
+    </decisions>
+    <description>Inbound Omni-Channel flow. Sends a signed-in resident Enhanced Chat session to Tenant Concierge. If the agent cannot take it, the session waits in Resident Concierge. A verified session (platform key AUTH/SFDC/uid:) is linked to that portal user's contact and account first, so the session's EndUserAccountId is set.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>signed_in_user_id</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!Get_End_User.MessagingPlatformKey}, &quot;/AUTH/SFDC/uid:&quot;), TRIM(MID({!Get_End_User.MessagingPlatformKey}, FIND(&quot;uid:&quot;, {!Get_End_User.MessagingPlatformKey}) + 4, 18)), &quot;&quot;)</expression>
+    </formulas>
     <interviewLabel>Route Resident Inbound {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Route Resident Inbound</label>
     <processMetadataValues>
@@ -93,11 +162,124 @@
         </value>
     </processMetadataValues>
     <processType>RoutingFlow</processType>
+    <recordLookups>
+        <name>Get_Session</name>
+        <label>Get Session</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_End_User</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Route_to_Agent</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>MessagingSession</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MessagingEndUserId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_End_User</name>
+        <label>Get End User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Needs_Link</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Route_to_Agent</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Session.MessagingEndUserId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>MessagingEndUser</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ContactId</queriedFields>
+        <queriedFields>MessagingPlatformKey</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Portal_User</name>
+        <label>Get Portal User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Portal_User_Found</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Route_to_Agent</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>signed_in_user_id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ContactId</queriedFields>
+        <queriedFields>AccountId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Link_End_User</name>
+        <label>Link End User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Route_to_Agent</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Route_to_Agent</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_End_User.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>Get_Portal_User.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>Get_Portal_User.ContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>MessagingEndUser</object>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Route_to_Agent</targetReference>
+            <targetReference>Get_Session</targetReference>
         </connector>
     </start>
     <status>Active</status>

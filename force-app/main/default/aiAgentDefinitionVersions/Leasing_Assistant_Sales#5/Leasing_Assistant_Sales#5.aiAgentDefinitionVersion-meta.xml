@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiAgentDefinitionVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <billingMode>ActionBased</billingMode>
+    <citationsEnabled>false</citationsEnabled>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The agent instructions</description>
+        <developerName>AgentScriptInternal_agent_instructions</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Agent Instructions</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The next topic to be visited</description>
+        <developerName>AgentScriptInternal_next_topic</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Next Topic</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <copilotPrimaryLanguage>en_US</copilotPrimaryLanguage>
+    <genAiPlannerName>Leasing_Assistant_Sales_v5</genAiPlannerName>
+    <isScriptCompatibleAgent>true</isScriptCompatibleAgent>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <planner>
+        <fullName>Leasing_Assistant_Sales_v5</fullName>
+        <agentGraphRef>20ZVW000001x4YT</agentGraphRef>
+        <description>Pacific Haven&apos;s inbound sales agent for website visitors. Finds vacant apartments, shares move-in specials, answers leasing policy questions from the handbook and knowledge articles, saves prospects as Leads after consent, and hands off to a leasing specialist for showings.</description>
+        <localTopicLinks>
+            <genAiPluginName>agent_router</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>ambiguous_question</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>leasing</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>off_topic</genAiPluginName>
+        </localTopicLinks>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Welcome the guest and send each request to the right subagent</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties inbound sales assistant for website guests who are prospective tenants.
+Help guests find vacant apartments, tell them about move-in specials, and answer public leasing questions.
+Use only action results. Never invent an apartment, a rent, an amenity,
+a square footage, or a security-deposit amount.
+Do not discuss resident cases, payments, late fees, lease files, or
+door access. Those belong to a signed-in resident assistant.
+Never offer a discount unless a move-in special is on file. Never
+offer more than the listed discount.
+Never book a meeting or say a showing time is booked. A leasing specialist schedules showings.
+If the guest is only browsing and does not agree to follow-up, do not
+save a lead.</description>
+                <developerName>instruction0_179VW000001L5XC</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001L5XC</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>agent_router</localDeveloperName>
+            <masterLabel>Agent Router</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Ask the guest for a clearer request when it is too vague to act on</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties inbound sales assistant for website guests who are prospective tenants.
+Help guests find vacant apartments, tell them about move-in specials, and answer public leasing questions.
+Use only action results. Never invent an apartment, a rent, an amenity,
+a square footage, or a security-deposit amount.
+Do not discuss resident cases, payments, late fees, lease files, or
+door access. Those belong to a signed-in resident assistant.
+Never offer a discount unless a move-in special is on file. Never
+offer more than the listed discount.
+Never book a meeting or say a showing time is booked. A leasing specialist schedules showings.
+If the guest is only browsing and does not agree to follow-up, do not
+save a lead.</description>
+                <developerName>instruction0_179VW000001L5XD</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001L5XD</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>ambiguous_question</localDeveloperName>
+            <masterLabel>Ambiguous Question</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Find vacant apartments, share move-in specials, answer public policy questions, save a consented prospect, and hand off to a leasing specialist.</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties inbound sales assistant for website guests who are prospective tenants.
+Help guests find vacant apartments, tell them about move-in specials, and answer public leasing questions.
+Use only action results. Never invent an apartment, a rent, an amenity,
+a square footage, or a security-deposit amount.
+Do not discuss resident cases, payments, late fees, lease files, or
+door access. Those belong to a signed-in resident assistant.
+Never offer a discount unless a move-in special is on file. Never
+offer more than the listed discount.
+Never book a meeting or say a showing time is booked. A leasing specialist schedules showings.
+If the guest is only browsing and does not agree to follow-up, do not
+save a lead.</description>
+                <developerName>instruction0_179VW000001L5XB</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001L5XB</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localActionLinks>
+                <functionName>AnswerQuestionsWithKnowledge</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>get_move_in_special</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>create_prospect_lead</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>search_available_apartments</functionName>
+            </localActionLinks>
+            <localActions>
+                <description>Answers questions about company policies and procedures, troubleshooting steps, or product information. For example: “What is your return policy?” “How do I fix an issue?” or “What features does a product have?”</description>
+                <invocationTarget>streamKnowledgeSearch</invocationTarget>
+                <invocationTargetType>standardInvocableAction</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>AnswerQuestionsWithKnowledge</localDeveloperName>
+                <masterLabel>Answer Questions with Knowledge</masterLabel>
+                <progressIndicatorMessage>Getting answers</progressIndicatorMessage>
+                <source>EmployeeCopilot__AnswerQuestionsWithKnowledge</source>
+            </localActions>
+            <localActions>
+                <description>Saves a website prospect after a last name, an email or phone number, and explicit consent to be contacted.</description>
+                <invocationTarget>Create_Prospect_Lead</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>create_prospect_lead</localDeveloperName>
+                <masterLabel>Create Prospect Lead</masterLabel>
+                <progressIndicatorMessage>Saving your contact details...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Returns the move-in special on file for a vacant apartment this month. The listed discount is the highest amount that can be offered.</description>
+                <invocationTarget>Get_Move_in_Special</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>get_move_in_special</localDeveloperName>
+                <masterLabel>Get Move-in Special</masterLabel>
+                <progressIndicatorMessage>Checking the listed move-in special...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Finds at most three vacant apartments for a city and a bedroom count. Maximum rent is optional. Pass move_in_window as this_week when the guest wants to move in this week.</description>
+                <invocationTarget>Search_Available_Apartments</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>search_available_apartments</localDeveloperName>
+                <masterLabel>Search Available Apartments</masterLabel>
+                <progressIndicatorMessage>Looking up vacant apartments...</progressIndicatorMessage>
+            </localActions>
+            <localDeveloperName>leasing</localDeveloperName>
+            <masterLabel>Leasing</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Redirect conversation to apartment and leasing topics when the guest request goes off-topic</description>
+            <genAiPluginInstructions>
+                <description>You are the Pacific Haven Properties inbound sales assistant for website guests who are prospective tenants.
+Help guests find vacant apartments, tell them about move-in specials, and answer public leasing questions.
+Use only action results. Never invent an apartment, a rent, an amenity,
+a square footage, or a security-deposit amount.
+Do not discuss resident cases, payments, late fees, lease files, or
+door access. Those belong to a signed-in resident assistant.
+Never offer a discount unless a move-in special is on file. Never
+offer more than the listed discount.
+Never book a meeting or say a showing time is booked. A leasing specialist schedules showings.
+If the guest is only browsing and does not agree to follow-up, do not
+save a lead.</description>
+                <developerName>instruction0_179VW000001L5XE</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001L5XE</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>off_topic</localDeveloperName>
+            <masterLabel>Off Topic</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <masterLabel>Leasing Assistant Sales</masterLabel>
+        <plannerSurfaces>
+            <adaptiveResponseAllowed>true</adaptiveResponseAllowed>
+            <callRecordingAllowed>false</callRecordingAllowed>
+            <outboundRouteConfigs>
+                <escalationMessage>I&apos;m connecting you with a leasing specialist. A showing time is not booked yet.</escalationMessage>
+                <outboundRouteName>Route_Leasing_Showing</outboundRouteName>
+                <outboundRouteType>OmniChannelFlow</outboundRouteType>
+            </outboundRouteConfigs>
+            <surface>SurfaceAction__Messaging</surface>
+            <surfaceType>Messaging</surfaceType>
+        </plannerSurfaces>
+        <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+    </planner>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <status>Inactive</status>
+    <stopRecPrompts>false</stopRecPrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+    <version>5</version>
+    <welcomeMessage>Hi, I&apos;m Pacific Haven&apos;s AI leasing assistant. I can help you find an apartment and answer leasing questions. Which city, how many bedrooms, and what monthly rent should I stay under?</welcomeMessage>
+</AiAgentDefinitionVersion>
