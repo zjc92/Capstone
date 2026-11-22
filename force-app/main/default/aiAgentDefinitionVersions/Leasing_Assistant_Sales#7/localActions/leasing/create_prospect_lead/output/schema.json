@@ -1,0 +1,30 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "confirmation_message" : {
+      "title" : "Confirmation Message",
+      "description" : "What to tell the guest about the save.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "lead_created" : {
+      "title" : "Lead Created",
+      "description" : "Whether a lead was saved.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "result_code" : {
+      "title" : "Result Code",
+      "description" : "created, not_created, or PII_DETECTED. PII_DETECTED means the details held what looks like a Social Security number and nothing was saved.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

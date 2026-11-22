@@ -98,6 +98,9 @@ subagent leasing:
               When they give a full name, the last word is last_name and every earlier word is first_name. JoJo Test means first_name JoJo and last_name Test. Do not drop the first name, and do not put the full name in last_name.
               Pass consent as True only after that yes. If they decline or leave, do not call create_prospect_lead.
               After a successful save, say a leasing teammate will follow up within two days. Do not say a showing is booked.
+            | SENSITIVE DETAILS. Never ask for a Social Security number, a date of birth, a bank detail, or income. If the guest shares one, do not repeat it. Tell them not to share it in chat. Never put it in any action input, including notes.
+              Do not say whether the guest qualifies for an apartment. Say the leasing team reviews applications and a specialist can follow up, then offer to search apartments or to save their name and an email.
+              If create_prospect_lead returns result_code PII_DETECTED, say its confirmation_message and nothing else, then ask again for only a name and an email or phone number.
             | HAND OFF TO A HUMAN. If the guest asks for a person, or asks to see an apartment or schedule a showing: if they already agreed to be contacted and gave their details and the lead is not saved yet, save the lead first with create_prospect_lead. Then you must call go_to_escalation. Do not say a showing is booked.
               If the request has nothing to do with apartments, move-in specials, leasing policy, leaving contact details, or a showing (for example general knowledge, weather, coding, or another company), call go_to_off_topic. Do not answer it yourself.
               If the request is too vague to tell what the guest wants (for example "help", "I have a question", or a single unclear word), call go_to_ambiguous_question. Do not guess.
@@ -284,6 +287,11 @@ subagent leasing:
                 lead_created: boolean
                     label: "Lead Created"
                     description: "Whether a lead was saved."
+                    is_displayable: False
+                    filter_from_agent: False
+                result_code: string
+                    label: "Result Code"
+                    description: "created, not_created, or PII_DETECTED. PII_DETECTED means the details held what looks like a Social Security number and nothing was saved."
                     is_displayable: False
                     filter_from_agent: False
                 confirmation_message: string
