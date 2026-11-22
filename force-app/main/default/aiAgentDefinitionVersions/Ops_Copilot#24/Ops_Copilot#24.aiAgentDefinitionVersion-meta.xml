@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiAgentDefinitionVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <billingMode>ActionBased</billingMode>
+    <citationsEnabled>false</citationsEnabled>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The agent instructions</description>
+        <developerName>AgentScriptInternal_agent_instructions</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Agent Instructions</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for if statements</description>
+        <developerName>AgentScriptInternal_condition_1</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 1</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The next topic to be visited</description>
+        <developerName>AgentScriptInternal_next_topic</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Next Topic</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>This message asks for a renewal draft or email.</description>
+        <developerName>asked_draft</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Asked Draft</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>The weekly question names another person, city, state, or manager.</description>
+        <developerName>asked_other</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Asked Other</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>This message asks about one tenant renewal, rent, payments, cases, or a draft.</description>
+        <developerName>asked_renewal</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Asked Renewal</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>The renewal question names two people. Leave tenant_name empty.</description>
+        <developerName>asked_two_tenants</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Asked Two Tenants</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>This message asks for this manager&apos;s weekly building summary.</description>
+        <developerName>asked_weekly</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Asked Weekly</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Apartment count from the weekly action.</description>
+        <developerName>last_apartment_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Apartment Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Apartment name from the renewal action.</description>
+        <developerName>last_apartment_name</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Apartment Name</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Building count from the weekly action.</description>
+        <developerName>last_building_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Building Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Case table from the renewal action.</description>
+        <developerName>last_case_table</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Case Table</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Cases closed from the weekly action.</description>
+        <developerName>last_cases_closed_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Cases Closed Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Open cases from the weekly action.</description>
+        <developerName>last_cases_open_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Cases Open Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Cases opened from the weekly action.</description>
+        <developerName>last_cases_opened_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Cases Opened Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>City from the renewal action.</description>
+        <developerName>last_city</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last City</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Tenant contact id from the renewal action. Used as the email recipient.</description>
+        <developerName>last_contact_id</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Contact Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Decision from the renewal action.</description>
+        <developerName>last_decision</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Decision</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Email generated by the Draft or Revise Email action.</description>
+        <developerName>last_email</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Email</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>The email draft action ran for this message.</description>
+        <developerName>last_email_ran</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Email Ran</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Download link of the weekly summary PDF from the weekly action. Empty when no file was made.</description>
+        <developerName>last_file_url</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last File Url</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Increase percent from the renewal action.</description>
+        <developerName>last_increase_percent</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Increase Percent</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Late payment count from the weekly action.</description>
+        <developerName>last_late_payment_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Late Payment Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Object</dataType>
+        <description>Late rent total from the weekly action.</description>
+        <developerName>last_late_rent_total</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Late Rent Total</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Notice days from the renewal action.</description>
+        <developerName>last_notice_days</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Notice Days</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Occupancy rate from the weekly action.</description>
+        <developerName>last_occupancy_rate</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Occupancy Rate</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Occupied count from the weekly action.</description>
+        <developerName>last_occupied_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Occupied Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Past-due count from the renewal action.</description>
+        <developerName>last_past_due_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Past Due Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Payments due from the weekly action.</description>
+        <developerName>last_payments_due_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Payments Due Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>The renewal action ran for this message.</description>
+        <developerName>last_renewal_ran</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Renewal Ran</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Object</dataType>
+        <description>Rent from the renewal action.</description>
+        <developerName>last_rent</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Rent</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Renewal result_code from the action.</description>
+        <developerName>last_result_code</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Result Code</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Tone from the renewal action.</description>
+        <developerName>last_tone</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Tone</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Vacant count from the weekly action.</description>
+        <developerName>last_vacant_count</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Vacant Count</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>The weekly action ran for this message.</description>
+        <developerName>last_weekly_ran</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Last Weekly Ran</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Preview user id. Paste a property manager id to run as that manager. Leave empty to use the logged-in user.</description>
+        <developerName>manager_user_id</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Manager User Id</label>
+        <visibility>External</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>True after this message has been classified.</description>
+        <developerName>request_captured</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Request Captured</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Last user message already handled.</description>
+        <developerName>seen_input</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Seen Input</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>One tenant name from this message. Empty when none was given or two people were named.</description>
+        <developerName>tenant_name</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Tenant Name</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <copilotPrimaryLanguage>en_US</copilotPrimaryLanguage>
+    <genAiPlannerName>Ops_Copilot_v24</genAiPlannerName>
+    <isScriptCompatibleAgent>true</isScriptCompatibleAgent>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <planner>
+        <fullName>Ops_Copilot_v24</fullName>
+        <agentGraphRef>20ZVW0000021JXJ</agentGraphRef>
+        <description>Internal assistant for one property manager. Reviews a tenant renewal and summarizes this week&apos;s buildings from Flow results, and drafts a renewal email only when asked.</description>
+        <localTopicLinks>
+            <genAiPluginName>off_topic</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>property_ops</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>router</genAiPluginName>
+        </localTopicLinks>
+        <localTopicLinks>
+            <genAiPluginName>tenant_not_found</genAiPluginName>
+        </localTopicLinks>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Questions that are not about a tenant renewal, a draft, or this manager&apos;s buildings.</description>
+            <genAiPluginInstructions>
+                <description>You are Ops Copilot for one Pacific Haven property manager.
+You only answer questions relevant to property manager work: one tenant&apos;s renewal, a renewal draft, or this week&apos;s buildings.
+A message can contain more than one question. Answer each property question. For each question that is not property-manager work, say you can only answer questions relevant to property manager work.
+You do not send email, change a record, or choose a renewal band.
+The two actions already limit every fact to the running manager. Never pass a user id or a building id.
+Quote the action result. Do not add a rent, a date, a count, a case, or a reason the action did not return.        Do not infer race, religion, disability, or sexual orientation from a name, a city, or an address.</description>
+                <developerName>instruction0_179VW000001MRia</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001MRia</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>off_topic</localDeveloperName>
+            <masterLabel>Off Topic</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Review one tenant renewal or summarize this manager&apos;s week.</description>
+            <genAiPluginInstructions>
+                <description>You are Ops Copilot for one Pacific Haven property manager.
+You only answer questions relevant to property manager work: one tenant&apos;s renewal, a renewal draft, or this week&apos;s buildings.
+A message can contain more than one question. Answer each property question. For each question that is not property-manager work, say you can only answer questions relevant to property manager work.
+You do not send email, change a record, or choose a renewal band.
+The two actions already limit every fact to the running manager. Never pass a user id or a building id.
+Quote the action result. Do not add a rent, a date, a count, a case, or a reason the action did not return.        Do not infer race, religion, disability, or sexual orientation from a name, a city, or an address.</description>
+                <developerName>instruction0_179VW000001MRiX</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001MRiX</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localActionLinks>
+                <functionName>weekly_property_summary</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>review_tenant_renewal</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>DraftOrReviseEmail</functionName>
+            </localActionLinks>
+            <localActions>
+                <asyncMode>false</asyncMode>
+                <description>Creates an email draft or revises the latest generated email based on user input.</description>
+                <invocationTarget>getDraftOrReviseEmailPrompt</invocationTarget>
+                <invocationTargetType>standardInvocableAction</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>DraftOrReviseEmail</localDeveloperName>
+                <masterLabel>Draft or Revise Email</masterLabel>
+                <progressIndicatorMessage>Crafting your email</progressIndicatorMessage>
+                <source>EmployeeCopilot__DraftOrReviseEmail</source>
+            </localActions>
+            <localActions>
+                <asyncMode>false</asyncMode>
+                <description>Reads the running manager and returns the renewal decision for one tenant in that manager&apos;s buildings.</description>
+                <invocationTarget>Review_Tenant_Renewal</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>review_tenant_renewal</localDeveloperName>
+                <masterLabel>Review Tenant Renewal</masterLabel>
+                <progressIndicatorMessage>Checking this tenant in your buildings...</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <asyncMode>false</asyncMode>
+                <description>Reads the running manager and returns this week&apos;s counts for that manager&apos;s buildings.</description>
+                <invocationTarget>Weekly_Property_Summary</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>weekly_property_summary</localDeveloperName>
+                <masterLabel>Weekly Property Summary</masterLabel>
+                <progressIndicatorMessage>Adding up your buildings for this week...</progressIndicatorMessage>
+            </localActions>
+            <localDeveloperName>property_ops</localDeveloperName>
+            <masterLabel>Property operations</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Send property-manager work to Property Operations. Send every other message to Off Topic.</description>
+            <genAiPluginInstructions>
+                <description>You are Ops Copilot for one Pacific Haven property manager.
+You only answer questions relevant to property manager work: one tenant&apos;s renewal, a renewal draft, or this week&apos;s buildings.
+A message can contain more than one question. Answer each property question. For each question that is not property-manager work, say you can only answer questions relevant to property manager work.
+You do not send email, change a record, or choose a renewal band.
+The two actions already limit every fact to the running manager. Never pass a user id or a building id.
+Quote the action result. Do not add a rent, a date, a count, a case, or a reason the action did not return.        Do not infer race, religion, disability, or sexual orientation from a name, a city, or an address.</description>
+                <developerName>instruction0_179VW000001MRiY</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001MRiY</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>router</localDeveloperName>
+            <masterLabel>Router</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>The renewal lookup returned not_found. Say the one sentence and nothing else.</description>
+            <genAiPluginInstructions>
+                <description>You are Ops Copilot for one Pacific Haven property manager.
+You only answer questions relevant to property manager work: one tenant&apos;s renewal, a renewal draft, or this week&apos;s buildings.
+A message can contain more than one question. Answer each property question. For each question that is not property-manager work, say you can only answer questions relevant to property manager work.
+You do not send email, change a record, or choose a renewal band.
+The two actions already limit every fact to the running manager. Never pass a user id or a building id.
+Quote the action result. Do not add a rent, a date, a count, a case, or a reason the action did not return.        Do not infer race, religion, disability, or sexual orientation from a name, a city, or an address.</description>
+                <developerName>instruction0_179VW000001MRiZ</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179VW000001MRiZ</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localDeveloperName>tenant_not_found</localDeveloperName>
+            <masterLabel>Tenant not found</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <masterLabel>Ops Copilot</masterLabel>
+        <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+    </planner>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <status>Inactive</status>
+    <stopRecPrompts>false</stopRecPrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+    <version>24</version>
+    <welcomeMessage>I can review one tenant&apos;s renewal or summarize your buildings for this week.</welcomeMessage>
+</AiAgentDefinitionVersion>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessType>NamespaceRestricted</accessType>
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <description>Agent action. The renewal flow reads the running user and returns the decision for one tenant in that manager's buildings. The agent cannot pass a user id or a building id.</description>
+    <description>Agent action. The renewal flow reads the running user and returns the decision for one tenant in that manager&apos;s buildings. The agent cannot pass a user id or a building id.</description>
     <environments>Default</environments>
     <interviewLabel>Review Tenant Renewal {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Review Tenant Renewal</label>
@@ -85,6 +86,10 @@
             <name>result_code</name>
         </outputAssignments>
         <outputAssignments>
+            <assignToReference>tenant_contact_id</assignToReference>
+            <name>tenant_contact_id</name>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>tone</assignToReference>
             <name>tone</name>
         </outputAssignments>
@@ -140,6 +145,13 @@
         <scale>0</scale>
     </variables>
     <variables>
+        <name>manager_user_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>notice_days</name>
         <dataType>Number</dataType>
         <isCollection>false</isCollection>
@@ -171,11 +183,11 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
-        <name>manager_user_id</name>
+        <name>tenant_contact_id</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>tenant_name</name>

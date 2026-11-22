@@ -1,0 +1,21 @@
+{
+  "required" : [ ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "manager_user_id" : {
+      "title" : "Manager User Id",
+      "description" : "Preview user id from the context variable. The conversation cannot set this.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "unused" : {
+      "title" : "Unused",
+      "description" : "Ignored. Present because an employee action needs one input. The script sets it. The manager does not.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

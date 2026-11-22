@@ -1,0 +1,102 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "apartment_name" : {
+      "title" : "Apartment Name",
+      "description" : "Apartment in this manager's buildings. Empty unless result_code is found.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "case_subjects" : {
+      "title" : "Case Subjects",
+      "description" : "Case subjects for that apartment, separated by a semicolon. Empty when there are none.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "case_table" : {
+      "title" : "Case Table",
+      "description" : "Case rows for that apartment. Each row is Case Number, Subject, Status, and Created Date, separated by ' | '. Rows are separated by '; '.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "city" : {
+      "title" : "City",
+      "description" : "City of that apartment. Empty unless result_code is found.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "decision" : {
+      "title" : "Decision",
+      "description" : "StandardRenewal, RenewalIncrease, RenewalNoIncrease, or Decline.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "earliest_due" : {
+      "title" : "Earliest Due",
+      "description" : "Earliest Date_Due__c, used as the tenancy start for the Oregon first-year rule.",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "increase_percent" : {
+      "title" : "Increase Percent",
+      "description" : "10 only for RenewalIncrease. Otherwise 0.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "notice_days" : {
+      "title" : "Notice Days",
+      "description" : "90 only for RenewalNoIncrease. Otherwise 0.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "past_due_count" : {
+      "title" : "Past Due Count",
+      "description" : "Count of Past_Due__c payments on that apartment.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "rent" : {
+      "title" : "Rent",
+      "description" : "Current monthly rent. Empty unless result_code is found.",
+      "lightning:type" : "lightning__currencyType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "result_code" : {
+      "title" : "Result Code",
+      "description" : "found, not_found, ambiguous, or no_payment_history. not_found means the tenant is not in this manager's buildings. no_payment_history means the apartment is in these buildings and has no payment rows, so there is no renewal decision.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "tone" : {
+      "title" : "Tone",
+      "description" : "warm, strict, or decline. Use this for a draft. Do not choose a different tone.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Lets a property manager read and edit buildings, apartments, and lease payments. Property_Manager__c stays read-only so the manager cannot reassign a building. The Ops Copilot Flow still filters on the running user.</description>
+    <classAccesses>
+        <apexClass>WeeklySummaryPdf</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <fieldPermissions>
         <editable>false</editable>
         <field>Apt_Location__c.External_ID__c</field>

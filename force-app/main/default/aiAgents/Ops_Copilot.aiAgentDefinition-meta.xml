@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiAgentDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <agentDSLEnabled>true</agentDSLEnabled>
+    <agentDescription>Internal assistant for one property manager. Reviews a tenant renewal and summarizes this week&apos;s buildings from Flow results, and drafts a renewal email only when asked.</agentDescription>
+    <agentType>AgentforceEmployeeAgent</agentType>
+    <logPrivateConversationData>false</logPrivateConversationData>
+    <richContentEnabled>true</richContentEnabled>
+    <type>InternalCopilot</type>
+</AiAgentDefinition>

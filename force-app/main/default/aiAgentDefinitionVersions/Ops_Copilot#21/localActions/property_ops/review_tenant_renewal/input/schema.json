@@ -1,0 +1,21 @@
+{
+  "required" : [ "tenant_name" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "manager_user_id" : {
+      "title" : "Manager User Id",
+      "description" : "Preview user id from the context variable. The conversation cannot set this.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "tenant_name" : {
+      "title" : "Tenant Name",
+      "description" : "Tenant name the manager asked about. Not a user id or a building id.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

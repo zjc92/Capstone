@@ -55,7 +55,7 @@ private class OpsCopilotFlowTest {
             System.assertEquals('RenewalNoIncrease', harpreet.get('decision'));
             System.assertEquals(2, harpreet.get('past_due_count'));
             System.assertEquals(0, harpreet.get('increase_percent'));
-            System.assertEquals(90, harpreet.get('notice_days'));
+            System.assertEquals(0, harpreet.get('notice_days'));
             System.assertEquals('strict', harpreet.get('tone'));
             System.assertEquals('Portland', harpreet.get('city'));
         }

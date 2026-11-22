@@ -1,0 +1,102 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "apartment_count" : {
+      "title" : "Apartment Count",
+      "description" : "Apartments in those buildings.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "building_count" : {
+      "title" : "Building Count",
+      "description" : "Buildings where this manager is Property_Manager__c.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "cases_closed_count" : {
+      "title" : "Cases Closed Count",
+      "description" : "Cases on these apartments closed in the last 7 days.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "cases_open_count" : {
+      "title" : "Cases Open Count",
+      "description" : "Cases on these apartments that are still open.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "cases_opened_count" : {
+      "title" : "Cases Opened Count",
+      "description" : "Cases created in the last 7 days on these apartments.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "file_url" : {
+      "title" : "File Url",
+      "description" : "Download link of the weekly summary PDF. Empty when the file could not be made.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "late_payment_count" : {
+      "title" : "Late Payment Count",
+      "description" : "Those payments where Past_Due__c is true.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "late_rent_total" : {
+      "title" : "Late Rent Total",
+      "description" : "Sum of Rent_Amount__c on the late payments in that window.",
+      "lightning:type" : "lightning__currencyType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "occupancy_rate" : {
+      "title" : "Occupancy Rate",
+      "description" : "Occupied divided by total, as a percent with one decimal.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "occupied_count" : {
+      "title" : "Occupied Count",
+      "description" : "Apartments with Occupied__c true.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "payments_due_count" : {
+      "title" : "Payments Due Count",
+      "description" : "Payments with Date_Due__c in the last 7 days.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "vacant_count" : {
+      "title" : "Vacant Count",
+      "description" : "apartment_count minus occupied_count.",
+      "lightning:type" : "lightning__numberType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -1,8 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessType>NamespaceRestricted</accessType>
+    <actionCalls>
+        <name>Create_Pdf</name>
+        <label>Create Pdf</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>WeeklySummaryPdf</actionName>
+        <actionType>apex</actionType>
+        <faultConnector>
+            <targetReference>No_File</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>managerUserId</name>
+            <value>
+                <elementReference>manager_user_id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>buildingCount</name>
+            <value>
+                <elementReference>building_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>apartmentCount</name>
+            <value>
+                <elementReference>apartment_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>occupiedCount</name>
+            <value>
+                <elementReference>occupied_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>vacantCount</name>
+            <value>
+                <elementReference>vacant_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>occupancyRate</name>
+            <value>
+                <elementReference>occupancy_rate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>paymentsDueCount</name>
+            <value>
+                <elementReference>payments_due_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>latePaymentCount</name>
+            <value>
+                <elementReference>late_payment_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>lateRentTotal</name>
+            <value>
+                <elementReference>late_rent_total</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>casesOpenedCount</name>
+            <value>
+                <elementReference>cases_opened_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>casesOpenCount</name>
+            <value>
+                <elementReference>cases_open_count</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>casesClosedCount</name>
+            <value>
+                <elementReference>cases_closed_count</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>WeeklySummaryPdf</nameSegment>
+        <outputParameters>
+            <assignToReference>file_url</assignToReference>
+            <name>fileUrl</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>file_name</assignToReference>
+            <name>fileName</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>68.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <description>Agent action. Reads the running user and returns this week's counts for that manager's buildings. The agent cannot pass a user id or a building id.</description>
+    <assignments>
+        <name>No_File</name>
+        <label>No File</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>file_url</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>Agent action. Reads the running user and returns this week&apos;s counts for that manager&apos;s buildings, and saves them as a PDF file the manager can download. The agent cannot pass a user id or a building id.</description>
     <environments>Default</environments>
     <interviewLabel>Weekly Property Summary {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Weekly Property Summary</label>
@@ -27,6 +134,9 @@
         <label>Summarize</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Pdf</targetReference>
+        </connector>
         <flowName>Summarize_Manager_Week</flowName>
         <inputAssignments>
             <name>manager_user_id</name>
@@ -80,20 +190,6 @@
         </outputAssignments>
     </subflows>
     <variables>
-        <name>manager_user_id</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>unused</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>apartment_count</name>
         <dataType>Number</dataType>
         <isCollection>false</isCollection>
@@ -134,6 +230,20 @@
         <scale>0</scale>
     </variables>
     <variables>
+        <name>file_name</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>file_url</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
         <name>late_payment_count</name>
         <dataType>Number</dataType>
         <isCollection>false</isCollection>
@@ -148,6 +258,13 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <scale>2</scale>
+    </variables>
+    <variables>
+        <name>manager_user_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>occupancy_rate</name>
@@ -172,6 +289,13 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <scale>0</scale>
+    </variables>
+    <variables>
+        <name>unused</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>vacant_count</name>

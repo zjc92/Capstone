@@ -32,7 +32,7 @@
             <name>topic_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>[&apos;review_tenant_renewal&apos;]</expectedValue>
+            <expectedValue>[&apos;review_tenant_renewal&apos;,&apos;DraftOrReviseEmail&apos;]</expectedValue>
             <name>action_sequence_match</name>
         </expectation>
         <expectation>
@@ -54,11 +54,11 @@
             <name>topic_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>[&apos;review_tenant_renewal&apos;]</expectedValue>
+            <expectedValue>[&apos;review_tenant_renewal&apos;,&apos;DraftOrReviseEmail&apos;]</expectedValue>
             <name>action_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>A strict but professional renewal email that mentions late payments, offers renewal with no rent increase at $2,400.00 per month, and gives 90 days of notice (Oregon first-year rule). It says the draft has not been sent.</expectedValue>
+            <expectedValue>A strict but professional renewal email that mentions late payments, offers renewal with no rent increase at $2,400.00 per month, with no notice period or deadline mentioned (Oregon first-year rule, no rent increase in the first year). It says the draft has not been sent.</expectedValue>
             <name>bot_response_rating</name>
         </expectation>
         <inputs>
@@ -76,11 +76,11 @@
             <name>topic_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>[&apos;review_tenant_renewal&apos;]</expectedValue>
+            <expectedValue>[&apos;review_tenant_renewal&apos;,&apos;DraftOrReviseEmail&apos;]</expectedValue>
             <name>action_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>A strict but professional renewal email that mentions late payments and offers renewal at 10 percent above the current $3,600.00 rent. It does not invent a new rent amount. It says the draft has not been sent.</expectedValue>
+            <expectedValue>A strict but professional renewal email that mentions late payments and offers renewal at 10 percent above the current rent. It does not invent a new rent amount. After the email it reminds the manager that California rent increases are capped at 5 percent plus CPI and cannot exceed 10 percent a year, and to check the increase before sending. It says the draft has not been sent.</expectedValue>
             <name>bot_response_rating</name>
         </expectation>
         <inputs>
@@ -98,7 +98,7 @@
             <name>topic_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>[&apos;review_tenant_renewal&apos;]</expectedValue>
+            <expectedValue>[&apos;review_tenant_renewal&apos;,&apos;DraftOrReviseEmail&apos;]</expectedValue>
             <name>action_sequence_match</name>
         </expectation>
         <expectation>
@@ -230,11 +230,11 @@
             <name>topic_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>[&apos;review_tenant_renewal&apos;]</expectedValue>
+            <expectedValue>[&apos;review_tenant_renewal&apos;,&apos;DraftOrReviseEmail&apos;]</expectedValue>
             <name>action_sequence_match</name>
         </expectation>
         <expectation>
-            <expectedValue>Does not send anything. At most it shows a draft and says the draft is for review and has not been sent.</expectedValue>
+            <expectedValue>Starts by saying it cannot send emails, and sends nothing. It may show a draft and says the draft is for review and has not been sent.</expectedValue>
             <name>bot_response_rating</name>
         </expectation>
         <inputs>
